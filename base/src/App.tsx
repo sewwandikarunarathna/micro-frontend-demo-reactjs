@@ -13,7 +13,7 @@ function App() {
 
   return (
     <div>
-    <nav className="p-4 bg-gray-200 flex gap-4 fixed top-0">
+    <nav className="flex flex-row justify-center items-center p-4 bg-gray-200 gap-4 stiky top-0">
       <Link to="/">Home</Link>
       <Link to="/about">About</Link>
       <Link to="/authLogin">Login</Link>

@@ -7,7 +7,8 @@ import {
   } from 'material-react-table';
 
 import STUDENTS from "./../assets/students.json";
-import { Button } from '@mui/material';
+import { Box, Button } from '@mui/material';
+import Paper from '@mui/material/Paper';
 
 //data type
 type Student = {
@@ -29,102 +30,103 @@ type Student = {
   };
 
 const MatTable = () => {
-    const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
 
-    const data: Student[] = STUDENTS;
-    //   const data: Student[] =  [
-    //     {
-    //         id: 1,
-    //         name: "Dipali Marar",
-    //         email: "Daevika_Gill46@yahoo.co.in",
-    //         phone: "+918323331146",
-    //         standard: 1,
-    //         section: "B",
-    //         age: 13,
-    //         date_of_birth: "1995-11-17T00:08:59.890Z",
-    //         date_of_admission: "2011-10-17T00:40:01.399Z",
-    //         address: {
-    //           pincode: "714 689",
-    //           city: "Richardson",
-    //           street: "15353 Mandakini Mill",
-    //           state: "Nagaland"
-    //         }
-    //       },
-    //   ];
+  const data: Student[] = STUDENTS;
+  //   const data: Student[] =  [
+  //     {
+  //         id: 1,
+  //         name: "Dipali Marar",
+  //         email: "Daevika_Gill46@yahoo.co.in",
+  //         phone: "+918323331146",
+  //         standard: 1,
+  //         section: "B",
+  //         age: 13,
+  //         date_of_birth: "1995-11-17T00:08:59.890Z",
+  //         date_of_admission: "2011-10-17T00:40:01.399Z",
+  //         address: {
+  //           pincode: "714 689",
+  //           city: "Richardson",
+  //           street: "15353 Mandakini Mill",
+  //           state: "Nagaland"
+  //         }
+  //       },
+  //   ];
 
-    const columns = useMemo<MRT_ColumnDef<Student>[]>(() => [
-        {
-          accessorKey: "name",
-          header: "Full Name",
-          size: 150,
-          enableClickToCopy: true,
-          enableResizing: false,
-        },
-        {
-          accessorKey: "email",
-          header: "Email Address",
-          size: 150,
-          enableClickToCopy: true,
-          enableResizing: true,
-        },
-        {
-          accessorKey: "phone",
-          header: "Phone Number",
-          size: 150,
-          enableClickToCopy: true,
-          enableResizing: true,
-        },
-        {
-          accessorKey: "standard",
-          header: "Class Name",
-          size: 150,
-          enableResizing: false,
-        },
-        {
-          accessorKey: "section",
-          header: "Section Name",
-          size: 150,
-        },
-        {
-          accessorKey: "age",
-          header: "Age",
-          size: 150,
-        },
-        {
-          accessorKey: "date_of_birth",
-          header: "DOB",
-          size: 150,
-        },
-        {
-          accessorKey: "date_of_admission",
-          header: "DOA",
-          size: 150,
-        },
-        {
-          accessorKey: "address.pincode",
-          header: "Pin Code",
-          size: 150,
-        },
-        {
-          accessorKey: "address.city",
-          header: "City Name",
-          size: 150,
-        },
-        {
-          accessorKey: "address.street",
-          header: "Street Name",
-          size: 150,
-        },
-        {
-          accessorKey: "address.state",
-          header: "State Name",
-          size: 150,
-        },
-      ], []);
+  const columns = useMemo<MRT_ColumnDef<Student>[]>(() => [
+      {
+        accessorKey: "name",
+        header: "Full Name",
+        size: 150,
+        enableClickToCopy: true,
+        enableResizing: false,
+      },
+      {
+        accessorKey: "email",
+        header: "Email Address",
+        size: 150,
+        enableClickToCopy: true,
+        enableResizing: true,
+      },
+      {
+        accessorKey: "phone",
+        header: "Phone Number",
+        size: 150,
+        enableClickToCopy: true,
+        enableResizing: true,
+      },
+      {
+        accessorKey: "standard",
+        header: "Class Name",
+        size: 150,
+        enableResizing: false,
+      },
+      {
+        accessorKey: "section",
+        header: "Section Name",
+        size: 150,
+      },
+      {
+        accessorKey: "age",
+        header: "Age",
+        size: 150,
+      },
+      {
+        accessorKey: "date_of_birth",
+        header: "DOB",
+        size: 150,
+      },
+      {
+        accessorKey: "date_of_admission",
+        header: "DOA",
+        size: 150,
+      },
+      {
+        accessorKey: "address.pincode",
+        header: "Pin Code",
+        size: 150,
+      },
+      {
+        accessorKey: "address.city",
+        header: "City Name",
+        size: 150,
+      },
+      {
+        accessorKey: "address.street",
+        header: "Street Name",
+        size: 150,
+      },
+      {
+        accessorKey: "address.state",
+        header: "State Name",
+        size: 150,
+      },
+    ], []);
 
   const table = useMaterialReactTable({
     columns,
     data, 
+    initialState: { density: 'compact' },
     defaultColumn: {
         maxSize: 400,
         minSize: 80,
@@ -134,18 +136,60 @@ const MatTable = () => {
     columnResizeMode: 'onChange', //default
     columnResizeDirection: 'rtl',
     enableBatchRowSelection: true,
+    enableRowVirtualization: true,
+    rowVirtualizerOptions: { overscan: 5 },
     state:{ isLoading: isLoading },
+    enableColumnOrdering: true,
     muiCircularProgressProps: {
         color: 'secondary',
         thickness: 5,
         size: 55,
-    }
+    },
+    muiTableBodyCellProps: {
+      //simple styling with the `sx` prop, works just like a style prop in this example
+      sx: {
+        fontWeight: 'normal',
+        fontSize: '12px',
+      },
+    },
+    enableFullScreenToggle: true,
+    enableStickyHeader: true,
+    muiTableContainerProps:{ sx: { maxHeight: '500px' } },
+    muiTablePaperProps: ({ table }) => ({
+      style: {
+        zIndex: table.getState().isFullScreen ? 1000 : undefined,
+        top: table.getState().isFullScreen ? '200px' : 0
+      },
+    }),
+    renderTopToolbarCustomActions: ({ table }) => (
+      <Box
+        sx={{
+          display: 'flex',
+          gap: '16px',
+          padding: '8px',
+          flexWrap: 'wrap',
+        }}
+      >
+        <Button
+          //export all data that is currently in the table (ignore pagination, sorting, filtering, etc.)
+          // onClick={handleExportData}
+          // startIcon={<FileDownloadIcon />}
+        >
+          Export All Data
+        </Button>
+      </Box>
+    ),
   });
 
   return (
   <>
-  <Button variant="contained" color="primary" onClick={() => setIsLoading(false)}>Load Data</Button>
+  <div className='flex flex-col justify-center items-center w-auto gap-4'>
+  <h1 className='text-4xl'>Material React Table</h1>
+  <Button className='flex w-48 mb-16' variant="contained" color="primary" onClick={() => setIsLoading(false)}>Load Data</Button>
+  </div>
+  <Paper className='flex flex-col justify-center p-4 m-16'>
   <MaterialReactTable table={table} />
+  </Paper>
   </>
   );
 }
