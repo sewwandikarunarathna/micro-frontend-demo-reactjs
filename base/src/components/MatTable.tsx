@@ -1,14 +1,16 @@
-import React, { useState } from 'react'
+import React, { useRef, useState } from 'react'
 import { useMemo } from "react";
 import {
     MaterialReactTable,
     useMaterialReactTable,
     type MRT_ColumnDef,
   } from 'material-react-table';
-
 import STUDENTS from "./../assets/students.json";
 import { Box, Button } from '@mui/material';
 import Paper from '@mui/material/Paper';
+import { downloadExcel } from "react-export-table-to-excel";
+import FileDownloadIcon from '@mui/icons-material/FileDownload';
+import _ from 'lodash';
 
 //data type
 type Student = {
@@ -21,13 +23,31 @@ type Student = {
     age: number;
     date_of_birth:string;
     date_of_admission:string;
-    address: {
-      pincode: string;
-      city: string;
-      street: string;
-      state: string;
-    }
+    // address: {
+    //   pincode: string;
+    //   city: string;
+    //   street: string;
+    //   state: string;
+    // }
   };
+
+  const columnNames = {
+    id: 'ID',
+    name: 'Full Name',
+    email: 'Email Address',
+    phone: 'Phone Number',
+    standard: 'Class Name',
+    section: 'Section Name',
+    age: 'Age',
+    date_of_birth: 'DOB',
+    date_of_admission: 'DOA',  
+    // address: {
+    //   pincode: 'Pin Code',
+    //   city: 'City Name',
+    //   street: 'Street Name',
+    //   state: 'State Name',
+    // }
+  } as const;
 
 const MatTable = () => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -53,75 +73,105 @@ const MatTable = () => {
   //       },
   //   ];
 
-  const columns = useMemo<MRT_ColumnDef<Student>[]>(() => [
-      {
-        accessorKey: "name",
-        header: "Full Name",
-        size: 150,
-        enableClickToCopy: true,
-        enableResizing: false,
-      },
-      {
-        accessorKey: "email",
-        header: "Email Address",
-        size: 150,
-        enableClickToCopy: true,
-        enableResizing: true,
-      },
-      {
-        accessorKey: "phone",
-        header: "Phone Number",
-        size: 150,
-        enableClickToCopy: true,
-        enableResizing: true,
-      },
-      {
-        accessorKey: "standard",
-        header: "Class Name",
-        size: 150,
-        enableResizing: false,
-      },
-      {
-        accessorKey: "section",
-        header: "Section Name",
-        size: 150,
-      },
-      {
-        accessorKey: "age",
-        header: "Age",
-        size: 150,
-      },
-      {
-        accessorKey: "date_of_birth",
-        header: "DOB",
-        size: 150,
-      },
-      {
-        accessorKey: "date_of_admission",
-        header: "DOA",
-        size: 150,
-      },
-      {
-        accessorKey: "address.pincode",
-        header: "Pin Code",
-        size: 150,
-      },
-      {
-        accessorKey: "address.city",
-        header: "City Name",
-        size: 150,
-      },
-      {
-        accessorKey: "address.street",
-        header: "Street Name",
-        size: 150,
-      },
-      {
-        accessorKey: "address.state",
-        header: "State Name",
-        size: 150,
-      },
-    ], []);
+  // const columns = useMemo<MRT_ColumnDef<Student>[]>(() => [
+  //     {
+  //       accessorKey: "name",
+  //       header: "Full Name",
+  //       size: 150,
+  //       enableClickToCopy: true,
+  //       enableResizing: false,
+  //     },
+  //     {
+  //       accessorKey: "email",
+  //       header: "Email Address",
+  //       size: 150,
+  //       enableClickToCopy: true,
+  //       enableResizing: true,
+  //     },
+  //     {
+  //       accessorKey: "phone",
+  //       header: "Phone Number",
+  //       size: 150,
+  //       enableClickToCopy: true,
+  //       enableResizing: true,
+  //     },
+  //     {
+  //       accessorKey: "standard",
+  //       header: "Class Name",
+  //       size: 150,
+  //       enableResizing: false,
+  //     },
+  //     {
+  //       accessorKey: "section",
+  //       header: "Section Name",
+  //       size: 150,
+  //     },
+  //     {
+  //       accessorKey: "age",
+  //       header: "Age",
+  //       size: 150,
+  //     },
+  //     {
+  //       accessorKey: "date_of_birth",
+  //       header: "DOB",
+  //       size: 150,
+  //     },
+  //     {
+  //       accessorKey: "date_of_admission",
+  //       header: "DOA",
+  //       size: 150,
+  //     },
+  //     {
+  //       accessorKey: "address.pincode",
+  //       header: "Pin Code",
+  //       size: 150,
+  //     },
+  //     {
+  //       accessorKey: "address.city",
+  //       header: "City Name",
+  //       size: 150,
+  //     },
+  //     {
+  //       accessorKey: "address.street",
+  //       header: "Street Name",
+  //       size: 150,
+  //     },
+  //     {
+  //       accessorKey: "address.state",
+  //       header: "State Name",
+  //       size: 150,
+  //     },
+  //   ], []);
+
+      //create columns from data
+  const columns = useMemo<MRT_ColumnDef<Student>[]>(
+    () =>
+      data.length
+        ? Object.keys(data[0]).map((columnId) => ({
+            header: columnNames[columnId as keyof Student],
+            accessorKey: columnId,
+            id: columnId,
+          }))
+        : [],
+    [data],
+  );
+
+    const handleExportRows = (rows: any) => {
+      const tableData = rows.map((row:any) =>
+        columns.map((column) => _.get(row.original, column.accessorKey ?? ''))
+      );
+      const tableHeaders = columns.map((c) => c.header);
+  
+      downloadExcel({
+        fileName: "table-data-to-excel",
+        sheet: "table-data-to-excel",
+        tablePayload: {
+          header: tableHeaders,
+          // accept two different data structures
+          body: tableData,
+        },
+      });
+    };
 
   const table = useMaterialReactTable({
     columns,
@@ -171,9 +221,10 @@ const MatTable = () => {
         }}
       >
         <Button
-          //export all data that is currently in the table (ignore pagination, sorting, filtering, etc.)
-          // onClick={handleExportData}
-          // startIcon={<FileDownloadIcon />}
+           onClick={() =>
+            handleExportRows(table.getPrePaginationRowModel().rows)
+          }
+          startIcon={<FileDownloadIcon />}
         >
           Export All Data
         </Button>
@@ -188,7 +239,8 @@ const MatTable = () => {
   <Button className='flex w-48 mb-16' variant="contained" color="primary" onClick={() => setIsLoading(false)}>Load Data</Button>
   </div>
   <Paper className='flex flex-col justify-center p-4 m-16'>
-  <MaterialReactTable table={table} />
+  <MaterialReactTable
+    table={table} />
   </Paper>
   </>
   );
