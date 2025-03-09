@@ -2,6 +2,9 @@ import React, { useRef, useState } from 'react'
 import { useMemo } from "react";
 import {
     MaterialReactTable,
+    MRT_ColumnFiltersState,
+    MRT_PaginationState,
+    MRT_SortingState,
     useMaterialReactTable,
     type MRT_ColumnDef,
   } from 'material-react-table';
@@ -23,14 +26,16 @@ type Student = {
     age: number;
     date_of_birth:string;
     date_of_admission:string;
-    // address: {
-    //   pincode: string;
-    //   city: string;
-    //   street: string;
-    //   state: string;
-    // }
+    address: {
+      pincode: string;
+      city: string;
+      street: string;
+      state: string;
+    }
   };
 
+  const columnNamesArray = ['id', 'name','email','phone','standard','section','age','date_of_birth','date_of_admission', 'address'];
+  const subColumnArray = ['pincode', 'city', 'street', 'state'];
   const columnNames = {
     id: 'ID',
     name: 'Full Name',
@@ -41,37 +46,20 @@ type Student = {
     age: 'Age',
     date_of_birth: 'DOB',
     date_of_admission: 'DOA',  
-    // address: {
-    //   pincode: 'Pin Code',
-    //   city: 'City Name',
-    //   street: 'Street Name',
-    //   state: 'State Name',
-    // }
+    address: {
+      pincode: 'Pin Code',
+      city: 'City Name',
+      street: 'Street Name',
+      state: 'State Name',
+    }
   } as const;
 
 const MatTable = () => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
   const data: Student[] = STUDENTS;
-  //   const data: Student[] =  [
-  //     {
-  //         id: 1,
-  //         name: "Dipali Marar",
-  //         email: "Daevika_Gill46@yahoo.co.in",
-  //         phone: "+918323331146",
-  //         standard: 1,
-  //         section: "B",
-  //         age: 13,
-  //         date_of_birth: "1995-11-17T00:08:59.890Z",
-  //         date_of_admission: "2011-10-17T00:40:01.399Z",
-  //         address: {
-  //           pincode: "714 689",
-  //           city: "Richardson",
-  //           street: "15353 Mandakini Mill",
-  //           state: "Nagaland"
-  //         }
-  //       },
-  //   ];
+
+   
 
   // const columns = useMemo<MRT_ColumnDef<Student>[]>(() => [
   //     {
@@ -143,16 +131,30 @@ const MatTable = () => {
   //     },
   //   ], []);
 
-      //create columns from data
+ 
+  // set columns dynamically   
   const columns = useMemo<MRT_ColumnDef<Student>[]>(
     () =>
       data.length
-        ? Object.keys(data[0]).map((columnId) => ({
-            header: columnNames[columnId as keyof Student],
-            accessorKey: columnId,
-            id: columnId,
-          }))
-        : [],
+    ? Object.keys(data[0])
+    .filter((columnId) => columnNamesArray.includes(columnId))
+      .flatMap((columnId: any) => {
+        if (typeof columnNames[columnId as keyof Student] === 'object') {
+          return Object.keys(columnNames[columnId as keyof Student])
+          .filter((subColumnId) => subColumnArray.includes(subColumnId))
+          .map((subColumnId) => ({
+            header: (columnNames[columnId as keyof Student] as any)[subColumnId as keyof (typeof columnNames)[keyof typeof columnNames]],
+            accessorKey: `${columnId}.${subColumnId}`,
+            id: `${columnId}.${subColumnId}`,
+          }));
+        }
+        return {
+          header: columnNames[columnId as keyof Student],
+          accessorKey: columnId,
+          id: columnId,
+        };
+      })
+    : [],
     [data],
   );
 
@@ -204,6 +206,7 @@ const MatTable = () => {
     },
     enableFullScreenToggle: true,
     enableStickyHeader: true,
+    enableClickToCopy: true,
     muiTableContainerProps:{ sx: { maxHeight: '500px' } },
     muiTablePaperProps: ({ table }) => ({
       style: {

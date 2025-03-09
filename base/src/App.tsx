@@ -8,6 +8,7 @@ const Home  = lazy(() => import('./components/Home'));
 const About = lazy(() => import('./components/About'));
 const NotFound = lazy(() => import('./components/NotFound'));
 const MatTable = lazy(() => import('./components/MatTable'));
+const UserTable = lazy(() => import('./components/UserTable'));
 
 function App() {
 
@@ -18,6 +19,7 @@ function App() {
       <Link to="/about">About</Link>
       <Link to="/authLogin">Login</Link>
       <Link to="/table">Table</Link>
+      <Link to="/userTable">Users Table</Link>
     </nav>
 
     <Routes>
@@ -26,6 +28,7 @@ function App() {
       <Route path="*" element={<Suspense fallback={<div>Loading...</div>}><NotFound /></Suspense>} />
       <Route path="/authLogin" element={<Suspense fallback={<div>Loading...</div>}><HostLogin /></Suspense>} />
       <Route path="/table" element={<Suspense fallback={<div>Loading...</div>}><MatTable /></Suspense>} />
+      <Route path="/userTable" element={<Suspense fallback={<div>Loading...</div>}><UserTable /></Suspense>} />
     </Routes>
   </div>
   )
