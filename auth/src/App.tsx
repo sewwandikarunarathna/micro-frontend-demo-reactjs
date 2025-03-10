@@ -1,12 +1,13 @@
 import { lazy, Suspense } from "react";
 import "./App.css";
 import { Link, Route, Routes } from "react-router-dom";
+import { StoreProvider } from "base/GlobalStore";
 
 const Login = lazy(() => import("./components/Login"));
 
 function App() {
   return (
-    <>
+    <StoreProvider>
       <Link to="/" className="m-20">
         Home
       </Link>
@@ -22,7 +23,7 @@ function App() {
         />
         {/* <Route path="/signup" element={<div>Signup Page</div>} /> */}
       </Routes>
-    </>
+    </StoreProvider>
 
 
 

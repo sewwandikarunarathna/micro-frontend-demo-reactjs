@@ -15,9 +15,11 @@ export default defineConfig({
       filename: 'remoteEntry.js',
       exposes: {
         './SharedButton': './src/components/SharedButton.tsx',
+        './GlobalStore': './src/state_management/globalStore.tsx',
         // './App': './src/App.tsx',
       },
       remotes: {
+        base: 'http://localhost:3000/assets/remoteEntry.js', // base module is self
         auth: 'http://localhost:3001/assets/remoteEntry.js',
         // inventory: 'http://localhost:3002/assets/remoteEntry.js',
         // finance: 'http://localhost:3003/assets/remoteEntry.js',
