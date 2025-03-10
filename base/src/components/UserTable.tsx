@@ -121,18 +121,36 @@ const UserTable = () => {
       }
 
       const url = new URL("https://jsonplaceholder.typicode.com/users", location.origin);
-    //   url.searchParams.set(
-    //     "start",
-    //     `${pagination.pageIndex * pagination.pageSize}`
-    //   );
-      url.searchParams.set("size", `${pagination.pageSize}`);
-      url.searchParams.set("filters", JSON.stringify(columnFilters ?? []));
-      url.searchParams.set("globalFilter", globalFilter ?? "");
-      url.searchParams.set("sorting", JSON.stringify(sorting ?? []));
+      // url.searchParams.set(
+      //   "start",
+      //   `${pagination.pageIndex * pagination.pageSize}`
+      // );
+      // url.searchParams.set("size", `${pagination.pageSize}`);
+      // url.searchParams.set("filters", JSON.stringify(columnFilters ?? []));
+      // url.searchParams.set("globalFilter", globalFilter ?? "");
+      // url.searchParams.set("sorting", JSON.stringify(sorting ?? []));
 
+      // try {
+      //   const response = await fetch(url.href);
+      //   const jsonData = (await response.json());
+      const requestBody = {
+        start: pagination.pageIndex * pagination.pageSize,
+        size: pagination.pageSize,
+        filters: columnFilters ?? [],
+        globalFilter: globalFilter ?? "",
+        sorting: sorting ?? [],
+      };
+  
       try {
-        const response = await fetch(url.href);
-        const jsonData = (await response.json());
+        const response = await fetch(url.href, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(requestBody),
+        });
+        const jsonData = await response.json();
+        //
         console.log(response.body);
         console.log(jsonData);
         setData(jsonData);
