@@ -21,7 +21,7 @@ export default defineConfig({
       remotes: {
         base: 'http://localhost:3000/assets/remoteEntry.js',
       },
-      shared: ['react', 'react-dom', 'react-router-dom', '@mui/material'],
+      shared: ['react', 'react-dom', 'react-router-dom', '@mui/material', 'redux', 'react-redux', '@reduxjs/toolkit'],
     }),
     {
       name: 'vite-plugin-notify-host-on-rebuild',

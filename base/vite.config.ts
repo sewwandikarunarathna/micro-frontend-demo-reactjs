@@ -24,7 +24,7 @@ export default defineConfig({
         // inventory: 'http://localhost:3002/assets/remoteEntry.js',
         // finance: 'http://localhost:3003/assets/remoteEntry.js',
       },
-      shared: ['react', 'react-dom', 'react-router-dom', '@mui/material', 'redux', 'react-redux'],
+      shared: ['react', 'react-dom', 'react-router-dom', '@mui/material', 'redux', 'react-redux', '@reduxjs/toolkit'],
     }),
     {
       name: 'vite-plugin-reload-endpoint',
