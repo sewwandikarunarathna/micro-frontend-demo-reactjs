@@ -18,10 +18,10 @@ export default defineConfig({
         // './Signup': './src/components/Signup.tsx',
         // './RolePermissions': './src/components/RolePermissions.tsx',
       },
-      // remotes: {
-      //   base: 'http://localhost:3000/assets/remoteEntry.js',
-      // },
-      shared: ['react', 'react-dom', 'react-router-dom', '@mui/material'],
+      remotes: {
+        base: 'http://localhost:3000/assets/remoteEntry.js',
+      },
+      shared: ['react', 'react-dom', 'react-router-dom', '@mui/material', 'redux', 'react-redux', '@reduxjs/toolkit'],
     }),
     {
       name: 'vite-plugin-notify-host-on-rebuild',
