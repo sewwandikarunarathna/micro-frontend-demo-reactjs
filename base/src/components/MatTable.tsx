@@ -13,7 +13,7 @@ import {
     type MRT_TableInstance
   } from 'material-react-table';
 import STUDENTS from "./../assets/students.json";
-import { Box, Button, Divider, IconButton, MenuItem, Typography } from '@mui/material';
+import { Box, Button, CircularProgress, Divider, IconButton, MenuItem, Typography } from '@mui/material';
 import Paper from '@mui/material/Paper';
 import { downloadExcel } from "react-export-table-to-excel";
 import FileDownloadIcon from '@mui/icons-material/FileDownload';
@@ -80,6 +80,8 @@ const MatTable = () => {
   const [validationErrors, setValidationErrors] = useState<
     Record<string, string | undefined>
   >({});
+  //keep track of rows that have been edited
+  const [editedUsers, setEditedUsers] = useState<Record<string, Student>>({});
 
   // const data: Student[] = STUDENTS;
 
@@ -88,8 +90,9 @@ const MatTable = () => {
         accessorKey: "name",
         header: "Full Name",
         size: 150,
-        muiEditTextFieldProps: {
-          type: 'text',
+        muiTableBodyCellEditTextFieldProps: { autoFocus: true }, // Always editable
+        muiEditTextFieldProps: ({ cell, row }) =>({
+          type: 'link',
           required: true,
           error: !!validationErrors?.name,
           helperText: validationErrors?.name,
@@ -99,17 +102,34 @@ const MatTable = () => {
               ...validationErrors,
               name: undefined,
             }),
-        },
-        Cell: ({ row }) => (
-          <a href='http://localhost:3000' target="_blank" rel="noopener noreferrer" style={{ color: 'blue', textDecoration: 'underline' }}>
-            {row.original.name}
-          </a>
-        ),
-      },
+          //store edited user in state to be saved later
+          onBlur: (event) => {
+            console.log('row', row);
+            console.log('eventt', event);
+            
+            const validationError = !validateRequired(event.currentTarget.value)
+              ? 'Required'
+              : undefined;
+            setValidationErrors({
+              ...validationErrors,
+              [cell.id]: validationError,
+            });
+            setEditedUsers({ ...editedUsers, [row.id]: row.original });
+            console.log('set edittt', editedUsers);
+
+          },
+          // Cell: ({ row }) => (
+          //   <a href='http://localhost:3000' target="_blank" rel="noopener noreferrer" style={{ color: 'blue', textDecoration: 'underline' }}>
+          //     {row.original.name}
+          //   </a>
+          // ),
+        })
+    },
       {
         accessorKey: "email",
         header: "Email Address",
         size: 150,
+        muiTableBodyCellEditTextFieldProps: { type: "email" }, // Always editable
         muiEditTextFieldProps: {
           type: 'email',
           required: true,
@@ -127,14 +147,12 @@ const MatTable = () => {
         accessorKey: "phone",
         header: "Phone Number",
         size: 150,
-        enableClickToCopy: true,
-        enableResizing: true,
+        muiTableBodyCellEditTextFieldProps: { type: "number" }, // Always editable
       },
       {
         accessorKey: "standard",
         header: "Class Name",
         size: 150,
-        enableResizing: false,
       },
       {
         accessorKey: "section",
@@ -182,12 +200,19 @@ const MatTable = () => {
         header: "State Name",
         size: 150,
         editVariant: 'select',
-        editSelectOptions: usStates,
-        muiEditTextFieldProps: {
+        editSelectOptions: usStates, 
+        muiEditTextFieldProps: ({ row }) => ({
           select: true,
           error: !!validationErrors?.state,
           helperText: validationErrors?.state,
-        },
+          onChange: (event) =>
+            console.log('statett', row)
+            
+            // setEditedUsers({
+            //   ...editedUsers,
+            //   [row.id]: { ...row.original, state: event.target.value },
+            // }),
+        }),
       },
     ], [validationErrors]);
 
@@ -238,7 +263,15 @@ const MatTable = () => {
     [data, validationErrors],
   ); */
 
- 
+  const handleSave = ({ row, values }: { row: any, values: Student }) => {
+    console.log('updatedData', values);
+    const updatedData = [...data];
+    updatedData[row.index] = values; // Update row data
+    console.log(updatedData);
+    
+    setData(updatedData);
+  };
+
   const handleExportRows = (rows: any) => {
     const tableData = rows.map((row:any) =>
       columns.map((column) => _.get(row.original, column.accessorKey ?? ''))
@@ -287,6 +320,22 @@ const MatTable = () => {
     setData(updatedData); // Update state with new data
   };
 
+  //UPDATE action
+  const handleSaveUsers = () => {
+    if (Object.values(validationErrors).some((error) => !!error)) return;
+    console.log('editedUsers', editedUsers);
+    
+    // await updateUsers(Object.values(editedUsers));
+    Object.values(editedUsers)?.map((std: Student) => {
+      const newUser = data.find((u) => u.id === std.id);
+      return newUser ? newUser : std;
+    }),
+    setEditedUsers({});
+  };
+
+  // console.log('editedusersss', Object.keys(editedUsers).length);
+  // console.log('validate errsssss', Object.values(validationErrors));
+
   const table = useMaterialReactTable({
     columns,
     data, 
@@ -308,13 +357,6 @@ const MatTable = () => {
         color: 'secondary',
         thickness: 5,
         size: 55,
-    },
-    muiTableBodyCellProps: {
-      //simple styling with the `sx` prop, works just like a style prop in this example
-      sx: {
-        fontWeight: 'normal',
-        fontSize: '12px',
-      },
     },
     enableFullScreenToggle: true,
     enableStickyHeader: true,
@@ -342,6 +384,21 @@ const MatTable = () => {
         >
           Export All Data
         </Button>
+        <Button
+          color="success"
+          variant="contained"
+          onClick={handleSaveUsers}
+          disabled={
+            Object.keys(editedUsers).length === 0 ||
+            Object.values(validationErrors).some((error) => !!error)
+          }
+        >
+          Save
+          {/* {isUpdatingUsers ? <CircularProgress size={25} /> : 'Save'} */}
+        </Button>
+        {Object.values(validationErrors).some((error) => !!error) && (
+          <Typography color="error">Fix errors before submitting</Typography>
+        )}
       </Box>
     ),
     muiDetailPanelProps: () => ({
@@ -386,6 +443,45 @@ const MatTable = () => {
       enableEditing : true,
       editDisplayMode: changeEditingMode,
       enableCellActions: true,
+      //optionally, use single-click to activate editing mode instead of default double-click
+    muiTableBodyCellProps: ({ cell, column, table }) => ({
+      onFocus: () => {
+        if(cell.column.columnDef.editVariant === 'select') {
+          return;
+        }
+        table.setEditingCell(cell); //set editing cell
+        //optionally, focus the text field
+        queueMicrotask(() => {
+          const textField = table.refs.editInputRefs.current?.[column.id];
+          if (textField) {
+            textField.focus();
+            textField.select?.();
+          }
+        });
+      },
+      // onKeyDown: (event) => {
+      //   if (event.key === 'Enter') {
+      //     table.setEditingCell(cell);
+      //     queueMicrotask(() => {
+      //       const textField = table.refs.editInputRefs.current?.[column.id];
+      //       if (textField) {
+      //         textField.focus();
+      //         textField.select?.();
+      //       }
+      //     });
+      //   }
+      // },
+     //simple styling with the `sx` prop, works just like a style prop in this example
+      sx: {
+        fontWeight: 'normal',
+        fontSize: '12px',
+        '&:focus-visible': {
+          //or just `&:focus` if you want all focus events to be visible
+          outline: '2px solid red',
+          outlineOffset: '-2px',
+        },
+      },
+    }),
       renderCellActionMenuItems: ({ 
         closeMenu,
         cell,
@@ -421,7 +517,8 @@ const MatTable = () => {
       // onCellEditChange: ({ cell, value }) => handleSaveCell(cell, value), // Save edited value
       //row actions
       enableRowActions: true,
-      onEditingRowSave: handleSaveUser,
+      onEditingRowSave: handleSave,
+      // onEditingCellChange: ({ cell, value }) => handleSaveCell(cell, value),
       onEditingRowCancel: () => {
         setValidationErrors({});
         setchangeEditingMode('cell');
@@ -480,25 +577,22 @@ const MatTable = () => {
         tabIndex: 0, //allow for keyboard focus
       },
       //body
-      muiTableBodyCellProps: {
-        onKeyDown: (event) => {
-          if (event.key === 'Enter') {
-            alert('You pressed the custom shortcut!');
-          }
-        },
-        //add custom focus styles
-        sx: {
-          '&:focus-visible': {
-            //or just `&:focus` if you want all focus events to be visible
-            outline: '2px solid red',
-            outlineOffset: '-2px',
-          },
-        },
-        tabIndex: 0, //allow for keyboard focus
-      },
+      // muiTableBodyCellProps: {
+      //   // onKeyDown: (event) => {
+      //   //   if (event.key === 'Enter') {
+      //   //     alert('You pressed the custom shortcut!');
+      //   //   }
+      //   // },
+      //   //add custom focus styles
+      //   sx: {
+      //     
+      //   },
+      //   tabIndex: 0, //allow for keyboard focus
+      // },
     },
-    enableKeyboardShortcuts: false, 
+    // enableKeyboardShortcuts: false, 
   });
+
 
   return (
   <>
