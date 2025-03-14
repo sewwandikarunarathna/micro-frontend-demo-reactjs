@@ -12,6 +12,7 @@ const initialState = {
         username: '',
         email: '',
         password: '',
+        userRole: '',
     }
 };
 
@@ -29,6 +30,7 @@ const userSlice = createSlice({
                 username: '',
                 email: '',
                 password: '',
+                userRole: '',
             };
         },
     },

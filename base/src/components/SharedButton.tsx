@@ -2,13 +2,14 @@ import Button from '@mui/material/Button';
 
 interface buttonProps {
   text: string,
-  variant: 'text' | 'outlined' | 'contained',
+  className?: string,
+  variant?: 'text' | 'outlined' | 'contained',
   onClick: any
 }
 const SharedButton = (props: buttonProps) => {
   return (
     <div>
-      <Button onClick={props.onClick} variant={props.variant ?? 'outlined'}>{props.text ? props.text : 'Demo Button'}</Button>
+      <Button className={props.className} onClick={props.onClick} variant={props.variant ?? 'outlined'}>{props.text ? props.text : 'Demo Button'}</Button>
     </div>
   )
 }
