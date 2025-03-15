@@ -6,7 +6,7 @@ const ProtectedRoute = ({ allowedRoles, children }: { allowedRoles: string[], ch
     const userType = dataService.userType;
 
     if (!isLoggedIn || !userType || !allowedRoles.includes(userType)) {
-      return <Navigate to="/" replace />;
+      return <Navigate to="/home" replace />;
     }
     return children;
   };

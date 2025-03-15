@@ -1,4 +1,4 @@
-import React, { Suspense, lazy } from "react";
+import React, { Suspense, lazy, useEffect, useState } from "react";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import routeConfig from "./routesConfig";
 import ProtectedRoute from "./ProtectedRoute";
@@ -7,7 +7,8 @@ import { dataService } from "../services/DataService";
 
 
 const AppRoutes = () => {
-  const isLoggedIn = dataService.isLoggedIn;
+  const [isLoggedIn, setisLoggedIn] = useState<string>(dataService.isLoggedIn ?? '');
+  
 
   return (
     <Routes>
@@ -17,8 +18,9 @@ const AppRoutes = () => {
           path={path}
           element={
             (allowedRoles as string[])?.includes('Guest') ? (
-              isLoggedIn ? (
-                <Navigate to="/home" />
+            // (allowedRoles as string[])?.length === 1 && (allowedRoles as string[])[0] === 'Guest' ? (
+              isLoggedIn === 'true' ? (
+              (allowedRoles as string[])?.length === 1 && (allowedRoles as string[])[0] === 'Guest' ? (<Navigate to="/home" />) : (<>{element}</>)
               ) : (
                 <>
                 {console.log("element", element)

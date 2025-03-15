@@ -17,8 +17,8 @@ const Login = () => {
   const dataService = new DataService();
 
   useEffect(() => {
-    console.log('user', user);
-    console.log('data servv', dataService);
+    // console.log('user', user);
+    // console.log('data servv', dataService);
   }, [user]);
 // console.log('user', user);
 
