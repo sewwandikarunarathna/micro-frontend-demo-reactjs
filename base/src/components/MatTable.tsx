@@ -20,10 +20,12 @@ import FileDownloadIcon from '@mui/icons-material/FileDownload';
 import EmailIcon from '@mui/icons-material/Email';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
+import ViewIcon from '@mui/icons-material/ViewListRounded';
 import CancelEditIcon from '@mui/icons-material/EditOff';
 import _, { flatten } from 'lodash';
 import { usStates } from '../assets/makeData';
 import { type Cell, type Table } from '@tanstack/react-table';
+import { Outlet, useNavigate } from 'react-router-dom';
 
 //data type
 type Student = {
@@ -82,6 +84,8 @@ const MatTable = () => {
   >({});
   //keep track of rows that have been edited
   const [editedUsers, setEditedUsers] = useState<Record<string, Student>>({});
+
+  const navigate = useNavigate();
 
   // const data: Student[] = STUDENTS;
 
@@ -544,7 +548,7 @@ const MatTable = () => {
           >
             <EditIcon />
           </IconButton>
-          <IconButton
+          {/* <IconButton
             color="error"
             onClick={() => {
               window.confirm('Are you sure you want to delete this row?').valueOf() &&
@@ -553,6 +557,16 @@ const MatTable = () => {
             }}
           >
             <DeleteIcon />
+          </IconButton> */}
+          <IconButton
+            color="secondary"
+            onClick={() => {
+              console.log('iddddddddd',row.original);
+              
+              navigate(`row/${row.id}`, { state: { data: row.original } })
+            }}
+          >
+            <ViewIcon />
           </IconButton>
         </Box>
       ),
@@ -600,6 +614,7 @@ const MatTable = () => {
   <h1 className='text-4xl'>Material React Table</h1>
   <Button className='flex w-48 mb-16' variant="contained" color="primary" onClick={() => setIsLoading(false)}>Load Data</Button>
   </div>
+  <Outlet /> 
   <Paper className='flex flex-col justify-center p-4 m-16'>
   <MaterialReactTable
     table={table} />

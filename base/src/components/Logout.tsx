@@ -2,20 +2,20 @@ import { Link, useNavigate } from 'react-router-dom'
 import SharedButton from './SharedButton'
 import { dataService } from '../services/DataService'
 import { useEffect } from 'react';
+import { useAuth } from '../context/AuthContext';
 
 const Logout = () => {
   const navigate = useNavigate();
+  const { logout } = useAuth();
 
-  useEffect(() => {
-    // setisLoggedIn(dataService.isLoggedIn ?? '');
-  }, [dataService.isLoggedIn]);
-  console.log('data logout', dataService.isLoggedIn);
+  // useEffect(() => {
+  //   // setisLoggedIn(dataService.isLoggedIn ?? '');
+  // }, [dataService.isLoggedIn]);
+  // console.log('data logout', dataService.isLoggedIn);
 
   const onClickLogout = () => {
-    dataService.removeAccessToken();
-    dataService.removeUserType();
-    dataService.removeLoggedIn();
-    console.log("Logout")
+    logout();
+    console.log("Logoutttttttttttttttt")
     navigate("/authLogin");
   }
   return (

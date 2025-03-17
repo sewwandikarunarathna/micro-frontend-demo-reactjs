@@ -4,6 +4,7 @@ import { Link, Route, Routes } from "react-router-dom";
 import { StoreProvider } from "base/GlobalStore";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import AppRoutes from "./routes/AppRoutes";
+import { AuthProvider } from "./context/AuthContext";
 
 const Home = lazy(() => import("./components/Home"));
 const About = lazy(() => import("./components/About"));
@@ -43,7 +44,9 @@ function App() {
             <Link to="/logout">Logout</Link> 
           </nav>
 
-          <AppRoutes />
+          <AuthProvider>
+            <AppRoutes />
+          </AuthProvider>
           {/* <Routes>
             <Route
               path="/"

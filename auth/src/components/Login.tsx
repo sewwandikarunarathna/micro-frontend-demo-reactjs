@@ -3,6 +3,7 @@ import TextField from "@mui/material/TextField";
 import { Paper } from "@mui/material";
 import { useGlobalStore } from "base/GlobalStore";
 import {DataService} from "base/DataService";
+import { useAuth } from 'base/AuthContext';
 
 const SharedButton = lazy(() => import("base/SharedButton"));
 
@@ -15,6 +16,7 @@ const Login = () => {
   //access global store from base module
   const { user, login } = useGlobalStore();
   const dataService = new DataService();
+  const { loginContext } = useAuth();
 
   useEffect(() => {
     // console.log('user', user);
@@ -24,8 +26,9 @@ const Login = () => {
 
   const handleLogin = () => {
     login({ username, password, email, userRole });
-    dataService.setLoggedIn(true);
-    dataService.setUserType(userRole);
+    loginContext('User');
+    // dataService.setLoggedIn(true);
+    // dataService.setUserType(userRole);
     alert(`Welcome ${username}!, You Signed in as a ${userRole} eith the Email: ${email} and Password: ${password}`);
   }
 

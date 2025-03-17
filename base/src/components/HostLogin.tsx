@@ -6,10 +6,9 @@ const AuthLoginModule = lazy(() => import("auth/Login"));
 const HostLogin = () => {
   const { user } = useGlobalStore();
 
-  useEffect(() => {
-    }, [dataService.isLoggedIn]);
-  console.log('data host login', dataService.isLoggedIn);
-
+  // useEffect(()=>{
+  //   alert('i host login')
+  // }, [])
   return (
     <div className="flex flex-col justify-center items-center content-center w-full">
       <h1 className="text-3xl pb-11">Base Login Page</h1>

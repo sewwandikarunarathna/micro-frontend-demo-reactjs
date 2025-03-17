@@ -1,14 +1,28 @@
 import { Navigate } from "react-router-dom";
 import { dataService } from "../services/DataService";
+import { useAuth } from "../context/AuthContext";
 
-const ProtectedRoute = ({ allowedRoles, children }: { allowedRoles: string[], children: React.ReactNode }) => {
-    const isLoggedIn = dataService.isLoggedIn;
-    const userType = dataService.userType;
+const ProtectedRoute = async ({
+  allowedRoles,
+  children,
+}: {
+  allowedRoles: string[];
+  children: React.ReactNode;
+}) => {
+  const { isLoggedIn } = useAuth();
+  const userData = dataService.token
+    ? typeof dataService.token === "string" 
+      ? await dataService.decodeToken(dataService.token) 
+      : null
+    : null;
+console.log('dta protected',userData);
 
-    if (!isLoggedIn || !userType || !allowedRoles.includes(userType)) {
-      return <Navigate to="/home" replace />;
-    }
-    return children;
-  };
+  const userType = userData?.userType;
 
-  export  default ProtectedRoute;
+  if (!isLoggedIn || !userType|| !allowedRoles.includes(userType)) {
+    return <Navigate to="/about" replace />;
+  }
+  return children;
+};
+
+export default ProtectedRoute;

@@ -17,6 +17,7 @@ export default defineConfig({
         './SharedButton': './src/components/SharedButton.tsx',
         './GlobalStore': './src/state_management/globalStore.tsx',
         './DataService': './src/services/DataService.ts',
+        './AuthContext': './src/context/AuthContext.tsx',
         // './App': './src/App.tsx',
       },
       remotes: {

@@ -8,6 +8,7 @@ const About = lazy(() => import("../components/About"));
 const NotFound = lazy(() => import("../components/NotFound"));
 const HostLogin = lazy(() => import("../components/HostLogin"));
 const MatTable = lazy(() => import("../components/MatTable"));
+const SubTable = lazy(() => import("../components/SubTable"));
 const UserTable = lazy(() => import("../components/UserTable"));
 const RowActionTable = lazy(() => import("../components/RowActionTable"));
 const Logout = lazy(() => import("../components/Logout"));
@@ -31,6 +32,16 @@ const routeConfig : RoutesType[]= [
                         <MatTable />
                       </Suspense>,
       allowedRoles: ["User", "Admin"],
+      children: [
+        {
+          path:'row/:id',
+          element: <Suspense fallback={<div>Loading...</div>}>
+            <SubTable />
+          </Suspense>,
+      // allowedRoles: ["User", "Admin"],
+
+        }
+      ]
     },
     {
       path: "/userTable",
@@ -83,6 +94,9 @@ const routeConfig : RoutesType[]= [
 
   export default routeConfig;
 
-  export type RoutesType = RouteObject & {
+  export type RoutesType =  {
+    path?: string;
+    element?: any;
 	allowedRoles?: string[] | [];
+  children?: RoutesType[];
 };
