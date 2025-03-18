@@ -39,7 +39,7 @@ const Login = () => {
         <TextField id="outlined-basic" name={username} type="text" onChange={(e)=>setUsername(e.target.value)} label="Username" variant="outlined" />
         <TextField id="outlined-basic" name={email} type="text" onChange={(e)=>setEmail(e.target.value)} label="Email" variant="outlined" />
         <TextField id="outlined-basic" name={password} type="password" onChange={(e)=>setPassword(e.target.value)} label="Password" variant="outlined" />
-        <SharedButton onClick={handleLogin} variant="contained" text="Auth Login" />
+        <SharedButton onClick={handleLogin} variant="contained" children="Auth Login" />
           {user.username != '' ||user.email != '' || user.password != '' ? (
             <h3>
               User Info: {user.username} | {user.email} | {user.password}
@@ -47,6 +47,7 @@ const Login = () => {
           ) : null}
       </Paper>
     </div>
+   
   );
 };
 

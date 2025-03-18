@@ -69,13 +69,13 @@ const routeConfig : RoutesType[]= [
                       </Suspense>,
       allowedRoles: ["Guest", "User", "Admin"], // Accessible by all roles
     },
-    {
-      path: "/",
-      element: <Suspense fallback={<div>Loading...</div>}>
-                        <Welcome />
-                      </Suspense>,
-      allowedRoles: ["Guest", "User", "Admin"], // Accessible by all roles
-    },
+    // {
+    //   path: "/",
+    //   element: <Suspense fallback={<div>Loading...</div>}>
+    //                     <Welcome />
+    //                   </Suspense>,
+    //   allowedRoles: ["Guest", "User", "Admin"], // Accessible by all roles
+    // },
     {
       path: "*",
       element: <Suspense fallback={<div>Loading...</div>}>

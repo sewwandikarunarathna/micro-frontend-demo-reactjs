@@ -1,5 +1,5 @@
 import { Link, useNavigate } from 'react-router-dom'
-import SharedButton from './SharedButton'
+import SharedButton from '../shared-components/atoms/SharedButton/SharedButton'
 import { dataService } from '../services/DataService'
 import { useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
@@ -21,7 +21,7 @@ const Logout = () => {
   return (
     <div className="text-center mt-10">
     <h1 className="text-2xl">Are you sure you want to logout?</h1>
-    <SharedButton onClick={onClickLogout} className="text-blue-500" text="Logout"/>
+    <SharedButton onClick={onClickLogout} className="text-blue-500" children="Logout"/>
   </div>
   )
 }

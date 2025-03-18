@@ -8,7 +8,7 @@ const withAuth = (WrappedComponent: any) => {
     
         // Check if user exists and has the required role
         if (!isLoggedIn) {
-          return <Navigate to="/login" replace />;
+          return <Navigate to="/authLogin" replace />;
         }
 
     
