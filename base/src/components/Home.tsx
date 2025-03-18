@@ -1,4 +1,5 @@
 import UserService from "../services/UserService";
+import withAuth from "../utils/WithAuth";
 import SharedButton from "./SharedButton"
 
 const Home = () => {
@@ -21,4 +22,4 @@ const Home = () => {
   )
 }
 
-export default Home
+export default  withAuth(Home);

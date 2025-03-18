@@ -26,6 +26,7 @@ import _, { flatten } from 'lodash';
 import { usStates } from '../assets/makeData';
 import { type Cell, type Table } from '@tanstack/react-table';
 import { Outlet, useNavigate } from 'react-router-dom';
+import withAuth from '../utils/WithAuth';
 
 //data type
 type Student = {
@@ -640,4 +641,4 @@ function validateUser(user: Student) {
   };
 }
 
-export default MatTable
+export default withAuth(MatTable)
