@@ -16,6 +16,7 @@ import {
 import { type User, fakeData, usStates } from './../assets/makeData';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
+import withAuth from '../utils/WithAuth';
 
 const RowActionTable = () => {
   const [validationErrors, setValidationErrors] = useState<
@@ -307,4 +308,4 @@ function validateUser(user: User) {
     email: !validateEmail(user.email) ? 'Incorrect Email Format' : '',
   };
 }
-export default RowActionTable;
+export default withAuth(RowActionTable);

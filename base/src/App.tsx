@@ -1,13 +1,15 @@
 import { lazy, Suspense } from "react";
 import "./App.css";
 import { Link, Route, Routes } from "react-router-dom";
-import HostLogin from "./components/HostLogin";
 import { StoreProvider } from "base/GlobalStore";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import AppRoutes from "./routes/AppRoutes";
+import { AuthProvider } from "./context/AuthContext";
 
 const Home = lazy(() => import("./components/Home"));
 const About = lazy(() => import("./components/About"));
 const NotFound = lazy(() => import("./components/NotFound"));
+const HostLogin = lazy(() => import("./components/HostLogin"));
 const MatTable = lazy(() => import("./components/MatTable"));
 const UserTable = lazy(() => import("./components/UserTable"));
 const RowActionTable = lazy(() => import("./components/RowActionTable"));
@@ -32,15 +34,20 @@ function App() {
       <StoreProvider>
         <div>
           <nav className="flex flex-row justify-center items-center p-4 bg-gray-200 gap-4 stiky top-0">
-            <Link to="/">Home</Link>
+            <Link to="/">Welcome</Link>
+            <Link to="/home">Home</Link>
             <Link to="/about">About</Link>
             <Link to="/authLogin">Login</Link>
             <Link to="/table">Table Features</Link>
             <Link to="/userTable">Users Table</Link>
             <Link to="/rowActionsTable">Row Actions Table</Link>
+            <Link to="/logout">Logout</Link> 
           </nav>
 
-          <Routes>
+          <AuthProvider>
+            <AppRoutes />
+          </AuthProvider>
+          {/* <Routes>
             <Route
               path="/"
               element={
@@ -97,7 +104,7 @@ function App() {
                 </Suspense>
               }
             />
-          </Routes>
+          </Routes> */}
         </div>
       </StoreProvider>
     </QueryClientProvider>
