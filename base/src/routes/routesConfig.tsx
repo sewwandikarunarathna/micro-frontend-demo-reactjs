@@ -12,6 +12,7 @@ const SubTable = lazy(() => import("../components/SubTable"));
 const UserTable = lazy(() => import("../components/UserTable"));
 const RowActionTable = lazy(() => import("../components/RowActionTable"));
 const Logout = lazy(() => import("../components/Logout"));
+const Layout1 = lazy(() => import("../layouts/Layout1"));
 
 const routeConfig : RoutesType[]= [
     {
@@ -87,6 +88,13 @@ const routeConfig : RoutesType[]= [
       path: "/logout",
       element: <Suspense fallback={<div>Loading...</div>}>
                         <Logout />
+                      </Suspense>,
+      allowedRoles: ["User", "Admin"], // Accessible by all roles
+    },
+    {
+      path: "/layout1",
+      element: <Suspense fallback={<div>Loading...</div>}>
+                        <Layout1 />
                       </Suspense>,
       allowedRoles: ["User", "Admin"], // Accessible by all roles
     },

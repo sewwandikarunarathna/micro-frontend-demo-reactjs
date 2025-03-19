@@ -6,6 +6,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import AppRoutes from "./routes/AppRoutes";
 import { AuthProvider } from "./context/AuthContext";
 import Layout from "./layouts/Layout";
+import Layout1 from "./layouts/Layout1";
 
 const Home = lazy(() => import("./components/Home"));
 const About = lazy(() => import("./components/About"));
@@ -34,11 +35,12 @@ function App() {
       </Suspense>
       <StoreProvider>
         <div className="flex justify-center items-center h-screen bg-green-800">
-         <Layout />
+         {/* <Layout /> */}
+         <Layout1 />
 
-          <AuthProvider>
+          {/* <AuthProvider>
             <AppRoutes />
-          </AuthProvider>
+          </AuthProvider> */}
           {/* <Routes>
             <Route
               path="/"

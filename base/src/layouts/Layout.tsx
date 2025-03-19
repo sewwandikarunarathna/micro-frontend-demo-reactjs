@@ -12,6 +12,8 @@ import CalendarIcon from "@mui/icons-material/CalendarToday";
 import SettingsIcon from "@mui/icons-material/Settings";
 import SupportIcon from "@mui/icons-material/HeadsetMic";
 import TableIcon from "@mui/icons-material/TableChart";
+import { AuthProvider } from "../context/AuthContext";
+import AppRoutes from "../routes/AppRoutes";
 
 const Layout = () => {
   const [open, setOpen] = useState(true);
@@ -194,6 +196,9 @@ const Layout = () => {
             Dashboard page.This is the Dashboard page.This is the Dashboard
             page.This is the Dashboard page.
           </h1>
+          <AuthProvider>
+            <AppRoutes />
+          </AuthProvider>
         </div>
       </div>
       {/* Dashboard Layout section */}
