@@ -1,5 +1,6 @@
 import { lazy, Suspense } from 'react';
 import { RouteObject } from 'react-router-dom';
+import UserDetails from '../components/UserDetails';
 
 
 const Welcome = lazy(() => import("../components/Welcome"));
@@ -77,6 +78,13 @@ const routeConfig : RoutesType[]= [
     //                   </Suspense>,
     //   allowedRoles: ["Guest", "User", "Admin"], // Accessible by all roles
     // },
+    {
+      path: "/user",
+      element: <Suspense fallback={<div>Loading...</div>}>
+                        <UserDetails />
+                      </Suspense>,
+      allowedRoles: ["User", "Admin"], 
+    },
     {
       path: "*",
       element: <Suspense fallback={<div>Loading...</div>}>

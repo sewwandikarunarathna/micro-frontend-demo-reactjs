@@ -365,7 +365,7 @@ const MatTable = () => {
     },
     enableFullScreenToggle: true,
     enableStickyHeader: true,
-    muiTableContainerProps:{ sx: { maxHeight: '500px' } },
+    muiTableContainerProps:{ sx: { maxHeight: '300px' } },
     muiTablePaperProps: ({ table }) => ({
       style: {
         zIndex: table.getState().isFullScreen ? 1000 : undefined,
