@@ -7,6 +7,7 @@ import AppRoutes from "./routes/AppRoutes";
 import { AuthProvider } from "./context/AuthContext";
 import Layout from "./layouts/Layout";
 import Layout1 from "./layouts/Layout1";
+import FullPageLoader from "./components/FullPageLoader";
 
 const Home = lazy(() => import("./components/Home"));
 const About = lazy(() => import("./components/About"));
@@ -29,15 +30,16 @@ const ReactQueryDevtoolsProduction = lazy(() =>
 
 function App() {
   return (
+      <AuthProvider>
     <QueryClientProvider client={queryClient}>
-       <Suspense fallback={null}>
+       <Suspense fallback={<FullPageLoader />}>
     <ReactQueryDevtoolsProduction />
+         <AppRoutes />
       </Suspense>
       <StoreProvider>
         <div className="flex justify-center items-center h-screen bg-green-800">
          {/* <Layout /> */}
-         <Layout1 />
-
+         {/* <Layout1 /> */}
           {/* <AuthProvider>
             <AppRoutes />
           </AuthProvider> */}
@@ -102,6 +104,7 @@ function App() {
         </div>
       </StoreProvider>
     </QueryClientProvider>
+      </AuthProvider>
   );
 }
 

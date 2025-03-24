@@ -1,4 +1,3 @@
-import React from 'react'
 import {configureStore, createSlice} from '@reduxjs/toolkit';
 import { Provider, useDispatch, useSelector } from 'react-redux';
 import { ReactNode } from 'react';

@@ -1,14 +1,14 @@
 import { lazy, Suspense } from 'react';
 import { RouteObject } from 'react-router-dom';
 import UserDetails from '../components/UserDetails';
-
+import MatTable from '../components/MatTable';
 
 const Welcome = lazy(() => import("../components/Welcome"));
 const Home = lazy(() => import("../components/Home"));
 const About = lazy(() => import("../components/About"));
 const NotFound = lazy(() => import("../components/NotFound"));
 const HostLogin = lazy(() => import("../components/HostLogin"));
-const MatTable = lazy(() => import("../components/MatTable"));
+// const MatTable = lazy(() => import("../components/MatTable"));
 const SubTable = lazy(() => import("../components/SubTable"));
 const UserTable = lazy(() => import("../components/UserTable"));
 const RowActionTable = lazy(() => import("../components/RowActionTable"));
@@ -30,9 +30,7 @@ const routeConfig : RoutesType[]= [
     // },
     {
       path: "/table",
-      element: <Suspense fallback={<div>Loading...</div>}>
-                        <MatTable />
-                      </Suspense>,
+      element: <MatTable />,
       allowedRoles: ["User", "Admin"],
       children: [
         {

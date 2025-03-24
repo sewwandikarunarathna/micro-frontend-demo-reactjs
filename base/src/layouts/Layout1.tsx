@@ -21,7 +21,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import PreviousIcon from "@mui/icons-material/SkipPrevious";
 import NextIcon from "@mui/icons-material/SkipNext";
 import "react-perfect-scrollbar/dist/css/styles.css";
-import { useNavigate } from "react-router-dom";
+import { Outlet, useNavigate } from "react-router-dom";
 import { AuthProvider } from "../context/AuthContext";
 import AppRoutes from "../routes/AppRoutes";
 
@@ -29,6 +29,7 @@ const Layout1 = () => {
   const [isCollapsedMenu, setIsCollapsedMenu] = useState(true);
   const [open, setOpen] = useState(true);
   const [clickedMenuIndex, setClickedMenuIndex] = useState(0);
+  const [clickedSubMenuIndex, setClickedSubMenuIndex] = useState(0);
   const [subMenus, setSubMenus] = useState<any>({
     calendar: false,
     support: false,
@@ -42,23 +43,27 @@ const Layout1 = () => {
 
   const onClickMenuItem = (menu: any, index: number) => {
     setClickedMenuIndex(index);
-    if(menu.subMenu){
+    if (menu.subMenu) {
       setSubMenus((prev: any) => ({
         ...prev,
         [menu.key]: !prev[menu.key],
       }));
-      console.log('sewww', subMenus);
+      console.log("sewww", subMenus);
       // navigate(menu.subMenu.url);
-    }
-    else{
+    } else {
       navigate(menu.url);
     }
   };
 
+  const onClickSubMenuItem = (subMenu: any, subIndex: number) => {
+    setClickedSubMenuIndex(subIndex);
+    navigate(subMenu.url);
+
+  }
+
   const handleSidebarToggle = () => {
     setIsCollapsedMenu(!isCollapsedMenu);
   };
-
 
   const iconMap: Record<string, JSX.Element> = {
     DashboardIcon: <DashboardIcon />,
@@ -114,37 +119,38 @@ const Layout1 = () => {
         </div>
         <div className="flex items-center justify-start gap-4">
           <span>ABC Ltd</span>
-        <NotificationIcon className="text-xl" />
+          <NotificationIcon className="text-xl" />
         </div>
       </nav>
 
       <div className="flex flex-1">
         {/* SideButtonsbar */}
         <aside
-          className={"bg-gray-500 text-black transition-all duration-300 w-16"}
+          className={"bg-gray-300 text-black transition-all duration-300 w-16"}
         >
           <nav className="p-2 space-y-1">
-
-              {/* Add your sidebar button items here */}
-              <ul className="pt-6 space-y-0.5">
-                {Menus.map((Menu, index) => (
-                  <li
-                    key={index}
-                    className={"flex flex-col rounded-md py-3 px-4 mt-2 cursor-pointer hover:text-white text-zinc-50 hover:bg-gray-500 transition-all ease-in-out duration-300"}
+            {/* Add your sidebar button items here */}
+            <ul className="pt-6 space-y-0.5">
+              {Menus.map((Menu, index) => (
+                <li
+                  key={index}
+                  className={
+                    "flex flex-col rounded-md py-3 px-4 mt-2 cursor-pointer hover:text-white text-zinc-50 hover:bg-gray-500 transition-all ease-in-out duration-300"
+                  }
+                >
+                  <div
+                    className="flex items-center justify-between gap-x-4"
+                    // onClick={() => onClickMenuItem(Menu.key)}
                   >
-                    <div
-                      className="flex items-center justify-between gap-x-4"
-                      // onClick={() => onClickMenuItem(Menu.key)}
-                    >
-                      <div className="flex items-center gap-2">
-                        <span className="text-lg">
-                          {getIconComponent(Menu.icon)}
-                        </span>
-                      </div>    
+                    <div className="flex items-center gap-2">
+                      <span className="text-lg">
+                        {getIconComponent(Menu.icon)}
+                      </span>
                     </div>
-                  </li>
-                ))}
-              </ul>
+                  </div>
+                </li>
+              ))}
+            </ul>
           </nav>
         </aside>
         {/* Sidebar */}
@@ -214,7 +220,8 @@ const Layout1 = () => {
                         {Menu.subMenu.map((subMenu, subIndex) => (
                           <li
                             key={subIndex}
-                            className="text-sm flex items-center gap-x-2 py-3 px-2 hover:bg-zinc-800 rounded-lg"
+                            className={`text-sm flex items-center gap-x-2 py-3 px-2 hover:bg-zinc-800 rounded-lg ${subIndex === clickedMenuIndex && "bg-zinc-500"}`}
+                            onClick={() => onClickSubMenuItem(subMenu, subIndex)}
                           >
                             <span className="text-zinc-4">
                               <ChevronRightIcon className="text-xs" />
@@ -229,27 +236,36 @@ const Layout1 = () => {
               </ul>
             </PerfectScrollbar>
           </nav>
-
         </aside>
 
         {/* Main Content */}
         <div className={`flex-1 flex flex-col overflow-hidden`}>
           {/* Content Horizontal Bar */}
           <div className="h-12 bg-red-100 border-b flex items-center justify-center px-4 gap-4">
-            <div className="text-gray-700 font-medium"><AddIcon /></div>
-            <div className="text-gray-700 font-medium"><SaveIcon /></div>
-            <div className="text-gray-700 font-medium"><PreviousIcon /></div>
-            <div className="text-gray-700 font-medium"><NextIcon /></div>
-            <div className="text-gray-700 font-medium"><DeleteIcon /></div>
+            <div className="text-gray-700 font-medium">
+              <AddIcon />
+            </div>
+            <div className="text-gray-700 font-medium">
+              <SaveIcon />
+            </div>
+            <div className="text-gray-700 font-medium">
+              <PreviousIcon />
+            </div>
+            <div className="text-gray-700 font-medium">
+              <NextIcon />
+            </div>
+            <div className="text-gray-700 font-medium">
+              <DeleteIcon />
+            </div>
           </div>
 
           {/* Scrollable Content Area */}
           <div className="flex-1 overflow-hidden p-0 bg-gray-50">
             {/* Your main content here */}
-             <AuthProvider>
-            <AppRoutes />
-          </AuthProvider>
-           
+            {/* <AuthProvider>
+              <AppRoutes />
+            </AuthProvider> */}
+             <Outlet />
           </div>
         </div>
       </div>
