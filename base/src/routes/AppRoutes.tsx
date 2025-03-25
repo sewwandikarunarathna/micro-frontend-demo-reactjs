@@ -13,56 +13,65 @@ const AppRoutes = () => {
 
   return (
     <Routes>
-      {routeConfig.map(({ path, element, allowedRoles, children }) => (
-        <Route element={<Layout1 />}>
+      {routeConfig.map(({ path, element, allowedRoles, children }) =>
+        (allowedRoles as string[])?.includes("Guest") ? (
           <Route
             key={path}
             path={path}
             element={
-              (allowedRoles as string[])?.includes("Guest") ? (
-                // (allowedRoles as string[])?.length === 1 && (allowedRoles as string[])[0] === 'Guest' ? (
-                isLoggedIn ? (
-                  (allowedRoles as string[])?.length === 1 &&
-                  (allowedRoles as string[])[0] === "Guest" ? (
-                    <Navigate to="/home" />
-                  ) : (
-                    <>{element}</>
-                  )
+              isLoggedIn ? (
+                (allowedRoles as string[])?.length === 1 &&
+                (allowedRoles as string[])[0] === "Guest" ? (
+                  <Navigate to="/home" />
                 ) : (
                   <>{element}</>
                 )
               ) : (
-                <ProtectedRoute allowedRoles={allowedRoles || []}>
-                  {element}
-                </ProtectedRoute>
+                <>{element}</>
               )
             }
           >
-            {/* {children?.map(({ path, element, allowedRoles }) => ( */}
             {children?.map((child) => (
               <Route
                 key={child.path}
                 path={child.path}
                 element={
-                  // (allowedRoles as string[])?.includes("Guest") ? (
-                  //   isLoggedIn ? (
-                  //     <Navigate to="/about" replace />
-                  //   ) : (
-                  //     child.element
-                  //   )
-                  // ) : (
                   <ProtectedRoute
                     allowedRoles={child?.allowedRoles || allowedRoles || []}
                   >
                     {child.element}
                   </ProtectedRoute>
-                  // )
                 }
               />
             ))}
           </Route>
-        </Route>
-      ))}
+        ) : (
+          <Route element={<Layout1 />} key={path}>
+            <Route
+              path={path}
+              element={
+                <ProtectedRoute allowedRoles={allowedRoles || []}>
+                  {element}
+                </ProtectedRoute>
+              }
+            >
+              {children?.map((child) => (
+                <Route
+                  key={child.path}
+                  path={child.path}
+                  element={
+                    <ProtectedRoute
+                      allowedRoles={child?.allowedRoles || allowedRoles || []}
+                    >
+                      {child.element}
+                    </ProtectedRoute>
+                  }
+                />
+              ))}
+            </Route>
+          </Route>
+        )
+      )}
     </Routes>
   );
 };

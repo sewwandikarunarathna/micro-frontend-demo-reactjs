@@ -43,7 +43,6 @@ const ProtectedRoute = ({
   }
 
   if (!isLoggedIn || !userType || !allowedRoles.includes(userType)) {
-    console.log("im innn");
     return <Navigate to="/home" />;
   }
   return children;

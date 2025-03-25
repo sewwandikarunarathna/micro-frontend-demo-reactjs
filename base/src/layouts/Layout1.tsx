@@ -24,6 +24,10 @@ import "react-perfect-scrollbar/dist/css/styles.css";
 import { Outlet, useNavigate } from "react-router-dom";
 import { AuthProvider } from "../context/AuthContext";
 import AppRoutes from "../routes/AppRoutes";
+// import { useMenuStore } from "../state_management/hooks/menuHooks";
+import { useMenuStore } from "base/MenuStore";
+import { useUserStore } from "base/UserStore";
+import UseFilteredSidebarMenu from "../utils/UseFilteredSidebarMenu";
 
 const Layout1 = () => {
   const [isCollapsedMenu, setIsCollapsedMenu] = useState(true);
@@ -39,7 +43,9 @@ const Layout1 = () => {
 
   const navigate = useNavigate();
 
-  const Menus = sidebarMenuList;
+  // const Menus = sidebarMenuList;
+  // const { menuList, updateMenu } = useMenuStore();
+  const menuList = UseFilteredSidebarMenu();
 
   const onClickMenuItem = (menu: any, index: number) => {
     setClickedMenuIndex(index);
@@ -126,12 +132,12 @@ const Layout1 = () => {
       <div className="flex flex-1">
         {/* SideButtonsbar */}
         <aside
-          className={"bg-gray-300 text-black transition-all duration-300 w-16"}
+          className={"bg-gray-400 text-black transition-all duration-300 w-16"}
         >
           <nav className="p-2 space-y-1">
             {/* Add your sidebar button items here */}
             <ul className="pt-6 space-y-0.5">
-              {Menus.map((Menu, index) => (
+              {menuList.map((Menu: any, index: number) => (
                 <li
                   key={index}
                   className={
@@ -173,7 +179,7 @@ const Layout1 = () => {
             >
               {/* Add your sidebar menu items here */}
               <ul className="pt-6 space-y-0.5">
-                {Menus.map((Menu, index) => (
+                {menuList.map((Menu: any, index: number) => (
                   <li
                     key={index}
                     className={`flex flex-col rounded-md py-3 px-4 cursor-pointer hover:text-white text-zinc-50 hover:bg-gray-500 transition-all ease-in-out duration-300 ${
@@ -217,7 +223,7 @@ const Layout1 = () => {
                     {/* Sidebar submenus NAvbar ITems */}
                     {Menu.subMenu && subMenus[Menu.key] && (
                       <ul className="pl-3 pt-4 text-zinc-300">
-                        {Menu.subMenu.map((subMenu, subIndex) => (
+                        {Menu.subMenu.map((subMenu:any, subIndex:number) => (
                           <li
                             key={subIndex}
                             className={`text-sm flex items-center gap-x-2 py-3 px-2 hover:bg-zinc-800 rounded-lg ${subIndex === clickedMenuIndex && "bg-zinc-500"}`}

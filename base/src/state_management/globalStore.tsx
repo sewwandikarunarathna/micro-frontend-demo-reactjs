@@ -1,62 +1,33 @@
-import {configureStore, createSlice} from '@reduxjs/toolkit';
-import { Provider, useDispatch, useSelector } from 'react-redux';
-import { ReactNode } from 'react';
+import {configureStore} from '@reduxjs/toolkit';
+import userReducer from './slices/userSlice';
+import menuReducer from './slices/menuSlice';
 
-interface StoreProviderProps {
-    children: ReactNode;
-}
-
-const initialState = {
-    user: {
-        username: '',
-        email: '',
-        password: '',
-        userRole: '',
-    }
-};
-
-const userSlice = createSlice({
-    name: 'user',
-    initialState: initialState,
-    reducers: {
-        login: (state, action) => {
-            console.log(action.payload);
-            
-            state.user = action.payload;
-        },
-        logout: (state) => {
-            state.user = {
-                username: '',
-                email: '',
-                password: '',
-                userRole: '',
-            };
-        },
-    },
-});
-
-const { login } = userSlice.actions;
-
-const store = configureStore({
+const globalStore = configureStore({
     reducer: {
-        userReducer: userSlice.reducer,
-    }
-});
+      userReducer,
+      menuReducer,
+    },
+  });
+  
+  export default globalStore;
+  
+  export type RootState = ReturnType<typeof globalStore.getState>;
+  export type AppDispatch = typeof globalStore.dispatch;
 
-export function StoreProvider({children}: StoreProviderProps){
-    return (
-        <Provider store={store}>
-            {children}
-        </Provider>
-    )
-};
+// export function StoreProvider({children}: StoreProviderProps){
+//     return (
+//         <Provider store={store}>
+//             {children}
+//         </Provider>
+//     )
+// };
 
-export function useGlobalStore(){
-    const user = useSelector((state: any) => state.userReducer.user);
-    const dispatch = useDispatch();
+// export function useGlobalStore(){
+//     const user = useSelector((state: any) => state.userReducer.user);
+//     const dispatch = useDispatch();
 
-    return {
-        user,
-        login: (newUser: any) => dispatch(login(newUser))
-    }
-} 
+//     return {
+//         user,
+//         login: (newUser: any) => dispatch(login(newUser))
+//     }
+// } 
