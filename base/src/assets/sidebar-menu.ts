@@ -1,4 +1,5 @@
 import DashboardIcon from "@mui/icons-material/Dashboard";
+import { url } from "inspector";
 
 export const sidebarMenuList = [
   { title: "Dashboard", icon: "DashboardIcon", url: "/home" },
@@ -23,7 +24,7 @@ export const sidebarMenuList = [
     ],
     key: "inbox",
   },
-  { title: "Calendar", icon: "CalendarIcon" },
+  { title: "Calendar", icon: "CalendarIcon", url: "/calendar" },
   { title: "Support", icon: "SupportIcon" },
   {
     title: "Setting",
