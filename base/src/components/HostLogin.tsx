@@ -1,11 +1,14 @@
 import { lazy, useEffect } from "react";
 import { dataService } from "../services/DataService";
-import { useGlobalStore } from "base/GlobalStore";
+// import { useGlobalStore } from "base/GlobalStore";
+import { useUserStore } from "base/UserStore";
 const AuthLoginModule = lazy(() => import("auth/Login"));
 
 const HostLogin = () => {
-  const { user } = useGlobalStore();
-
+  // const { user } = useGlobalStore();
+  const { user, loginUser, logoutUser } = useUserStore();
+  console.log('user', user);
+  
   // useEffect(()=>{
   //   alert('i host login')
   // }, [])
@@ -13,9 +16,9 @@ const HostLogin = () => {
     <div className="flex flex-col justify-center items-center content-center w-full">
       <h1 className="text-3xl pb-11">Base Login Page</h1>
       <AuthLoginModule />
-      {user.username != "" || user.email != "" || user.password != "" ? (
+      {user?.username != "" || user?.email != "" || user?.password != "" ? (
         <h3>
-          User Info: {user.username} | {user.email} | {user.password}
+          User Info: {user?.username} | {user?.email} | {user?.password}
         </h3>
       ) : null}
 

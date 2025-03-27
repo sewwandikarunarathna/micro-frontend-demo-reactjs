@@ -37,9 +37,7 @@ export class DataService {
   }
 
   //enocde and decode token
-  async decodeToken(token: string): Promise<any> {
-    console.log('tokennn',token);
-    
+  async decodeToken(token: string): Promise<any> {   
     const tokenPayload = await jwtDecode(token);
     return tokenPayload;
   }

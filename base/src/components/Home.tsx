@@ -1,6 +1,6 @@
 import UserService from "../services/UserService";
 import withAuth from "../utils/WithAuth";
-import SharedButton from "./SharedButton"
+import SharedButton from "../shared-components/atoms/SharedButton/SharedButton"
 
 const Home = () => {
   const userService = new UserService();
@@ -16,7 +16,7 @@ const Home = () => {
   <h1 className="text-2xl text-center mt-10">🏠 Home Page</h1>
   <div className="p-40 bg-red-200">
   <h1>You're in home page</h1>  
-  <SharedButton text="Get Users" onClick={getUsersViaInterceptor} />
+  <SharedButton children="Get Users" onClick={getUsersViaInterceptor} />
   </div>
   </>
   )

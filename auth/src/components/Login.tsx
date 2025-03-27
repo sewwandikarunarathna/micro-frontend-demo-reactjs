@@ -2,6 +2,7 @@ import { lazy, useEffect, useState } from "react";
 import TextField from "@mui/material/TextField";
 import { Paper } from "@mui/material";
 import { useGlobalStore } from "base/GlobalStore";
+// import { useUserStore } from "base/UserStore";
 import {DataService} from "base/DataService";
 import { useAuth } from 'base/AuthContext';
 
@@ -15,6 +16,7 @@ const Login = () => {
    
   //access global store from base module
   const { user, login } = useGlobalStore();
+  // const { user, loginUser, logoutUser } = useUserStore();
   const dataService = new DataService();
   const { loginContext } = useAuth();
 
@@ -26,6 +28,7 @@ const Login = () => {
 
   const handleLogin = () => {
     login({ username, password, email, userRole });
+    // loginUser({ username, password, email, userRole });
     loginContext('User');
     // dataService.setLoggedIn(true);
     // dataService.setUserType(userRole);
@@ -39,7 +42,7 @@ const Login = () => {
         <TextField id="outlined-basic" name={username} type="text" onChange={(e)=>setUsername(e.target.value)} label="Username" variant="outlined" />
         <TextField id="outlined-basic" name={email} type="text" onChange={(e)=>setEmail(e.target.value)} label="Email" variant="outlined" />
         <TextField id="outlined-basic" name={password} type="password" onChange={(e)=>setPassword(e.target.value)} label="Password" variant="outlined" />
-        <SharedButton onClick={handleLogin} variant="contained" text="Auth Login" />
+        <SharedButton onClick={handleLogin} variant="contained" children="Auth Login" />
           {user.username != '' ||user.email != '' || user.password != '' ? (
             <h3>
               User Info: {user.username} | {user.email} | {user.password}
@@ -47,6 +50,7 @@ const Login = () => {
           ) : null}
       </Paper>
     </div>
+   
   );
 };
 

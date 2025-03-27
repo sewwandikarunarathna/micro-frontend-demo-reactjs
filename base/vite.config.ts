@@ -14,10 +14,12 @@ export default defineConfig({
       name: 'base',
       filename: 'remoteEntry.js',
       exposes: {
-        './SharedButton': './src/components/SharedButton.tsx',
+        './SharedButton': './src/shared-components/atoms/SharedButton/SharedButton.tsx',
         './GlobalStore': './src/state_management/globalStore.tsx',
         './DataService': './src/services/DataService.ts',
         './AuthContext': './src/context/AuthContext.tsx',
+        './UserStore': './src/state_management/hooks/userHooks.ts',
+        './MenuStore': './src/state_management/hooks/menuHooks.ts',
         // './App': './src/App.tsx',
       },
       remotes: {
