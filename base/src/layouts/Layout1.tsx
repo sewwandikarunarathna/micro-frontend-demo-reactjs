@@ -44,8 +44,8 @@ const Layout1 = () => {
   const navigate = useNavigate();
 
   // const Menus = sidebarMenuList;
-  const { menuList, updateMenu } = useMenuStore();
-  // const menuList = UseFilteredSidebarMenu();
+  // const { menuList, updateMenu } = useMenuStore();
+  const menuList = UseFilteredSidebarMenu();
 console.log(menuList);
 
   const onClickMenuItem = (menu: any, index: number) => {
