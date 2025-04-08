@@ -2,6 +2,7 @@ import { lazy, Suspense } from "react";
 import { RouteObject } from "react-router-dom";
 import UserDetails from "../components/UserDetails";
 import Layout1 from "../layouts/Layout1";
+import AntLayout from "../layouts/AntLayout";
 
 const Welcome = lazy(() => import("../components/Welcome"));
 const Home = lazy(() => import("../components/Home"));
@@ -126,6 +127,13 @@ const routeConfig: RoutesType[] = [
         <Layout1 />
     ),
     allowedRoles: ["User", "Admin"], // Accessible by all roles
+  },
+  {
+    path: "/ant-layout",
+    element: (
+        <AntLayout />
+    ),
+    allowedRoles: ["Guest", "User", "Admin"], // Accessible by all roles
   },
 ];
 
