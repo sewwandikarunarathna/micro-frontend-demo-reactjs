@@ -365,7 +365,7 @@ const MatTable = () => {
     },
     enableFullScreenToggle: true,
     enableStickyHeader: true,
-    muiTableContainerProps:{ sx: { maxHeight: '300px' } },
+    muiTableContainerProps:{ sx: { width:'400px', maxHeight: '300px' } },
     muiTablePaperProps: ({ table }) => ({
       style: {
         zIndex: table.getState().isFullScreen ? 1000 : undefined,
@@ -376,12 +376,13 @@ const MatTable = () => {
       <Box
         sx={{
           display: 'flex',
-          gap: '16px',
-          padding: '8px',
+          gap: '4px',
+          padding: '4px',
           flexWrap: 'wrap',
         }}
       >
         <Button
+        size='small'
            onClick={() =>
             handleExportRows(table.getPrePaginationRowModel().rows)
           }
@@ -390,6 +391,7 @@ const MatTable = () => {
           Export All Data
         </Button>
         <Button
+          size='small'
           color="success"
           variant="contained"
           onClick={handleSaveUsers}
@@ -615,11 +617,11 @@ const MatTable = () => {
   {/* <h1 className='text-4xl'>Material React Table</h1> */}
   <Button size='small' className='flex px-4 mb-1' variant="contained" color="primary" onClick={() => setIsLoading(false)}>Load Data</Button>
   {/* </div> */}
-  <Outlet /> 
-  <Paper className='flex flex-col w-1/3 h-screen justify-start p-4 mb-4'>
+  {/* <Outlet /> 
+  <Paper className='flex flex-col w-1/3 h-screen justify-start p-4 mb-4'> */} 
   <MaterialReactTable
     table={table} />
-  </Paper>
+  {/* </Paper> */}
   </>
   );
 }

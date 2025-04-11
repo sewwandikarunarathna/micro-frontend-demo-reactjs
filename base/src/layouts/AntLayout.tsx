@@ -46,6 +46,8 @@ import UserSearch from "../shared-components/organisms/UserSearch";
 import STUDENTS from "../assets/students.json";
 import { divide } from "lodash";
 import { ResizableBox } from "react-resizable";
+import UserForm from "../components/Form";
+import AuthenticForm from "../components/AuthenticForm";
 
 const { Header, Content, Sider } = Layout;
 
@@ -261,12 +263,12 @@ const AntLayout = () => {
     {
       key: "2",
       label: "Company",
-      children: "Content of Company",
+      children: <UserForm />, 
     },
     {
       key: "3",
       label: "Authorization",
-      children: "Content of Authorization",
+      children: <AuthenticForm />,
     },
     {
       key: "4",
@@ -474,9 +476,9 @@ const AntLayout = () => {
                     </Form>
                   </div>
                   {/* Tabs section */}
-                  <div className="flex flex-row w-full justify-between items-center">
+                  <div className="flex flex-row w-full justify-start items-center">
                     <Tabs
-                      defaultActiveKey="1"
+                      defaultActiveKey="3"
                       items={tabItems}
                       onChange={onChangeTab}
                     />
