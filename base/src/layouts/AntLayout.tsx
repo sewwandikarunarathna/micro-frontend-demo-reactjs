@@ -38,7 +38,6 @@ import {
   VideoCameraOutlined,
   UploadOutlined,
 } from "@ant-design/icons";
-import PerfectScrollbar from "react-perfect-scrollbar";
 import UserDetails from "../components/UserDetails";
 import MatTable from "../components/MatTable";
 import ActionButtonPopover from "../shared-components/templates/ActionButtonPopover";
@@ -48,16 +47,23 @@ import { divide } from "lodash";
 import { ResizableBox } from "react-resizable";
 import UserForm from "../components/Form";
 import AuthenticForm from "../components/AuthenticForm";
+import SharedMenu from "../shared-components/molecules/SharedMenu";
+import SharedSider from "../shared-components/organisms/SharedSider";
+import SharedButton from "../shared-components/atoms/SharedButton";
+import MainNavBar from "../shared-components/templates/MainNavBar";
+import ButtonSideBar from "../shared-components/templates/ButtonSideBar";
+import MainSideBar from "../shared-components/templates/MainSideBar";
+import ActionButtonBar from "../shared-components/templates/ActionButtonBar";
+import SearchBar from "../shared-components/templates/SearchBar";
 
-const { Header, Content, Sider } = Layout;
+const { Header } = Layout;
 
 const AntLayout = () => {
   const [sidebarCollapsed, setSidebarCollapsed] = useState<boolean>(false);
   const [searchbarCollapsed, setSearchbarCollapsed] = useState<boolean>(false);
-  const [isSearchOpen, setIsSearchOpen] = useState<boolean>(false);
   const [userData, setUserData] = useState<MenuProps["items"]>([]);
   const [currentUser, setCurrentUser] = useState<any>({
-    name: "",
+    userName: "",
     email: "N/A",
     firstName: "N/A",
     lastName: "N/A",
@@ -70,10 +76,11 @@ const AntLayout = () => {
   const navigate = useNavigate();
   const [siderWidth, setSiderWidth] = useState(220); // Initial width of the Sider
 
-
   useEffect(() => {
-    setCurrentUser(userData?.[0]);
+    // setCurrentUser(userData?.[0]);
   }, [userData]);
+  console.log("use dataar", userData);
+  console.log("cuenrt user", currentUser);
 
   let isMoving = false;
   let lastX = 0;
@@ -135,73 +142,22 @@ const AntLayout = () => {
   //     token: { colorBgContainer, borderRadiusLG, green1 },
   //   } = theme.useToken();
 
-  const actionButtons = [
-    {
-      name: "Search",
-      icon: <SearchIcon />,
-      onclick: () => console.log("Search"),
-      disabled: false,
-    },
-    {
-      name: "Add",
-      icon: <AddIcon />,
-      onclick: () => console.log("Add"),
-      disabled: true,
-    },
-    {
-      name: "Save",
-      icon: <SaveIcon />,
-      onclick: () => console.log("Save"),
-      disabled: true,
-    },
-    {
-      name: "Previous",
-      icon: <PreviousIcon />,
-      onclick: () => console.log("Prev"),
-      disabled: true,
-    },
-    {
-      name: "Next",
-      icon: <NextIcon />,
-      onclick: () => console.log("next"),
-      disabled: true,
-    },
-    {
-      name: "Delete",
-      icon: <DeleteIcon />,
-      onclick: () => console.log("Delete"),
-      disabled: true,
-    },
-  ];
 
-  const iconMap: Record<string, JSX.Element> = {
-    DashboardIcon: <DashboardIcon />,
-    UsersIcon: <UsersIcon />,
-    OneUserIcon: <OneUserIcon />,
-    ChatIcon: <ChatIcon />,
-    CalendarIcon: <CalendarIcon />,
-    TableIcon: <TableIcon />,
-    SupportIcon: <SupportIcon />,
-    SettingsIcon: <SettingsIcon />,
-    AntLayoutIcon: <AntLayoutIcon />,
-    LogoutIcon: <LogoutIcon />,
-  };
 
-  const getIconComponent = (iconName: keyof typeof iconMap) => {
-    if (iconMap[iconName]) {
-      return iconMap[iconName];
-    }
-    // Return a default icon or null if the icon is not found
-    return null;
-  };
+
+  // const getIconComponent = (iconName: keyof typeof iconMap) => {
+  //   if (iconMap[iconName]) {
+  //     return iconMap[iconName];
+  //   }
+  //   // Return a default icon or null if the icon is not found
+  //   return null;
+  // };
 
   const onChangeTab = (key: string) => {
     console.log(key);
   };
 
-  const hideSearchPopover = () => {
-    setIsSearchOpen(false);
-  };
+
 
   const searchSingleUser = () => {
     setUserData(
@@ -209,12 +165,20 @@ const AntLayout = () => {
         key: index + 1,
         label: user.name,
         onClick: () => {
-          setCurrentUser({
-            name: user.name,
+          form.setFieldsValue({
+            userName: user.name,
             email: user.email,
             firstName: "N/A",
             lastName: "N/A",
-            phone: user.phone,
+            phoneNo: user.phone,
+            status: "Active",
+          });
+          setCurrentUser({
+            userName: user.name,
+            email: user.email,
+            firstName: "N/A",
+            lastName: "N/A",
+            phoneNo: user.phone,
             status: "Active",
           });
         },
@@ -222,35 +186,35 @@ const AntLayout = () => {
     );
   };
 
-  const sidebarItems: MenuProps["items"] = sidebarMenuList.map(
-    (menu, index) => {
-      const key = String(index + 1);
+  // const sidebarItems: MenuProps["items"] = sidebarMenuList.map(
+  //   (menu, index) => {
+  //     const key = String(index + 1);
 
-      return {
-        key: `sub${key}`,
-        icon: getIconComponent(menu.icon),
-        label: menu.title,
-        children: menu.subMenu?.map((subMenu, subIndex) => {
-          const subKey = subIndex + 1;
-          return {
-            key: subKey,
-            label: subMenu.title,
-          };
-        }),
-      };
-    }
-  );
+  //     return {
+  //       key: `sub${key}`,
+  //       icon: getIconComponent(menu.icon),
+  //       label: menu.title,
+  //       children: menu.subMenu?.map((subMenu, subIndex) => {
+  //         const subKey = subIndex + 1;
+  //         return {
+  //           key: subKey,
+  //           label: subMenu.title,
+  //         };
+  //       }),
+  //     };
+  //   }
+  // );
 
-  const navItems: MenuProps["items"] = sideButtonList.map(
-    (button: any, index) => ({
-      key: index + 1,
-      icon: getIconComponent(button.icon),
-      label: button.title,
-      onClick: () => {
-        navigate(button.url);
-      },
-    })
-  );
+  // const navItems: MenuProps["items"] = sideButtonList.map(
+  //   (button: any, index) => ({
+  //     key: index + 1,
+  //     icon: getIconComponent(button.icon),
+  //     label: button.title,
+  //     onClick: () => {
+  //       navigate(button.url);
+  //     },
+  //   })
+  // );
 
   // const userData: MenuProps["items"] = ;
 
@@ -263,7 +227,7 @@ const AntLayout = () => {
     {
       key: "2",
       label: "Company",
-      children: <UserForm />, 
+      children: <UserForm />,
     },
     {
       key: "3",
@@ -280,150 +244,26 @@ const AntLayout = () => {
   return (
     <div>
       <Layout className="h-screen w-full flex flex-col overflow-hidden">
-        <Header className="flex w-full items-center">
-          <div className="demo-logo" />
-          <Menu
-            theme="dark"
-            mode="horizontal"
-            defaultSelectedKeys={["2"]}
-            items={navItems}
-            style={{ flex: 1, minWidth: 0 }}
-          />
-        </Header>
+        {/* navbar */}
+        <MainNavBar />
         <Layout>
-          <Sider
-            // className="flex flex-col h-screen bg-gray-50"
-            trigger={null}
-            collapsible
-            style={{ background: "#f9fafb" }}
-            collapsed={true}
-          >
-            <Menu
-              //   className="flex flex-col h-auto bg-gray-50"
-              mode="inline"
-              defaultSelectedKeys={["1"]}
-              defaultOpenKeys={["sub1"]}
-              style={{ borderRight: 0, background: "#f9fafb" }}
-              items={navItems}
-            />
-          </Sider>
+          {/* Buttons sidebar */}
+          <ButtonSideBar />
+          {/* Main Sidebar */}
           <div className="flex flex-col gap-4 h-screen bg-gray-200">
-            <Button
-              type="text"
-              icon={
-                sidebarCollapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />
-              }
-              onClick={() => setSidebarCollapsed(!sidebarCollapsed)}
-              style={{
-                fontSize: "16px",
-                width: 64,
-                height: 64,
-              }}
-            />
-            <PerfectScrollbar
-              className=""
-              onScrollY={() => console.log("helooo")}
-            >
-              <Sider
-                className="!bg-red-200"
-                trigger={null}
-                collapsible
-                collapsed={sidebarCollapsed}
-                collapsedWidth={64}
-                width={200}
-                breakpoint="lg"
-                style={{ background: "#e5e7eb" }}
-              >
-                <Menu
-                  className="flex flex-col h-auto"
-                  mode="inline"
-                  defaultSelectedKeys={["1"]}
-                  defaultOpenKeys={["sub1"]}
-                  style={{ borderRight: 0, background: "#e5e7eb" }}
-                  items={sidebarItems}
-                />
-              </Sider>
-            </PerfectScrollbar>
+            <MainSideBar sidebarCollapsed={sidebarCollapsed} onClick={() => setSidebarCollapsed(!sidebarCollapsed)} />           
           </div>
           <Layout>
             <div className="flex-1 w-full flex-col overflow-hidden h-screen p-0 bg-gray-50">
+              {/* Action Buttons Bar */}
               <div className="h-12 w-full bg-red-100 border-b flex items-center justify-center px-4 gap-8">
-                {actionButtons.map((button, index) =>
-                  button.name == "Search" ? (
-                    <ActionButtonPopover
-                      content={
-                        <UserSearch
-                          onSearchClick={searchSingleUser}
-                          onCancelClick={hideSearchPopover}
-                        />
-                      }
-                      title={button.name}
-                      open={isSearchOpen}
-                      onOpenChange={(newOpen: boolean) =>
-                        setIsSearchOpen(newOpen)
-                      }
-                    >
-                      <Button
-                        disabled={button.disabled}
-                        size="small"
-                        type="text"
-                        className="text-gray-600 font-bold bg-red-100"
-                        onClick={button.onclick}
-                        icon={button.icon}
-                      ></Button>
-                    </ActionButtonPopover>
-                  ) : (
-                    <Button
-                      disabled={button.disabled}
-                      size="small"
-                      type="text"
-                      className="text-gray-600 font-bold bg-red-100"
-                      onClick={button.onclick}
-                      icon={button.icon}
-                    ></Button>
-                  )
-                )}
+                <ActionButtonBar onSearchClick={searchSingleUser} />
               </div>
               <div className="flex-1 flex flex-row w-full bg-gray-50">
-                <div className="flex w-auto justify-start items-start">
-                  <div className="flex flex-col gap-4 h-screen bg-gray-200 border-l-2 border-gray-400">
-                    <Button
-                      className="!bg-red-200 w-40 h-40"
-                      type="text"
-                      icon={
-                        searchbarCollapsed ? (
-                          <MenuUnfoldOutlined />
-                        ) : (
-                          <MenuFoldOutlined />
-                        )
-                      }
-                      onClick={() => setSearchbarCollapsed(!searchbarCollapsed)}
-                    />
-                    <Sider
-                      className="!bg-gray-200"
-                      trigger={null}
-                      collapsible
-                      collapsed={searchbarCollapsed}
-                      collapsedWidth={64}
-                      width={siderWidth}
-                      breakpoint="lg"
-                      style={{ background: "#e5e7eb" }}
-                    >
-                    <Menu
-                        className="flex flex-col h-auto"
-                        mode="inline"
-                        defaultSelectedKeys={["1"]}
-                        defaultOpenKeys={["sub1"]}
-                        style={{ borderRight: 0, background: "#e5e7eb" }}
-                        items={userData}
-                      />
-                    </Sider>
-                  </div>
-                </div>
-                <div
-                  className="flex justify-start items-start w-2 h-screen p-0 bg-yellow-400 hover:cursor-col-resize"
-                  onMouseDown={handleMouseDown}
-                ></div>
+                {/* Search bar */}
+                <SearchBar onClick={() => setSearchbarCollapsed(!searchbarCollapsed)} searchedData={userData} siderWidth={siderWidth} onMouseDown={handleMouseDown} sidebarCollapsed={searchbarCollapsed} />               
+
+                {/* Main Content */}
                 <div className="flex flex-col w-full justify-start items-start p-4 gap-6">
                   {/* <Content
                     style={{
@@ -439,7 +279,7 @@ const AntLayout = () => {
                     <div className="flex flex-col justify-start w-auto">
                       <h1 className="font-bold text-3xl text-black">User</h1>
                       <h3 className="font-normal text-2xl text-gray-700">
-                        {currentUser?.name ?? ""}
+                        {currentUser?.userName ?? ""}
                       </h3>
                     </div>
                   </div>
@@ -473,6 +313,65 @@ const AntLayout = () => {
                           </Form.Item>
                         ))}
                       {/* {!currentUser && <div className="w-full h-24"></div>} */}
+                      {/* <Form.Item
+                        key="userName"
+                        label="User Name"
+                        className="w-auto"
+                      >
+                        <Input
+                          className="text-bold text-sm"
+                          placeholder="userName"
+                          defaultValue={currentUser?.userName}
+                          value={currentUser?.userName}
+                        />
+                      </Form.Item>
+                      <Form.Item key="email" label="E-mail" className="w-auto">
+                        <Input
+                          className="text-bold text-sm"
+                          placeholder="email"
+                          defaultValue={currentUser?.email}
+                        />
+                      </Form.Item>
+                      <Form.Item
+                        key="firstName"
+                        label="First Name"
+                        className="w-auto"
+                      >
+                        <Input
+                          className="text-bold text-sm"
+                          placeholder="first name"
+                          defaultValue={currentUser?.firstName}
+                        />
+                      </Form.Item>
+                      <Form.Item
+                        key="lastName"
+                        label="Last Name"
+                        className="w-auto"
+                      >
+                        <Input
+                          className="text-bold text-sm"
+                          placeholder="lastName"
+                          defaultValue={currentUser?.lastName}
+                        />
+                      </Form.Item>
+                      <Form.Item
+                        key="phoneNo"
+                        label="phone No"
+                        className="w-auto"
+                      >
+                        <Input
+                          className="text-bold text-sm"
+                          placeholder="phoneNo"
+                          defaultValue={currentUser?.phoneNo}
+                        />
+                      </Form.Item>
+                      <Form.Item key="status" label="status" className="w-auto">
+                        <Input
+                          className="text-bold text-sm"
+                          placeholder="status"
+                          defaultValue={currentUser?.status}
+                        />
+                      </Form.Item> */}
                     </Form>
                   </div>
                   {/* Tabs section */}
@@ -483,7 +382,6 @@ const AntLayout = () => {
                       onChange={onChangeTab}
                     />
                   </div>
-                  {/* </Content> */}
                 </div>
               </div>
             </div>

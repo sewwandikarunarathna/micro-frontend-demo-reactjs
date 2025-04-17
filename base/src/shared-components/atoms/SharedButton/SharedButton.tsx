@@ -1,22 +1,60 @@
-import Button from '@mui/material/Button';
+import { Button } from "antd";
+import { ReactNode } from "react";
 
 type Props = {
-  color?: 'inherit'| 'primary' | 'secondary' | 'error'| 'warning'| 'info'| 'success' | any;
+  color?:
+    | "inherit"
+    | "primary"
+    | "secondary"
+    | "error"
+    | "warning"
+    | "info"
+    | "success"
+    | any;
   children: any;
-  type?: 'button' | 'reset' | 'submit';
-  size?: 'small' | 'medium' | 'large';
-  variant?: 'text' | 'outlined' | 'contained' | any;
+  type?: "button" | "reset" | "submit";
+  size?: "small" | "medium" | "large";
+  variant?: "text" | "outlined" | "contained" | any;
   bgcolor?: string;
+  icon?: ReactNode;
   className?: string;
   component?: any;
   disabled?: boolean;
   onClick?: any;
 };
 
-const SharedButton = (props: Props) => {
+type AntProps = {
+  type?: "default" | "primary" | "dashed" | "link" | "text";
+  size?: "small"| 'middle' | "large";
+  variant?: "text" | "outlined" | "contained" | any;
+  bgcolor?: string;
+  icon?: any;
+  fontSize?: string;
+  width?: number;
+  height?: number;
+  className?: string;
+  component?: any;
+  disabled?: boolean;
+  onClick?: any;
+};
+
+const SharedButton = (props: AntProps) => {
   return (
-    <div>
+    <>
       <Button
+        type={props.type ?? 'default'}
+        icon={props.icon}
+        onClick={props.onClick}
+        disabled={props.disabled}
+        className={props.className}
+        size={props.size}
+        style={{
+          fontSize: props.fontSize,
+          width: props.width,
+          height: props.height,
+        }}
+      />
+      {/* <Button
       className={props.className}
       component={props.component}
       type={props.type}
@@ -32,9 +70,9 @@ const SharedButton = (props: Props) => {
       }}
     >
       {props.children}
-    </Button>
-    </div>
-  )
-}
+    </Button> */}
+    </>
+  );
+};
 
-export default SharedButton
+export default SharedButton;

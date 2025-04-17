@@ -1,34 +1,34 @@
-import {useActionState, useState} from "react";
+import { useActionState, useState } from "react";
 import { Form, Input, Button, Alert } from "antd";
 // import {  useFormStatus } from "react-dom";
 
 const AuthenticForm = () => {
   const [form] = Form.useForm();
-    const [formErrors, setFormErrors] = useState<any>({});
+  const [formErrors, setFormErrors] = useState<any>({});
 
   const [message, submitAction, isPending] = useActionState(
-    async (prevErrors:any, formData:any) => {
+    async (prevErrors: any, formData: any) => {
       // Server-side validation
-      const errors:any = {};
+      const errors: any = {};
       if (!formData.get("username")) errors.username = "Username required";
       if (!formData.get("email")?.match(/^\S+@\S+\.\S+$/)) {
         errors.email = "Invalid email format";
       }
-      if (Object.keys(errors).length > 0){
+      if (Object.keys(errors).length > 0) {
         setFormErrors(errors); // Update errors state
-          return {type: "error", message: 'Something wrong!'}; // Return error message
-      } 
-      
+        return { type: "error", message: "Something wrong!" }; // Return error message
+      }
+
       // Process valid data
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      await new Promise((resolve) => setTimeout(resolve, 1000));
       console.log("Submitted:", Object.fromEntries(formData));
-      setFormErrors({})
-      return {type: "success", message: 'Submitted!'}; // Return success message
-    }, 
-    {type: "", message: ''} // Initial state
+      setFormErrors({});
+      return { type: "success", message: "Submitted!" }; // Return success message
+    },
+    { type: "", message: "" } // Initial state
   );
 
-//   const { pending } = useFormStatus();
+  //   const { pending } = useFormStatus();
 
   return (
     <Form
@@ -62,7 +62,7 @@ const AuthenticForm = () => {
         name="email"
         rules={[
           { required: true, message: "Required field" },
-        //   { type: "email", message: "Invalid email format" }
+          //   { type: "email", message: "Invalid email format" }
         ]}
         validateStatus={formErrors?.email ? "error" : ""}
         help={formErrors?.email}
@@ -70,14 +70,20 @@ const AuthenticForm = () => {
         <Input />
       </Form.Item>
 
+      {/* Password Field */}
+      <Form.Item
+        label="Password"
+        name="password"
+        rules={[{ required: true, message: "Required field" }]}
+        validateStatus={formErrors?.password ? "error" : ""}
+        help={formErrors?.password}
+      >
+        <Input.Password />
+      </Form.Item>
       {/* Submit Button */}
       <Form.Item>
-        <Button 
-          type="primary" 
-          htmlType="submit"
-          disabled={isPending}
-        >
-         {isPending ? "Submitting..." : "Submit"}
+        <Button type="primary" htmlType="submit" disabled={isPending}>
+          {isPending ? "Submitting..." : "Submit"}
         </Button>
       </Form.Item>
 
@@ -91,11 +97,11 @@ const AuthenticForm = () => {
         />
       )}
       {/* Success Message */}
-        {message?.type === "success" ? (
-            <Alert message={message.message} type="success" showIcon />
-        ) : (
-            <Alert message={message.message} type="error" showIcon />
-        )}
+      {message?.type === "success" ? (
+        <Alert message={message.message} type="success" showIcon />
+      ) : (
+        <Alert message={message.message} type="error" showIcon />
+      )}
     </Form>
   );
 };
