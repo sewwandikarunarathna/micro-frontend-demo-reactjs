@@ -33,6 +33,7 @@ type AntProps = {
   width?: number;
   height?: number;
   className?: string;
+  children?: any;
   component?: any;
   disabled?: boolean;
   onClick?: any;
@@ -48,12 +49,14 @@ const SharedButton = (props: AntProps) => {
         disabled={props.disabled}
         className={props.className}
         size={props.size}
-        style={{
-          fontSize: props.fontSize,
-          width: props.width,
-          height: props.height,
-        }}
-      />
+        // style={{
+        //   fontSize: props.fontSize,
+        //   width: props.width,
+        //   height: props.height,
+        // }}
+      >
+        {props.children}
+        </Button>
       {/* <Button
       className={props.className}
       component={props.component}

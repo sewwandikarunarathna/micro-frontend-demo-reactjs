@@ -1,4 +1,5 @@
 import {
+  Avatar,
   Breadcrumb,
   Button,
   Form,
@@ -15,29 +16,6 @@ import React, { JSX, useEffect, useState } from "react";
 import { sideButtonMenuList } from "../assets/sidebutton-menu";
 import { sidebarMenuList } from "../assets/sidebar-menu";
 import { useNavigate } from "react-router-dom";
-import {
-  MenuFoldOutlined,
-  MenuUnfoldOutlined,
-  DashboardOutlined as DashboardIcon,
-  UsergroupAddOutlined as UsersIcon,
-  UserOutlined as OneUserIcon,
-  MessageOutlined as ChatIcon,
-  CalendarOutlined as CalendarIcon,
-  TableOutlined as TableIcon,
-  CustomerServiceOutlined as SupportIcon,
-  SettingOutlined as SettingsIcon,
-  LayoutOutlined as AntLayoutIcon,
-  LogoutOutlined as LogoutIcon,
-  PlusOutlined as AddIcon,
-  SaveOutlined as SaveIcon,
-  ArrowLeftOutlined as PreviousIcon,
-  ArrowRightOutlined as NextIcon,
-  DeleteOutlined as DeleteIcon,
-  SearchOutlined as SearchIcon,
-  UserOutlined,
-  VideoCameraOutlined,
-  UploadOutlined,
-} from "@ant-design/icons";
 import UserDetails from "../components/UserDetails";
 import MatTable from "../components/MatTable";
 import ActionButtonPopover from "../shared-components/templates/ActionButtonPopover";
@@ -55,13 +33,18 @@ import ButtonSideBar from "../shared-components/templates/ButtonSideBar";
 import MainSideBar from "../shared-components/templates/MainSideBar";
 import ActionButtonBar from "../shared-components/templates/ActionButtonBar";
 import SearchBar from "../shared-components/templates/SearchBar";
+import AntIcons from "../utils/AntIcons";
+import SharedAvatar from "../shared-components/atoms/SharedAvatar";
 
 const { Header } = Layout;
 
 const AntLayout = () => {
   const [sidebarCollapsed, setSidebarCollapsed] = useState<boolean>(false);
   const [searchbarCollapsed, setSearchbarCollapsed] = useState<boolean>(false);
-  const [userData, setUserData] = useState<MenuProps["items"]>([]);
+  const [userData, setUserData] = useState<MenuProps["items"]>([
+    { key: '1', label: 'John Doe' },
+  ]);
+  const [isSearchOpen, setIsSearchOpen] = useState<boolean>(false);
   const [currentUser, setCurrentUser] = useState<any>({
     userName: "",
     email: "N/A",
@@ -76,6 +59,44 @@ const AntLayout = () => {
   const navigate = useNavigate();
   const [siderWidth, setSiderWidth] = useState(220); // Initial width of the Sider
 
+  const actionButtons = [
+    {
+      name: "Search",
+      icon: AntIcons("SearchIcon")(),
+      onclick: () => console.log("Search"),
+      disabled: false,
+    },
+    {
+      name: "Add",
+      icon: AntIcons("AddIcon")(),
+      onclick: () => console.log("Add"),
+      disabled: true,
+    },
+    {
+      name: "Save",
+      icon: AntIcons("SaveIcon")(),
+      onclick: () => console.log("Save"),
+      disabled: true,
+    },
+    {
+      name: "Previous",
+      icon: AntIcons("PreviousIcon")(),
+      onclick: () => console.log("Prev"),
+      disabled: true,
+    },
+    {
+      name: "Next",
+      icon: AntIcons("NextIcon")(),
+      onclick: () => console.log("next"),
+      disabled: true,
+    },
+    {
+      name: "Delete",
+      icon: AntIcons("DeleteIcon")(),
+      onclick: () => console.log("Delete"),
+      disabled: true,
+    },
+  ];
   useEffect(() => {
     // setCurrentUser(userData?.[0]);
   }, [userData]);
@@ -118,6 +139,7 @@ const AntLayout = () => {
       lastX = e.clientX;
     };
 
+
     const handleMouseUp = () => {
       console.log("mouse up");
       isMoving = false;
@@ -157,13 +179,34 @@ const AntLayout = () => {
     console.log(key);
   };
 
+ const handleOpenChange = (newOpen: boolean) => {
+    // setIsSearchOpen(newOpen);
+    setIsSearchOpen(!isSearchOpen);
+  };
 
+   // const getInitials = (name: string) => {
+    const getInitials = (name:string) => {
+  
+      if (!name) return "";
+      console.log('short name', name
+        .split(" ")
+        .map((n) => n[0])
+        .join("")
+        .toUpperCase());
+      
+      return name
+        .split(" ")
+        .map((n) => n[0])
+        .join("")
+        .toUpperCase();
+    };
 
   const searchSingleUser = () => {
     setUserData(
       STUDENTS.filter((std) => std.age == 13).map((user: any, index) => ({
         key: index + 1,
         label: user.name,
+        icon: <SharedAvatar style={{ padding: 0, backgroundColor: '#fde3cf', color: '#f56a00', fontSize: 10 }} size="small" gap={1}>{getInitials(user.name)}</SharedAvatar>,
         onClick: () => {
           form.setFieldsValue({
             userName: user.name,
@@ -258,22 +301,14 @@ const AntLayout = () => {
               {/* Action Buttons Bar */}
               <div className="h-12 w-full bg-red-100 border-b flex items-center justify-center px-4 gap-8">
                 <ActionButtonBar onSearchClick={searchSingleUser} />
+   
               </div>
               <div className="flex-1 flex flex-row w-full bg-gray-50">
                 {/* Search bar */}
-                <SearchBar onClick={() => setSearchbarCollapsed(!searchbarCollapsed)} searchedData={userData} siderWidth={siderWidth} onMouseDown={handleMouseDown} sidebarCollapsed={searchbarCollapsed} />               
+                <SearchBar onClick={() => setSearchbarCollapsed(!searchbarCollapsed)} searchedData={userData} siderWidth={siderWidth} onMouseDown={handleMouseDown} sidebarCollapsed={searchbarCollapsed} setSidebarCollapsed={() => setSearchbarCollapsed(!searchbarCollapsed)} />               
 
                 {/* Main Content */}
                 <div className="flex flex-col w-full justify-start items-start p-4 gap-6">
-                  {/* <Content
-                    style={{
-                      padding: 0,
-                      margin: 0,
-                      minHeight: 280,
-                      background: green1,
-                      borderRadius: borderRadiusLG,
-                    }}
-                  > */}
                   <div className="flex flex-row w-full h-auto justify-between items-start py-3">
                     {/* User Panel */}
                     <div className="flex flex-col justify-start w-auto">

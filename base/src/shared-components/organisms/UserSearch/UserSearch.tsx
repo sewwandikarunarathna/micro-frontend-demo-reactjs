@@ -8,7 +8,7 @@ type Props = {
     onSearchClick?: any;
 }
 
-const UserSearch = (props: any) => {
+const UserSearch = (props: Props) => {
   const [form] = Form.useForm();
   const formData = {
     userName: "John D",

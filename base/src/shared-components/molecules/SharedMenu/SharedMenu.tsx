@@ -18,7 +18,7 @@ const SharedMenu = (props: Props) => {
     <>
       <Menu
       theme={props.theme}
-        mode={props.mode ?? "inline"}
+        mode={props.mode ?? "inline"}        
         defaultSelectedKeys={props.defaultSelectedKeys}
         defaultOpenKeys={props.defaultOpenKeys}
         style={{ ...props.style, borderRight: 0, background: props.bgColor }}

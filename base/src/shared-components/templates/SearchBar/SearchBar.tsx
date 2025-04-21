@@ -1,39 +1,27 @@
-import { MenuProps } from "antd";
 import SharedMenu from "../../molecules/SharedMenu";
 import SharedSider from "../../organisms/SharedSider";
 import SharedButton from "../../atoms/SharedButton";
 import AntIcons from "../../../utils/AntIcons";
-import { sidebarMenuList } from "../../../assets/sidebar-menu";
-import PerfectScrollbar from "react-perfect-scrollbar";
 
+  // Custom inline styles
+  const menuItemStyle = {
+    fontSize: '11px',
+    padding: '0',     // Padding inside menu items
+    height: 'auto',           // Allow items to grow based on content
+    lineHeight: '1.5',        // Better line height for readability
+    display: 'flex',
+    alignItems: 'center',     // Center items vertically
+    justifyContent: 'flex-start', // Align items to the left
+  };
 type Props = {
   sidebarCollapsed: boolean;
+  setSidebarCollapsed: any;
   onClick: any;
   siderWidth: number;
   searchedData: any;
   onMouseDown: any;
 };
 const SearchBar = (props: Props) => {
-  const sidebarItems: MenuProps["items"] = sidebarMenuList.map(
-    (menu, index) => {
-      const key = String(index + 1);
-      const getIconComponent = AntIcons(menu.icon);
-
-      return {
-        key: `sub${key}`,
-        icon: getIconComponent(),
-        label: menu.title,
-        children: menu.subMenu?.map((subMenu, subIndex) => {
-          const subKey = subIndex + 1;
-          return {
-            key: subKey,
-            label: subMenu.title,
-          };
-        }),
-      };
-    }
-  );
-
   return (
     <>
       <div className="flex w-auto justify-start items-start">
@@ -41,13 +29,19 @@ const SearchBar = (props: Props) => {
           <SharedButton
             className="!bg-red-200 w-40 h-40"
             type="text"
-            icon={props.sidebarCollapsed ? AntIcons("MenuUnfoldOutlined")() : AntIcons("MenuFoldOutlined")()}
+            icon={
+              props.sidebarCollapsed
+                ? AntIcons("MenuUnfoldOutlined")()
+                : AntIcons("MenuFoldOutlined")()
+            }
             onClick={props.onClick}
           />
           <SharedSider
             className="!bg-gray-200"
             collapsed={props.sidebarCollapsed}
-            collapsedWidth={64}
+            // onCollapse={getInitials}
+            onCollapse={(value: any) => props.setSidebarCollapsed(value)}
+            collapsedWidth={44}
             width={props.siderWidth}
             breakpoint="lg"
             bgColor="#e5e7eb"
@@ -58,8 +52,24 @@ const SearchBar = (props: Props) => {
               defaultSelectedKeys={["1"]}
               defaultOpenKeys={["sub1"]}
               bgColor="#e5e7eb"
-              items={props.searchedData}
+              items={props.searchedData} 
+              style={menuItemStyle}
             />
+            {/* <Menu mode="inline" defaultSelectedKeys={["1"]}>
+              {props.searchedData.map(
+                ({ key, label }: { key: string; label: string }) => (
+                  <Menu.Item key={key}>
+                    {props.sidebarCollapsed ? getInitials1(label) : label}
+                    {/* {getInitials(label)} */}
+               
+            {/* <SharedMenu
+              className="flex flex-col h-auto"
+              mode="inline"
+              defaultSelectedKeys={["1"]}
+              defaultOpenKeys={["sub1"]}
+              bgColor="#e5e7eb"
+              items={processedItems}
+            /> */}
           </SharedSider>
         </div>
       </div>

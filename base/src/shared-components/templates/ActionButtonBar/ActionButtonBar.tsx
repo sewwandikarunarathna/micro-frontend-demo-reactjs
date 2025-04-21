@@ -1,4 +1,4 @@
-import { MenuProps } from "antd";
+import { Button, MenuProps } from "antd";
 import { useState } from "react";
 import { sideButtonMenuList } from "../../../assets/sidebutton-menu";
 import { useNavigate } from "react-router-dom";
@@ -8,11 +8,14 @@ import SharedButton from "../../atoms/SharedButton";
 import AntIcons from "../../../utils/AntIcons";
 
 type Props = {
-  onSearchClick: any;
+  onSearchClick?: any;
+  openPopover?: boolean;
+  setOpenPopover?: any;
 };
 
 const ActionButtonBar = (props: Props) => {
-  const [isSearchOpen, setIsSearchOpen] = useState<boolean>(false);
+  const [isSearchOpen, setIsSearchOpen] = useState<boolean>(false); 
+console.log('serch opene',isSearchOpen);
 
   const actionButtons = [
     {
@@ -54,9 +57,12 @@ const ActionButtonBar = (props: Props) => {
   ];
 
   const hideSearchPopover = () => {
-    setIsSearchOpen(false);
+    console.log('open stts', props.onSearchClick);
+    setIsSearchOpen(false)
   };
-
+  const handleOpenChange = (newOpen: boolean) => {
+    setIsSearchOpen(newOpen);
+  };
   return (
     <>
       {actionButtons.map((button, index) =>
@@ -69,10 +75,10 @@ const ActionButtonBar = (props: Props) => {
               />
             }
             title={button.name}
-            open={isSearchOpen}
-            onOpenChange={(newOpen: boolean) => setIsSearchOpen(newOpen)}
+            open={isSearchOpen} 
+          onOpenChange={handleOpenChange}
           >
-            <SharedButton
+            <Button
               disabled={button.disabled}
               size="small"
               type="text"

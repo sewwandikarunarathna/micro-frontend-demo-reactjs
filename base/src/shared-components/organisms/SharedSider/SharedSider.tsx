@@ -7,6 +7,7 @@ type Props = {
   bgColor?: string;
   className?: string;
   collapsed?: boolean;
+  onCollapse?: any;
   collapsedWidth?: number;
   width?: number;
   breakpoint?: "xs" | "sm" | "md" | "lg" | "xl" | "xxl" | undefined;
@@ -21,6 +22,7 @@ const SharedSider = (props: Props) => {
         collapsible
         style={{ background: props.bgColor ?? "#f9fafb" }}
         collapsed={props.collapsed}
+        onCollapse={props.onCollapse}
         collapsedWidth={props.collapsedWidth}
         width={props.width}
         breakpoint={props.breakpoint}
