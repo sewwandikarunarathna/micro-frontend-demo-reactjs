@@ -42,6 +42,9 @@ const ProtectedRoute = ({
     return <div>Loading...</div>; // Show loader until auth check completes
   }
 
+  if (!isLoggedIn) {
+    return <Navigate to="/authLogin" />;
+  }
   if (!isLoggedIn || !userType || !allowedRoles.includes(userType)) {
     return <Navigate to="/home" />;
   }

@@ -46,7 +46,7 @@ const AppRoutes = () => {
             ))}
           </Route>
         ) : (
-          <Route element={<Layout1 />} key={path}>
+          <Route element={<Layout1 />}>
             <Route
               path={path}
               element={

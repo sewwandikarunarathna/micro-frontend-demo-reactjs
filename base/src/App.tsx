@@ -10,6 +10,7 @@ import { AuthProvider } from "./context/AuthContext";
 import Layout from "./layouts/Layout";
 import Layout1 from "./layouts/Layout1";
 import FullPageLoader from "./components/FullPageLoader";
+import ThemeLayout from "./layouts/ThemeLayout";
 
 const Home = lazy(() => import("./components/Home"));
 const About = lazy(() => import("./components/About"));

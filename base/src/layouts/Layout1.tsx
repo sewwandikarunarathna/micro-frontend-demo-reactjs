@@ -1,5 +1,5 @@
 import React, { JSX, useState } from "react";
-import { sidebarMenuList } from "../assets/sidebar-menu";
+import { sideButtonMenuList } from "../assets/sidebutton-menu";
 import DownIcon from "@mui/icons-material/ArrowDownwardRounded";
 import ChevronRightIcon from "@mui/icons-material/ChevronRightRounded";
 import PerfectScrollbar from "react-perfect-scrollbar";
@@ -20,6 +20,8 @@ import SaveIcon from "@mui/icons-material/Save";
 import DeleteIcon from "@mui/icons-material/Delete";
 import PreviousIcon from "@mui/icons-material/SkipPrevious";
 import NextIcon from "@mui/icons-material/SkipNext";
+import AntLayoutIcon from "@mui/icons-material/LayersOutlined";
+import LogoutIcon from "@mui/icons-material/LogoutOutlined";
 import "react-perfect-scrollbar/dist/css/styles.css";
 import { Outlet, useNavigate } from "react-router-dom";
 import { AuthProvider } from "../context/AuthContext";
@@ -28,6 +30,7 @@ import AppRoutes from "../routes/AppRoutes";
 import { useMenuStore } from "base/MenuStore";
 import { useUserStore } from "base/UserStore";
 import UseFilteredSidebarMenu from "../utils/UseFilteredSidebarMenu";
+import { Tooltip } from "antd";
 
 const Layout1 = () => {
   const [isCollapsedMenu, setIsCollapsedMenu] = useState(true);
@@ -46,6 +49,8 @@ const Layout1 = () => {
   // const Menus = sidebarMenuList;
   // const { menuList, updateMenu } = useMenuStore();
   const menuList = UseFilteredSidebarMenu();
+  const sideButtonList = sideButtonMenuList;
+  console.log(menuList);
 
   const onClickMenuItem = (menu: any, index: number) => {
     setClickedMenuIndex(index);
@@ -64,8 +69,7 @@ const Layout1 = () => {
   const onClickSubMenuItem = (subMenu: any, subIndex: number) => {
     setClickedSubMenuIndex(subIndex);
     navigate(subMenu.url);
-
-  }
+  };
 
   const handleSidebarToggle = () => {
     setIsCollapsedMenu(!isCollapsedMenu);
@@ -80,6 +84,8 @@ const Layout1 = () => {
     TableIcon: <TableIcon />,
     SupportIcon: <SupportIcon />,
     SettingsIcon: <SettingsIcon />,
+    AntLayoutIcon: <AntLayoutIcon />,
+    LogoutIcon: <LogoutIcon />,
   };
 
   const getIconComponent = (iconName: keyof typeof iconMap) => {
@@ -137,23 +143,25 @@ const Layout1 = () => {
           <nav className="p-2 space-y-1">
             {/* Add your sidebar button items here */}
             <ul className="pt-6 space-y-0.5">
-              {menuList.map((Menu: any, index: number) => (
+              {sideButtonList.map((Menu: any, index: number) => (
                 <li
                   key={index}
                   className={
                     "flex flex-col rounded-md py-3 px-4 mt-2 cursor-pointer hover:text-white text-zinc-50 hover:bg-gray-500 transition-all ease-in-out duration-300"
                   }
                 >
-                  <div
-                    className="flex items-center justify-between gap-x-4"
-                    // onClick={() => onClickMenuItem(Menu.key)}
-                  >
-                    <div className="flex items-center gap-2">
-                      <span className="text-lg">
-                        {getIconComponent(Menu.icon)}
-                      </span>
+                  <Tooltip placement="bottomLeft" title={Menu.title}>
+                    <div
+                      className="flex items-center justify-between gap-x-4"
+                      onClick={() => onClickMenuItem(Menu, index)}
+                    >
+                      <div className="flex items-center gap-2">
+                        <span className="text-lg">
+                          {getIconComponent(Menu.icon)}
+                        </span>
+                      </div>
                     </div>
-                  </div>
+                  </Tooltip>
                 </li>
               ))}
             </ul>
@@ -223,11 +231,15 @@ const Layout1 = () => {
                     {/* Sidebar submenus NAvbar ITems */}
                     {Menu.subMenu && subMenus[Menu.key] && (
                       <ul className="pl-3 pt-4 text-zinc-300">
-                        {Menu.subMenu.map((subMenu:any, subIndex:number) => (
+                        {Menu.subMenu.map((subMenu: any, subIndex: number) => (
                           <li
                             key={subIndex}
-                            className={`text-sm flex items-center gap-x-2 py-3 px-2 hover:bg-zinc-800 rounded-lg ${subIndex === clickedMenuIndex && "bg-zinc-500"}`}
-                            onClick={() => onClickSubMenuItem(subMenu, subIndex)}
+                            className={`text-sm flex items-center gap-x-2 py-3 px-2 hover:bg-zinc-800 rounded-lg ${
+                              subIndex === clickedMenuIndex && "bg-zinc-500"
+                            }`}
+                            onClick={() =>
+                              onClickSubMenuItem(subMenu, subIndex)
+                            }
                           >
                             <span className="text-zinc-4">
                               <ChevronRightIcon className="text-xs" />
@@ -271,7 +283,7 @@ const Layout1 = () => {
             {/* <AuthProvider>
               <AppRoutes />
             </AuthProvider> */}
-             <Outlet />
+            <Outlet />
           </div>
         </div>
       </div>

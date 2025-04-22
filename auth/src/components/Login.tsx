@@ -2,7 +2,7 @@ import { lazy, useEffect, useState } from "react";
 import TextField from "@mui/material/TextField";
 import { Paper } from "@mui/material";
 import { useGlobalStore } from "base/GlobalStore";
-// import { useUserStore } from "base/UserStore";
+import { useUserStore } from "base/UserStore";
 import {DataService} from "base/DataService";
 import { useAuth } from 'base/AuthContext';
 
@@ -15,8 +15,8 @@ const Login = () => {
   const [userRole, setUserRole] = useState('User');
    
   //access global store from base module
-  const { user, login } = useGlobalStore();
-  // const { user, loginUser, logoutUser } = useUserStore();
+  // const { user, login } = useGlobalStore();
+  const { user, loginUser, logoutUser } = useUserStore();
   const dataService = new DataService();
   const { loginContext } = useAuth();
 
@@ -27,7 +27,7 @@ const Login = () => {
 // console.log('user', user);
 
   const handleLogin = () => {
-    login({ username, password, email, userRole });
+    loginUser({ username, password, email, userRole });
     // loginUser({ username, password, email, userRole });
     loginContext('User');
     // dataService.setLoggedIn(true);
