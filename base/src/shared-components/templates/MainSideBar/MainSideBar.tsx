@@ -5,14 +5,19 @@ import SharedButton from "../../atoms/SharedButton";
 import AntIcons from "../../../utils/AntIcons";
 import { sidebarMenuList } from "../../../assets/sidebar-menu";
 import PerfectScrollbar from "react-perfect-scrollbar";
+import UseFilteredSidebarMenu from "../../../utils/UseFilteredSidebarMenu";
+import { useNavigate } from "react-router-dom";
 
 type Props = {
   sidebarCollapsed: boolean;
   onClick: any;
 }
 const MainSideBar = (props:Props) => {
-  const sidebarItems: MenuProps["items"] = sidebarMenuList.map(
-    (menu, index) => {
+  const menuList = UseFilteredSidebarMenu();
+  const navigate = useNavigate();
+
+  const sidebarItems: MenuProps["items"] = menuList.map(
+    (menu:any, index:number) => {
       const key = String(index + 1);
       const getIconComponent = AntIcons(menu.icon);
   
@@ -20,11 +25,17 @@ const MainSideBar = (props:Props) => {
           key: `sub${key}`,
           icon: getIconComponent(),
           label: menu.title,
-          children: menu.subMenu?.map((subMenu, subIndex) => {
+          onClick: () => {
+            navigate(menu.url);
+          },
+          children: menu.subMenu?.map((subMenu:any, subIndex:number) => {
             const subKey = subIndex + 1;
             return {
               key: subKey,
               label: subMenu.title,
+              onClick: () => {
+                navigate(subMenu.url);
+              },
             };
           }),
         };

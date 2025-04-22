@@ -47,8 +47,6 @@ type Student = {
     }
   };
 
-  const columnNamesArray = ['id', 'name','email','phone','standard','section','age','date_of_birth','date_of_admission', 'address'];
-  const subColumnArray = ['pincode', 'city', 'street', 'state'];
   const expandDataArray = ['id', 'name', 'email', 'phone'];
   const expandData = {
     id: 'ID',
@@ -56,23 +54,6 @@ type Student = {
     email: 'Email',
     phone: 'Phone',
   };
-  const columnNames = {
-    id: 'ID',
-    name: 'Full Name',
-    email: 'Email Address',
-    phone: 'Phone Number',
-    standard: 'Class Name',
-    section: 'Section Name',
-    age: 'Age',
-    date_of_birth: 'DOB',
-    date_of_admission: 'DOA',  
-    address: {
-      pincode: 'Pin Code',
-      city: 'City Name',
-      street: 'Street Name',
-      state: 'State Name',
-    }
-  } as const;
 
   type editingModeProps = "cell" | "table" | "row" | "custom" | "modal";
   
@@ -87,8 +68,6 @@ const MatTable = () => {
   const [editedUsers, setEditedUsers] = useState<Record<string, Student>>({});
 
   const navigate = useNavigate();
-
-  // const data: Student[] = STUDENTS;
 
   const columns = useMemo<MRT_ColumnDef<Student>[]>(() => [
       {
@@ -338,9 +317,6 @@ const MatTable = () => {
     setEditedUsers({});
   };
 
-  // console.log('editedusersss', Object.keys(editedUsers).length);
-  // console.log('validate errsssss', Object.values(validationErrors));
-
   const table = useMaterialReactTable({
     columns,
     data, 
@@ -377,7 +353,7 @@ const MatTable = () => {
         sx={{
           display: 'flex',
           gap: '4px',
-          padding: '4px',
+          padding: '2px',
           flexWrap: 'wrap',
         }}
       >
@@ -576,7 +552,7 @@ const MatTable = () => {
       displayColumnDefOptions: {
         "mrt-row-actions": {
           header: "Admin Actions", //change header text
-          size: 220, //change column size
+          size: 120, //change column size
         },
       },
      //add custom keyboard shortcuts
@@ -617,8 +593,8 @@ const MatTable = () => {
   {/* <h1 className='text-4xl'>Material React Table</h1> */}
   <Button size='small' className='flex px-4 mb-1' variant="contained" color="primary" onClick={() => setIsLoading(false)}>Load Data</Button>
   {/* </div> */}
-  {/* <Outlet /> 
-  <Paper className='flex flex-col w-1/3 h-screen justify-start p-4 mb-4'> */} 
+   <Outlet /> 
+  {/*<Paper className='flex flex-col w-1/3 h-screen justify-start p-4 mb-4'> */} 
   <MaterialReactTable
     table={table} />
   {/* </Paper> */}

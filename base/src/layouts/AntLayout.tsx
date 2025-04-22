@@ -15,9 +15,8 @@ import {
 import React, { JSX, useEffect, useState } from "react";
 import { sideButtonMenuList } from "../assets/sidebutton-menu";
 import { sidebarMenuList } from "../assets/sidebar-menu";
-import { useNavigate } from "react-router-dom";
+import { Outlet, useNavigate } from "react-router-dom";
 import UserDetails from "../components/UserDetails";
-import MatTable from "../components/MatTable";
 import ActionButtonPopover from "../shared-components/templates/ActionButtonPopover";
 import UserSearch from "../shared-components/organisms/UserSearch";
 import STUDENTS from "../assets/students.json";
@@ -59,44 +58,6 @@ const AntLayout = () => {
   const navigate = useNavigate();
   const [siderWidth, setSiderWidth] = useState(220); // Initial width of the Sider
 
-  const actionButtons = [
-    {
-      name: "Search",
-      icon: AntIcons("SearchIcon")(),
-      onclick: () => console.log("Search"),
-      disabled: false,
-    },
-    {
-      name: "Add",
-      icon: AntIcons("AddIcon")(),
-      onclick: () => console.log("Add"),
-      disabled: true,
-    },
-    {
-      name: "Save",
-      icon: AntIcons("SaveIcon")(),
-      onclick: () => console.log("Save"),
-      disabled: true,
-    },
-    {
-      name: "Previous",
-      icon: AntIcons("PreviousIcon")(),
-      onclick: () => console.log("Prev"),
-      disabled: true,
-    },
-    {
-      name: "Next",
-      icon: AntIcons("NextIcon")(),
-      onclick: () => console.log("next"),
-      disabled: true,
-    },
-    {
-      name: "Delete",
-      icon: AntIcons("DeleteIcon")(),
-      onclick: () => console.log("Delete"),
-      disabled: true,
-    },
-  ];
   useEffect(() => {
     // setCurrentUser(userData?.[0]);
   }, [userData]);
@@ -261,28 +222,6 @@ const AntLayout = () => {
 
   // const userData: MenuProps["items"] = ;
 
-  const tabItems: TabsProps["items"] = [
-    {
-      key: "1",
-      label: "User Groups",
-      children: <MatTable />,
-    },
-    {
-      key: "2",
-      label: "Company",
-      children: <UserForm />,
-    },
-    {
-      key: "3",
-      label: "Authorization",
-      children: <AuthenticForm />,
-    },
-    {
-      key: "4",
-      label: "Settings",
-      children: "Content of Settings",
-    },
-  ];
 
   return (
     <div>
@@ -296,131 +235,13 @@ const AntLayout = () => {
           <div className="flex flex-col gap-4 h-screen bg-gray-200">
             <MainSideBar sidebarCollapsed={sidebarCollapsed} onClick={() => setSidebarCollapsed(!sidebarCollapsed)} />           
           </div>
+          {/* Main Content Area */}
           <Layout>
             <div className="flex-1 w-full flex-col overflow-hidden h-screen p-0 bg-gray-50">
-              {/* Action Buttons Bar */}
-              <div className="h-12 w-full bg-red-100 border-b flex items-center justify-center px-4 gap-8">
-                <ActionButtonBar onSearchClick={searchSingleUser} />
-   
-              </div>
-              <div className="flex-1 flex flex-row w-full bg-gray-50">
-                {/* Search bar */}
-                <SearchBar onClick={() => setSearchbarCollapsed(!searchbarCollapsed)} searchedData={userData} siderWidth={siderWidth} onMouseDown={handleMouseDown} sidebarCollapsed={searchbarCollapsed} setSidebarCollapsed={() => setSearchbarCollapsed(!searchbarCollapsed)} />               
-
-                {/* Main Content */}
-                <div className="flex flex-col w-full justify-start items-start p-4 gap-6">
-                  <div className="flex flex-row w-full h-auto justify-between items-start py-3">
-                    {/* User Panel */}
-                    <div className="flex flex-col justify-start w-auto">
-                      <h1 className="font-bold text-3xl text-black">User</h1>
-                      <h3 className="font-normal text-2xl text-gray-700">
-                        {currentUser?.userName ?? ""}
-                      </h3>
-                    </div>
-                  </div>
-                  {/* User Form */}
-                  <div className="flex flex-row w-full justify-center p-2 gap-4 bg-gray-200 rounded-md shadow-md">
-                    <Form
-                      className="flex flex-row w-full justify-center items-center gap-3"
-                      layout={"vertical"}
-                      form={form}
-                      variant="borderless"
-                      size="small"
-                      initialValues={{ layout: "vertical" }}
-                      //   onValuesChange={}
-                    >
-                      {currentUser &&
-                        (
-                          Object.keys(currentUser) as Array<
-                            keyof typeof currentUser
-                          >
-                        ).map((data: any) => (
-                          <Form.Item key={data} label={data} className="w-auto">
-                            {data == "status" ? (
-                              <Tag color="cyan">{currentUser[data]}</Tag>
-                            ) : (
-                              <Input
-                                className="text-bold text-sm"
-                                placeholder={data}
-                                defaultValue={currentUser[data]}
-                              />
-                            )}
-                          </Form.Item>
-                        ))}
-                      {/* {!currentUser && <div className="w-full h-24"></div>} */}
-                      {/* <Form.Item
-                        key="userName"
-                        label="User Name"
-                        className="w-auto"
-                      >
-                        <Input
-                          className="text-bold text-sm"
-                          placeholder="userName"
-                          defaultValue={currentUser?.userName}
-                          value={currentUser?.userName}
-                        />
-                      </Form.Item>
-                      <Form.Item key="email" label="E-mail" className="w-auto">
-                        <Input
-                          className="text-bold text-sm"
-                          placeholder="email"
-                          defaultValue={currentUser?.email}
-                        />
-                      </Form.Item>
-                      <Form.Item
-                        key="firstName"
-                        label="First Name"
-                        className="w-auto"
-                      >
-                        <Input
-                          className="text-bold text-sm"
-                          placeholder="first name"
-                          defaultValue={currentUser?.firstName}
-                        />
-                      </Form.Item>
-                      <Form.Item
-                        key="lastName"
-                        label="Last Name"
-                        className="w-auto"
-                      >
-                        <Input
-                          className="text-bold text-sm"
-                          placeholder="lastName"
-                          defaultValue={currentUser?.lastName}
-                        />
-                      </Form.Item>
-                      <Form.Item
-                        key="phoneNo"
-                        label="phone No"
-                        className="w-auto"
-                      >
-                        <Input
-                          className="text-bold text-sm"
-                          placeholder="phoneNo"
-                          defaultValue={currentUser?.phoneNo}
-                        />
-                      </Form.Item>
-                      <Form.Item key="status" label="status" className="w-auto">
-                        <Input
-                          className="text-bold text-sm"
-                          placeholder="status"
-                          defaultValue={currentUser?.status}
-                        />
-                      </Form.Item> */}
-                    </Form>
-                  </div>
-                  {/* Tabs section */}
-                  <div className="flex flex-row w-full justify-start items-center">
-                    <Tabs
-                      defaultActiveKey="3"
-                      items={tabItems}
-                      onChange={onChangeTab}
-                    />
-                  </div>
-                </div>
-              </div>
+             <Outlet />
             </div>
           </Layout>
+          {/* End of Main Content Area */}
         </Layout>
       </Layout>
     </div>

@@ -5,6 +5,7 @@ export const sidebarMenuList = [
   { title: "Dashboard", icon: "DashboardIcon", url: "/home" },
   { title: "Users", icon: "UsersIcon", url: "/table" },
   { title: "User", icon: "OneUserIcon", url: "/user" },
+  { title: "User Details", icon: "OneUserIcon", url: "/user-details" },
   { title: "Tables", icon: "TableIcon",
     gap: true,
     subMenu: [
