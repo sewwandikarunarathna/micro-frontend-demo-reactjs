@@ -1,8 +1,8 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { sidebarMenuList } from '../../assets/sidebar-menu';
+import { userMenuList } from '../../assets/sidebar-menu';
 
 const initialState = {
-  menuList: sidebarMenuList
+  menuList: userMenuList
 };
 
 const menuSlice = createSlice({

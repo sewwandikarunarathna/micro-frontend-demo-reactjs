@@ -1,7 +1,5 @@
-import DashboardIcon from "@mui/icons-material/Dashboard";
-import { url } from "inspector";
 
-export const sidebarMenuList = [
+export const userMenuList = [
   { title: "Dashboard", icon: "DashboardIcon", url: "/home" },
   { title: "Users", icon: "UsersIcon", url: "/table" },
   { title: "User", icon: "OneUserIcon", url: "/user" },
@@ -37,4 +35,18 @@ export const sidebarMenuList = [
     ],
     key: "settings",
   },
+];
+
+export const licenseAdminMenuList   = [
+  { title: "License Admin 1", icon: "DashboardIcon", url: "/home" },
+  { title: "License Admin 2", icon: "DashboardIcon", url: "/home" },
+  { title: "License Admin 3", icon: "DashboardIcon", url: "/home" },
+];
+
+export const systemEnablementMenuList   = [
+  { title: "Country", icon: "DashboardIcon", url: "/home" },
+  { title: "Currency", icon: "DashboardIcon", url: "/home" },
+  { title: "Language", icon: "DashboardIcon", url: "/home" },
+  { title: "UOM", icon: "DashboardIcon", url: "/home" },
+  { title: "Time Zone", icon: "DashboardIcon", url: "/home" },
 ];
