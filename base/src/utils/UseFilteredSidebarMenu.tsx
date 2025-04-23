@@ -3,11 +3,9 @@ import { useAuth } from "../context/AuthContext";
 import routeConfig from "../routes/routesConfig";
 import { useMenuStore } from "base/MenuStore";
 
-type Props = { menuList?: any[] };
 const UseFilteredSidebarMenu = () => {
   const { userType } = useAuth(); // Get the current user's role
   const { menuList } = useMenuStore();
-console.log('not props:', menuList);
 
   // Filter the sidebar menu based on user role
   const filteredSidebarMenu = useMemo(() => {

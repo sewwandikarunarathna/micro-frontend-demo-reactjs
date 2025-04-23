@@ -479,7 +479,7 @@ const UserGroup = () => {
     ),
     displayColumnDefOptions: {
       "mrt-row-actions": {
-        header: "Admin Actions", //change header text
+        header: "Actions", //change header text
         size: 120, //change column size
       },
     },

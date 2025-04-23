@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Button,
   Flex,
@@ -57,51 +57,26 @@ const AntUserDetails = () => {
     },
   ];
 
-  const getInitials = (name: string) => {
-    if (!name) return "";
-    console.log(
-      "short name",
-      name
-        .split(" ")
-        .map((n) => n[0])
-        .join("")
-        .toUpperCase()
-    );
+  useEffect(()=>{
+   
+  }, [userData, form]);
 
-    return name
-      .split(" ")
-      .map((n) => n[0])
-      .join("")
-      .toUpperCase();
-  };
   const searchSingleUser = () => {
+    const filteredStudents = STUDENTS.filter((std) => std.age == 13);
+    //set first user as current user in the form
+    setCurrentUser({
+      userName: filteredStudents[0].name,
+      email: filteredStudents[0].email,
+      firstName: "N/A",
+      lastName: "N/A",
+      phoneNo: filteredStudents[0].phone,
+      status: "Active",
+    });
     setUserData(
-      STUDENTS.filter((std) => std.age == 13).map((user: any, index) => ({
+      filteredStudents.map((user: any, index) => ({
         key: index + 1,
         label: user.name,
-        icon: (
-          <SharedAvatar
-            style={{
-              padding: 0,
-              backgroundColor: "#fde3cf",
-              color: "#f56a00",
-              fontSize: 10,
-            }}
-            size="small"
-            gap={1}
-          >
-            {getInitials(user.name)}
-          </SharedAvatar>
-        ),
-        onClick: () => {
-          form.setFieldsValue({
-            userName: user.name,
-            email: user.email,
-            firstName: "N/A",
-            lastName: "N/A",
-            phoneNo: user.phone,
-            status: "Active",
-          });
+        onClick: () => {         
           setCurrentUser({
             userName: user.name,
             email: user.email,
@@ -113,6 +88,7 @@ const AntUserDetails = () => {
         },
       }))
     );
+   
   };
 
   let isMoving = false;
@@ -170,7 +146,7 @@ const AntUserDetails = () => {
       <div className="flex-1 flex flex-row w-full bg-gray-50">
         {/* Search bar */}
         <SearchBar
-          onClick={() => setSearchbarCollapsed(!searchbarCollapsed)}
+          onCollapseClick={() => setSearchbarCollapsed(!searchbarCollapsed)}
           searchedData={userData}
           siderWidth={siderWidth}
           onMouseDown={handleMouseDown}
@@ -180,7 +156,7 @@ const AntUserDetails = () => {
 
         {/* Main Content */}
         <div className="flex flex-col w-full justify-start items-start p-4 gap-6">
-          <div className="flex flex-row w-full h-auto justify-between items-start py-3">
+          <div className="flex flex-row w-full h-13 justify-between items-start my-3">
             {/* User Panel */}
             <div className="flex flex-col justify-start w-auto">
               <h1 className="font-bold text-3xl text-black">User</h1>
@@ -190,7 +166,7 @@ const AntUserDetails = () => {
             </div>
           </div>
           {/* User Form */}
-          <div className="flex flex-row w-full justify-center p-2 gap-4 bg-gray-200 rounded-md shadow-md">
+          <div className="flex flex-row w-full justify-center items-center p-1 gap-4 bg-gray-200 rounded-md shadow-md">
             <Form
               className="flex flex-row w-full justify-center items-center gap-3"
               layout={"vertical"}
@@ -198,9 +174,16 @@ const AntUserDetails = () => {
               variant="borderless"
               size="small"
               initialValues={{ layout: "vertical" }}
-              //   onValuesChange={}
+              onFinish={async (values) => {
+                // Convert AntD values to FormData
+                const formData = new FormData();
+                Object.entries(values).forEach(([key, value]) => {
+                  formData.append(key, value as string);
+                });
+                // submitAction(formData);
+              }}
             >
-              {currentUser &&
+              {/* {currentUser &&
                 (
                   Object.keys(currentUser) as Array<keyof typeof currentUser>
                 ).map((data: any) => (
@@ -215,9 +198,9 @@ const AntUserDetails = () => {
                       />
                     )}
                   </Form.Item>
-                ))}
+                ))} */}
               {/* {!currentUser && <div className="w-full h-24"></div>} */}
-              {/* <Form.Item
+              <Form.Item
                         key="userName"
                         label="User Name"
                         className="w-auto"
@@ -225,7 +208,7 @@ const AntUserDetails = () => {
                         <Input
                           className="text-bold text-sm"
                           placeholder="userName"
-                          defaultValue={currentUser?.userName}
+                          // defaultValue={currentUser?.userName}
                           value={currentUser?.userName}
                         />
                       </Form.Item>
@@ -234,6 +217,7 @@ const AntUserDetails = () => {
                           className="text-bold text-sm"
                           placeholder="email"
                           defaultValue={currentUser?.email}
+                          value={currentUser?.email}
                         />
                       </Form.Item>
                       <Form.Item
@@ -267,6 +251,7 @@ const AntUserDetails = () => {
                           className="text-bold text-sm"
                           placeholder="phoneNo"
                           defaultValue={currentUser?.phoneNo}
+                          value={currentUser?.phoneNo}
                         />
                       </Form.Item>
                       <Form.Item key="status" label="status" className="w-auto">
@@ -274,8 +259,9 @@ const AntUserDetails = () => {
                           className="text-bold text-sm"
                           placeholder="status"
                           defaultValue={currentUser?.status}
+                          value={currentUser?.status}
                         />
-                      </Form.Item> */}
+                      </Form.Item>
             </Form>
           </div>
           {/* Tabs section */}

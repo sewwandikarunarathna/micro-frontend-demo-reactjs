@@ -6,11 +6,8 @@ import AntIcons from "../../../utils/AntIcons";
 import PerfectScrollbar from "react-perfect-scrollbar";
 import UseFilteredSidebarMenu from "../../../utils/UseFilteredSidebarMenu";
 import { useNavigate } from "react-router-dom";
-import SharedSelect from "../../atoms/SharedSelect";
 // import { useMenuStore } from "../../../state_management/hooks/menuHooks";
-import { sideBarMenuTypesList } from "../../../assets/menu-type";
-import { useEffect, useState } from "react";
-import { useMenuStore } from "base/MenuStore";
+import { useState } from "react";
 
 type Props = {
   sidebarCollapsed: boolean;
@@ -18,68 +15,53 @@ type Props = {
 };
 const MainSideBar = (props: Props) => {
   const navigate = useNavigate();
-  const { updateMenu, menuList } = useMenuStore();
   const [selectedMenuList, setSelectedMenuList] = useState(UseFilteredSidebarMenu());
+  const [openKeys, setOpenKeys] = useState(['1']); // Default open submenus
+  const [selectedKeys, setSelectedKeys] = useState(['1-1-1']); // Default selected item
 
-  useEffect(() => {
-    console.log("use efiect:", menuList);
-    // setSelectedMenuList(UseFilteredSidebarMenu())
-    setSelectedMenuList(menuList)
-  }, [useMenuStore()]);
+   // Recursive function to build menu items
+   const buildMenuItems = (items: any): MenuProps['items'] => {
+    return items.map((item:any) => {
+      const iconComponent = AntIcons(item.icon)();
+      const hasChildren = item.subMenu && item.subMenu.length > 0;
 
-  const sidebarItems: MenuProps["items"] = selectedMenuList?.map(
-    (menu: any, index: number) => {
-      const key = String(index + 1);
-      const getIconComponent = AntIcons(menu.icon);
-
-      return {
-        key: `sub${key}`,
-        icon: getIconComponent(),
-        label: menu.title,
-        onClick: () => {
-          navigate(menu.url);
-        },
-        children: menu.subMenu?.map((subMenu: any, subIndex: number) => {
-          const subKey = subIndex + 1;
-          return {
-            key: subKey,
-            label: subMenu.title,
-            onClick: () => {
-              navigate(subMenu.url);
-            },
-          };
+      const menuItem = {
+        key: item.key,
+        icon: iconComponent,
+        label: item.title,
+        className: item.gap ? 'menu-gap' : '',
+        style: { marginBottom: item.gap ? '16px' : '0' },
+        // Only add onClick handler if no children
+        ...(!hasChildren && {
+          onClick: () => {
+            if (item.url) {
+              navigate(item.url);
+            }
+          }
         }),
+        // Recursively build children if they exist
+        ...(hasChildren && { children: buildMenuItems(item.subMenu!) })
       };
-    }
-  );
 
-  const handleMenuTypeChange = (value: any) => {
-    // console.log('selected value:', value);
-    const selectedMenu = sideBarMenuTypesList.find(
-      (menu) => menu.title === value
-    );
-    updateMenu(selectedMenu?.menuList);
-    // setSelectedMenuList(UseFilteredSidebarMenu());
+      return menuItem;
+    });
   };
-  console.log("menu list fro select:", menuList);
-  console.log(" selected menu lis:", selectedMenuList);
-  console.log(
-    " UseFilteredSidebarMenu(menuList):",
-    UseFilteredSidebarMenu()
-  );
 
+  const menuItems = buildMenuItems(selectedMenuList);
+
+   // Handle submenu expand/collapse
+   const onOpenChange = (keys:string | any) => {
+    setOpenKeys(keys);
+  };
+
+  // Handle menu item selection
+  const onSelect = ({ key }: {key: any}) => {
+    setSelectedKeys([key]);
+  };
   return (
     <>
-      <div className="flex flow-row gap-2 items-center justify-center w-full h-8 bg-white shadow-md">
-        <SharedSelect
-          defaultValue={sideBarMenuTypesList[0]}
-          style={{ width: 120 }}
-          onChange={handleMenuTypeChange}
-          options={sideBarMenuTypesList.map((menuType) => ({
-            label: menuType.title,
-            value: menuType.title,
-          }))}
-        />
+      <div className="flex flow-row items-center justify-end w-full">
+       
         <SharedButton
           type="text"
           icon={
@@ -105,10 +87,15 @@ const MainSideBar = (props: Props) => {
           <SharedMenu
             className="flex flex-col h-auto"
             mode="inline"
-            defaultSelectedKeys={["1"]}
-            defaultOpenKeys={["sub1"]}
+            // defaultSelectedKeys={["1"]}
+            // defaultOpenKeys={["sub1"]}
             bgColor="#e5e7eb"
-            items={sidebarItems}
+            // items={sidebarItems}
+            items={menuItems}
+            openKeys={openKeys}
+            selectedKeys={selectedKeys}
+            onOpenChange={onOpenChange}
+            onSelect={onSelect}
           />
         </SharedSider>
       </PerfectScrollbar>
