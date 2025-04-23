@@ -6,10 +6,13 @@ type Props = {
   mode?: "horizontal" | "vertical" | "inline";
   bgColor?: string;
   className?: string;
-  onClick?: any;
+  onOpenChange?: any;
+  onSelect?: any;
   items?: any[];
   defaultSelectedKeys?: string[];
   defaultOpenKeys?: string[];
+  openKeys?: string[];
+  selectedKeys?: string[];
   style?: React.CSSProperties;
 };
 
@@ -24,6 +27,10 @@ const SharedMenu = (props: Props) => {
         style={{ ...props.style, borderRight: 0, background: props.bgColor }}
         items={props.items}
         className={props.className}
+        openKeys={props.openKeys}
+        selectedKeys={props.selectedKeys}
+        onOpenChange={props.onOpenChange}
+        onSelect={props.onSelect}
       />
     </>
   );

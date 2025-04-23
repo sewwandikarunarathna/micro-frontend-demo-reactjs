@@ -30,14 +30,6 @@ const ProtectedRoute = ({
   //   fetchUserData();
   // }, [isAuthChecked, isLoggedIn]);
 
-  // const userType = userData?.userType;
-  console.log("isLoggedIn", !isLoggedIn);
-  console.log("usetype truee?", !userType);
-  console.log("usetype", userType);
-  console.log("allowddd", allowedRoles);
-
-  console.log("dta protected", !allowedRoles.includes(userType));
-
   if (!isAuthChecked) {
     return <div>Loading...</div>; // Show loader until auth check completes
   }

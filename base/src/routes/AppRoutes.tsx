@@ -5,6 +5,7 @@ import ProtectedRoute from "./ProtectedRoute";
 import { dataService } from "../services/DataService";
 import { useAuth } from "../context/AuthContext";
 import Layout1 from "../layouts/Layout1";
+import AntLayout from "../layouts/AntLayout";
 // import button from 'auth/Login';
 
 const AppRoutes = () => {
@@ -46,7 +47,7 @@ const AppRoutes = () => {
             ))}
           </Route>
         ) : (
-          <Route element={<Layout1 />}>
+          <Route element={<AntLayout />}>
             <Route
               path={path}
               element={

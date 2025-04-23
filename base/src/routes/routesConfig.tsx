@@ -1,8 +1,4 @@
 import { lazy, Suspense } from "react";
-import { RouteObject } from "react-router-dom";
-import UserDetails from "../components/UserDetails";
-import Layout1 from "../layouts/Layout1";
-import AntLayout from "../layouts/AntLayout";
 
 const Welcome = lazy(() => import("../components/Welcome"));
 const Home = lazy(() => import("../components/Home"));
@@ -13,8 +9,11 @@ const MatTable = lazy(() => import("../components/MatTable"));
 const SubTable = lazy(() => import("../components/SubTable"));
 const UserTable = lazy(() => import("../components/UserTable"));
 const RowActionTable = lazy(() => import("../components/RowActionTable"));
+const UserDetails = lazy(() => import("../components/UserDetails"));
+const AntUserDetails = lazy(() => import("../components/AntUserDetails"));
 const Logout = lazy(() => import("../components/Logout"));
-// const Layout1 = lazy(() => import("../layouts/Layout1"));
+const Layout1 = lazy(() => import("../layouts/Layout1"));
+const AntLayout = lazy(() => import("../layouts/AntLayout"));
 
 const routeConfig: RoutesType[] = [
   {
@@ -99,6 +98,15 @@ const routeConfig: RoutesType[] = [
     element: (
       <Suspense fallback={<div>Loading...</div>}>
         <UserDetails />
+      </Suspense>
+    ),
+    allowedRoles: ["User", "Admin"],
+  },
+  {
+    path: "/user-details",
+    element: (
+      <Suspense fallback={<div>Loading...</div>}>
+        <AntUserDetails />
       </Suspense>
     ),
     allowedRoles: ["User", "Admin"],
