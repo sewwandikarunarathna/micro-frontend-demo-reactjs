@@ -6,6 +6,7 @@ import {
   MaterialReactTable,
   MRT_ActionMenuItem,
   MRT_ColumnDef,
+  MRT_DensityState,
   useMaterialReactTable,
 } from "material-react-table";
 import { downloadExcel } from "react-export-table-to-excel";
@@ -56,7 +57,9 @@ const UserGroup = () => {
   >({});
   //keep track of rows that have been edited
   const [editedUsers, setEditedUsers] = useState<Record<string, Student>>({});
-
+  const [tableDensity, setTableDensity] = useState<
+    MRT_DensityState | undefined
+  >("compact");
   const navigate = useNavigate();
 
   const columns = useMemo<MRT_ColumnDef<Student>[]>(
@@ -231,57 +234,149 @@ const UserGroup = () => {
   };
 
   const table = useMaterialReactTable({
-    columns,
+    columns:columns,
     data,
     initialState: {
-      density: "compact",
+      density: tableDensity,
       columnPinning: { left: ["name"], right: ["mrt-row-actions"] }, //make columns fixed
     },
-    enableColumnResizing: true,
-    enableColumnPinning: true,
-    columnResizeMode: "onChange", //default
-    columnResizeDirection: "rtl",
-    enableBatchRowSelection: true,
-    enableRowVirtualization: true,
-    enableRowSelection: true,
-    rowVirtualizerOptions: { overscan: 5 },
-    state: { isLoading: false }, // isLoading
-    enableColumnOrdering: true,
-    muiCircularProgressProps: {
+    muiTableHeadRowProps: { //x
+      sx: {
+        "& .MuiIconButton-root": {
+          // For icon buttons specifically
+          padding: "2px",
+          "& .MuiSvgIcon-root": {
+            fontSize: "1.0rem", // Make icons smaller
+          },
+        },
+        "& .MuiInputBase-root": {
+          // For search/filter inputs
+          height: "20px",
+          fontSize: "0.75rem",
+          margin: "2px",
+        },
+        // maxHeight: tableDensity === "compact" ? "30px" : tableDensity === "spacious" ? "52px" : "30px",
+      },
+    },
+    // Apply height constraints only to regular rows, not expanded ones
+    muiTableBodyRowProps: ({ row }) => ({ //x
+      sx: {
+        // Only apply height constraints if the row is NOT expanded
+        ...(row.getIsExpanded()
+          ? {}
+          : {
+              maxHeight:
+                tableDensity === "compact"
+                  ? "24px"
+                  : tableDensity === "spacious"
+                  ? "52px"
+                  : "30px",
+            }),
+      },
+    }),
+    enableColumnResizing: true, //x
+    enableColumnPinning: true, //x
+    columnResizeMode: "onChange", //default //x
+    columnResizeDirection: "rtl", //x
+    enableBatchRowSelection: true, //x
+    enableRowVirtualization: true, //x
+    enableRowSelection: true, //x
+    rowVirtualizerOptions: { overscan: 5 }, //x
+    state: { isLoading: false }, // isLoading //x
+    enableColumnOrdering: true, //x
+    muiCircularProgressProps: { //x
       color: "secondary",
       thickness: 5,
       size: 55,
     },
-    enableFullScreenToggle: true,
-    enableStickyHeader: true,
+    enableFullScreenToggle: true, //x
+    enableStickyHeader: true, //x
     muiTableProps: {
-        sx: {
-          width: "600px",
-        },
+      sx: {
+        width: "600px",
+      },
     },
-    muiTopToolbarProps: {
-        sx: {
-            backgroundColor: "#ECECEE",
-            color: "text.secondary",
-            position: "sticky",
-            top: 0,
-            maxHeight: "1000px",
-            zIndex: 1000,
+    muiTopToolbarProps: { //x
+      sx: {
+        backgroundColor: "#ECECEE",
+        minHeight: "15px",
+        maxHeight: "34px",
+        padding: "2px 8px",
+        "& .MuiButtonBase-root": {
+          // Reduce size of buttons
+          padding: "2px 6px",
+          minWidth: "unset",
         },
+        "& .MuiIconButton-root": {
+          // For icon buttons specifically
+          padding: "2px",
+          "& .MuiSvgIcon-root": {
+            fontSize: "1.0rem", // Make icons smaller
+          },
+        },
+        "& .MuiInputBase-root": {
+          // For search/filter inputs
+          height: "26px",
+          fontSize: "0.75rem",
+          margin: "2px",
+        },
+      },
     },
-    muiTableContainerProps: { sx: { maxHeight: "250px" } },
-    muiTablePaperProps: ({ table }) => ({
+    muiBottomToolbarProps: { //x
+      sx: {
+        minHeight: "10px",
+        maxHeight: "36px",
+        padding: "10px",
+        top: 0,
+        // Target pagination components directly
+        "& .MuiTypography-root": {
+          fontSize: "0.7rem",
+        },
+        "& .MuiButtonBase-root": {
+          // Reduce size of buttons
+          padding: "2px 6px",
+          minWidth: "unset",
+        },
+        "& .MuiIconButton-root": {
+          // For icon buttons specifically
+          padding: "2px",
+          "& .MuiSvgIcon-root": {
+            fontSize: "1.0rem", // Make icons smaller
+          },
+        },
+        "& .MuiInputBase-root": {
+          // For search/filter inputs
+          height: "26px",
+          fontSize: "0.75rem",
+          margin: "2px",
+        },
+        "& .MuiInputLabel-root": {
+          // "Rows per page:" text
+          fontSize: "0.75rem",
+        },
+        "& .MuiMenu-root": {
+          // page number list
+          fontSize: "0.75rem",
+        },
+      },
+    },
+    muiTableContainerProps: { sx: { maxHeight: "220px" } }, //c tableContainerHeight
+    muiTablePaperProps: ({ table }) => ({ //x
       style: {
         zIndex: table.getState().isFullScreen ? 1000 : undefined,
         top: table.getState().isFullScreen ? "200px" : 0,
       },
     }),
-    renderTopToolbarCustomActions: ({ table }) => (
+    renderTopToolbarCustomActions: ({ table }) => ( //c onExportButtonClick={props.onExportButtonClick} onSaveButtonClick={props.onSaveButtonClick} editedUsers={props.editedUsers} validationErrors={props.validationErrors}
       <Box
         sx={{
           display: "flex",
           gap: "4px",
-          padding: "2px",
+          "& .MuiButtonBase-root": {
+            // Reduce size of buttons
+            padding: "2px 6px",
+            minWidth: "unset",
+          },
           flexWrap: "wrap",
         }}
       >
@@ -293,9 +388,10 @@ const UserGroup = () => {
           startIcon={<FileDownloadIcon />}
         ></Button>
         <Button
-          size="small"
+          // className="h-auto w-auto px-1 text-sm m-1"
+          // size="small"
           color="success"
-          variant="contained"
+          variant="text"
           onClick={handleSaveUsers}
           disabled={
             Object.keys(editedUsers).length === 0 ||
@@ -310,7 +406,7 @@ const UserGroup = () => {
         )}
       </Box>
     ),
-    muiDetailPanelProps: () => ({
+    muiDetailPanelProps: () => ({ //x
       sx: (theme) => ({
         backgroundColor:
           theme.palette.mode === "dark"
@@ -320,7 +416,7 @@ const UserGroup = () => {
       }),
     }),
     //custom expand button rotation
-    muiExpandButtonProps: ({ row, table }) => ({
+    muiExpandButtonProps: ({ row, table }) => ({ //x
       onClick: () => table.setExpanded({ [row.id]: !row.getIsExpanded() }), //only 1 detail panel open at a time
       sx: {
         transform: row.getIsExpanded() ? "rotate(180deg)" : "rotate(-90deg)",
@@ -328,7 +424,14 @@ const UserGroup = () => {
       },
     }),
     //conditionally render detail panel
-    renderDetailPanel: ({ row }) =>
+    renderDetailPanel: ({ row }) => //c detailPanelContent={Object.keys(row.original)
+    // .filter((itemId) => expandDataArray.includes(itemId))
+    // .map((itemId: string) => (
+    //   <Typography key={itemId}>
+    //     {expandData[itemId as keyof typeof expandData]}:{" "}
+    //     {(row.original as any)[itemId]}
+    //   </Typography> <SharedTable />
+    // ))}
       row.original.address ? (
         <Box
           sx={{
@@ -336,6 +439,10 @@ const UserGroup = () => {
             margin: "auto",
             gridTemplateColumns: "1fr 1fr",
             width: "100%",
+            padding: "8px",
+            "& .MuiTypography-root": {
+              fontSize: "0.75rem",
+            },
           }}
         >
           {Object.keys(row.original)
@@ -349,12 +456,12 @@ const UserGroup = () => {
         </Box>
       ) : null,
     // enable Cell Actions
-    enableClickToCopy: "context-menu",
-    enableEditing: true,
-    editDisplayMode: changeEditingMode,
-    enableCellActions: true,
+    enableClickToCopy: "context-menu", //x
+    enableEditing: true, //x
+    editDisplayMode: changeEditingMode, //x
+    enableCellActions: true, //x
     //optionally, use single-click to activate editing mode instead of default double-click
-    muiTableBodyCellProps: ({ cell, column, table }) => ({
+    muiTableBodyCellProps: ({ cell, column, table }) => ({ //x
       onFocus: () => {
         if (cell.column.columnDef.editVariant === "select") {
           return;
@@ -392,7 +499,7 @@ const UserGroup = () => {
         },
       },
     }),
-    renderCellActionMenuItems: ({
+    renderCellActionMenuItems: ({ //x
       closeMenu,
       cell,
       row,
@@ -426,10 +533,9 @@ const UserGroup = () => {
     ],
     // onCellEditChange: ({ cell, value }) => handleSaveCell(cell, value), // Save edited value
     //row actions
-    enableRowActions: true,
-    onEditingRowSave: handleSave,
-    // onEditingCellChange: ({ cell, value }) => handleSaveCell(cell, value),
-    onEditingRowCancel: () => {
+    enableRowActions: true, //x
+    onEditingRowSave: handleSave, //c pass this
+    onEditingRowCancel: () => { //c pass this
       setValidationErrors({});
       setchangeEditingMode("cell");
     },
@@ -477,19 +583,22 @@ const UserGroup = () => {
         </IconButton>
       </Box>
     ),
-    displayColumnDefOptions: {
+    displayColumnDefOptions: { //x
       "mrt-row-actions": {
         header: "Actions", //change header text
         size: 120, //change column size
       },
     },
     //add custom keyboard shortcuts
-    defaultColumn: {
+    defaultColumn: { //x
       maxSize: 400,
       minSize: 80,
       size: 160, //default size is usually 180
       //header
       muiTableHeadCellProps: {
+        sx: {
+          fontSize: "12px",
+        },
         onKeyDown: (event) => {
           if (event.key === "enter" && event.metaKey) {
             alert("You pressed the custom shortcut!");
