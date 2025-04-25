@@ -6,8 +6,8 @@ import FileDownloadIcon from "@mui/icons-material/FileDownload";
 type Props = {
   onExportButtonClick: any;
   onSaveButtonClick: any;
-  editedUsers: string[];
-  validationErrors: string[];
+  editedUsers: Record<string, any>;
+  validationErrors: Record<string, string | undefined>;
 };
 
 const TopToolbar = (props: Props) => {

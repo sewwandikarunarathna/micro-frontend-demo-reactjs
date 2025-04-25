@@ -17,6 +17,8 @@ import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import ViewIcon from "@mui/icons-material/ViewListRounded";
 import _, { flatten } from "lodash";
+import SharedTable from "../../../shared-components/organisms/SharedTable";
+import DetailPanelContent from "../../../shared-components/molecules/sharedTableItems/DetailPanelContent.tsx";
 
 //data type
 type Student = {
@@ -204,10 +206,10 @@ const UserGroup = () => {
   };
 
   const handleExportRows = (rows: any) => {
-    const tableData = rows.map((row: any) =>
-      columns.map((column) => _.get(row.original, column.accessorKey ?? ""))
+    const tableData = rows?.map((row: any) =>
+      columns?.map((column) => _?.get(row?.original, column.accessorKey ?? ""))
     );
-    const tableHeaders = columns.map((c) => c.header);
+    const tableHeaders = columns?.map((c) => c.header);
 
     downloadExcel({
       fileName: "table-data-to-excel",
@@ -233,14 +235,35 @@ const UserGroup = () => {
       setEditedUsers({});
   };
 
+  // Custom toolbar with multiple buttons
+  const renderProductToolbar = (table:any) => (
+    <div style={{ display: 'flex', gap: '8px', padding: '8px' }}>
+      <Button 
+        variant="contained" 
+        size="small"
+        onClick={() => handleExportRows(table.getPrePaginationRowModel().rows)}
+      >
+        Export to Excel
+      </Button>
+      <Button 
+        variant="outlined" 
+        size="small"
+        onClick={() => console.log('Print action')}
+      >
+        Print Inventory
+      </Button>
+    </div>
+  );
+
   const table = useMaterialReactTable({
-    columns:columns,
+    columns: columns,
     data,
     initialState: {
       density: tableDensity,
       columnPinning: { left: ["name"], right: ["mrt-row-actions"] }, //make columns fixed
     },
-    muiTableHeadRowProps: { //x
+    muiTableHeadRowProps: {
+      //x
       sx: {
         "& .MuiIconButton-root": {
           // For icon buttons specifically
@@ -259,7 +282,8 @@ const UserGroup = () => {
       },
     },
     // Apply height constraints only to regular rows, not expanded ones
-    muiTableBodyRowProps: ({ row }) => ({ //x
+    muiTableBodyRowProps: ({ row }) => ({
+      //x
       sx: {
         // Only apply height constraints if the row is NOT expanded
         ...(row.getIsExpanded()
@@ -284,7 +308,8 @@ const UserGroup = () => {
     rowVirtualizerOptions: { overscan: 5 }, //x
     state: { isLoading: false }, // isLoading //x
     enableColumnOrdering: true, //x
-    muiCircularProgressProps: { //x
+    muiCircularProgressProps: {
+      //x
       color: "secondary",
       thickness: 5,
       size: 55,
@@ -296,7 +321,8 @@ const UserGroup = () => {
         width: "600px",
       },
     },
-    muiTopToolbarProps: { //x
+    muiTopToolbarProps: {
+      //x
       sx: {
         backgroundColor: "#ECECEE",
         minHeight: "15px",
@@ -322,7 +348,8 @@ const UserGroup = () => {
         },
       },
     },
-    muiBottomToolbarProps: { //x
+    muiBottomToolbarProps: {
+      //x
       sx: {
         minHeight: "10px",
         maxHeight: "36px",
@@ -361,13 +388,16 @@ const UserGroup = () => {
       },
     },
     muiTableContainerProps: { sx: { maxHeight: "220px" } }, //c tableContainerHeight
-    muiTablePaperProps: ({ table }) => ({ //x
+    muiTablePaperProps: ({ table }) => ({
+      //x
       style: {
         zIndex: table.getState().isFullScreen ? 1000 : undefined,
         top: table.getState().isFullScreen ? "200px" : 0,
       },
     }),
-    renderTopToolbarCustomActions: ({ table }) => ( //c onExportButtonClick={props.onExportButtonClick} onSaveButtonClick={props.onSaveButtonClick} editedUsers={props.editedUsers} validationErrors={props.validationErrors}
+    renderTopToolbarCustomActions: (
+      { table } //c onExportButtonClick={props.onExportButtonClick} onSaveButtonClick={props.onSaveButtonClick} editedUsers={props.editedUsers} validationErrors={props.validationErrors}
+    ) => (
       <Box
         sx={{
           display: "flex",
@@ -406,7 +436,8 @@ const UserGroup = () => {
         )}
       </Box>
     ),
-    muiDetailPanelProps: () => ({ //x
+    muiDetailPanelProps: () => ({
+      //x
       sx: (theme) => ({
         backgroundColor:
           theme.palette.mode === "dark"
@@ -416,7 +447,8 @@ const UserGroup = () => {
       }),
     }),
     //custom expand button rotation
-    muiExpandButtonProps: ({ row, table }) => ({ //x
+    muiExpandButtonProps: ({ row, table }) => ({
+      //x
       onClick: () => table.setExpanded({ [row.id]: !row.getIsExpanded() }), //only 1 detail panel open at a time
       sx: {
         transform: row.getIsExpanded() ? "rotate(180deg)" : "rotate(-90deg)",
@@ -424,14 +456,16 @@ const UserGroup = () => {
       },
     }),
     //conditionally render detail panel
-    renderDetailPanel: ({ row }) => //c detailPanelContent={Object.keys(row.original)
-    // .filter((itemId) => expandDataArray.includes(itemId))
-    // .map((itemId: string) => (
-    //   <Typography key={itemId}>
-    //     {expandData[itemId as keyof typeof expandData]}:{" "}
-    //     {(row.original as any)[itemId]}
-    //   </Typography> <SharedTable />
-    // ))}
+    renderDetailPanel: (
+      { row } //c detailPanelContent={Object.keys(row.original)
+    ) =>
+      // .filter((itemId) => expandDataArray.includes(itemId))
+      // .map((itemId: string) => (
+      //   <Typography key={itemId}>
+      //     {expandData[itemId as keyof typeof expandData]}:{" "}
+      //     {(row.original as any)[itemId]}
+      //   </Typography> <SharedTable />
+      // ))}
       row.original.address ? (
         <Box
           sx={{
@@ -461,7 +495,8 @@ const UserGroup = () => {
     editDisplayMode: changeEditingMode, //x
     enableCellActions: true, //x
     //optionally, use single-click to activate editing mode instead of default double-click
-    muiTableBodyCellProps: ({ cell, column, table }) => ({ //x
+    muiTableBodyCellProps: ({ cell, column, table }) => ({
+      //x
       onFocus: () => {
         if (cell.column.columnDef.editVariant === "select") {
           return;
@@ -499,7 +534,8 @@ const UserGroup = () => {
         },
       },
     }),
-    renderCellActionMenuItems: ({ //x
+    renderCellActionMenuItems: ({
+      //x
       closeMenu,
       cell,
       row,
@@ -535,7 +571,8 @@ const UserGroup = () => {
     //row actions
     enableRowActions: true, //x
     onEditingRowSave: handleSave, //c pass this
-    onEditingRowCancel: () => { //c pass this
+    onEditingRowCancel: () => {
+      //c pass this
       setValidationErrors({});
       setchangeEditingMode("cell");
     },
@@ -583,14 +620,16 @@ const UserGroup = () => {
         </IconButton>
       </Box>
     ),
-    displayColumnDefOptions: { //x
+    displayColumnDefOptions: {
+      //x
       "mrt-row-actions": {
         header: "Actions", //change header text
         size: 120, //change column size
       },
     },
     //add custom keyboard shortcuts
-    defaultColumn: { //x
+    defaultColumn: {
+      //x
       maxSize: 400,
       minSize: 80,
       size: 160, //default size is usually 180
@@ -610,7 +649,48 @@ const UserGroup = () => {
   });
   return (
     <div>
-      <MaterialReactTable table={table} />
+      {/* <MaterialReactTable table={table} /> */}
+      <SharedTable
+        columns={columns}
+        data={data}
+        // dataType={Student}
+        tableDensity="compact"
+        leftColumnPinning={["name"]}
+        rightColumnPinning={["mrt-row-actions"]}
+        // tableWidth=""600px"
+        // tableContainerHeight="220px"
+        onExportButtonClick={({table}: {table: any}) =>{
+          console.log("table", table);          
+          handleExportRows(table?.getPrePaginationRowModel().rows)
+        }
+        }
+        onSaveButtonClick={handleSaveUsers}
+        editedUsers={editedUsers}
+        validationErrors={validationErrors}
+        detailPanelContent={({ row }: { row: any }) =>
+          row?.original.address ? (
+            <>
+              {Object.keys(row?.original)
+                .filter((itemId) => expandDataArray.includes(itemId))
+                .map((itemId: string) => (
+                  <DetailPanelContent
+                    row={row}
+                    expandData={expandData}
+                    itemId={itemId}
+                  />
+                ))}
+            </>
+          ) : (
+            {}
+          )
+        }
+        onEditingRowSave={handleSave}
+        onEditingRowCancel={() => {
+          setValidationErrors({});
+          setchangeEditingMode("cell");
+        }}
+        renderTopToolbarCustomActions={renderProductToolbar}
+      />
     </div>
   );
 };

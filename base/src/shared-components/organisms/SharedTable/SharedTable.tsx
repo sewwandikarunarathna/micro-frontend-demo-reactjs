@@ -7,13 +7,21 @@ import SharedTableTopToolbar from "../../molecules/sharedTableItems/TopToolbar.t
 import SharedTableDetailPanel from "../../molecules/sharedTableItems/DetailPanel.tsx/DetailPanel.tsx";
 import { Divider } from "@mui/material";
 import CellActionMenuItems from "../../molecules/sharedTableItems/CellActionMenuItems.tsx/CellActionMenuItems.tsx";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import EmailIcon from "@mui/icons-material/Email";
+import EditIcon from "@mui/icons-material/Edit";
+import DeleteIcon from "@mui/icons-material/Delete";
+import ViewIcon from "@mui/icons-material/ViewListRounded";
+import RowActions from "../../molecules/sharedTableItems/RowActions.tsx/RowActions.tsx";
+import TopToolbar from "../../molecules/sharedTableItems/TopToolbar.tsx/index.ts";
 
 const { Header } = Layout;
 
 type Props = {
   columns: any;
   data: any;
-  isDataLoading: boolean;
+  isDataLoading?: boolean;
   children?: any;
   tableDensity?: MRT_DensityState | undefined;
   leftColumnPinning?: string[];
@@ -23,11 +31,13 @@ type Props = {
   /* renderTopToolbarCustomActions props */
   onExportButtonClick: any;
   onSaveButtonClick: any;
-  editedUsers: string[];
-  validationErrors: string[];
-  /* end */
+  editedUsers: Record<string, any>;
+  validationErrors: Record<string, string | undefined>;
+  renderTopToolbarCustomActions?: any;
+  // setchangeEditingMode: editingModeProps;
+  /* end of renderTopToolbarCustomActions */
   detailPanelContent: any;
-  changeEditingMode: editingModeProps;
+  // changeEditingMode: editingModeProps;
   onEditingRowSave: any;
   onEditingRowCancel: any;
 };
@@ -35,6 +45,11 @@ type Props = {
 type editingModeProps = "cell" | "table" | "row" | "custom" | "modal";
 
 const SharedTable = (props: Props) => {
+  const [changeEditingMode, setchangeEditingMode] =
+      useState<editingModeProps>("cell");
+
+        const navigate = useNavigate();
+      
   const handleExportRows = (rows: any) => {
     const tableData = rows.map((row: any) =>
       props.columns.map((column:any) => _.get(row.original, column.accessorKey ?? ""))
@@ -52,7 +67,7 @@ const SharedTable = (props: Props) => {
     });
   };
 
-  const table = useMaterialReactTable({
+  const tableProps = useMaterialReactTable({
     columns: props.columns,
     data: props.data,
     initialState: {
@@ -184,9 +199,10 @@ const SharedTable = (props: Props) => {
         top: table.getState().isFullScreen ? "200px" : 0,
       },
     }),
-    renderTopToolbarCustomActions: ({ table }) => (
-      <SharedTableTopToolbar onExportButtonClick={props.onExportButtonClick} onSaveButtonClick={props.onSaveButtonClick} editedUsers={props.editedUsers} validationErrors={props.validationErrors} />
-    ),
+    // renderTopToolbarCustomActions: ({ table }) => (
+    //   <TopToolbar onExportButtonClick={handleExportRows(table.getPrePaginationRowModel().rows)} onSaveButtonClick={props.onSaveButtonClick} editedUsers={props.editedUsers} validationErrors={props.validationErrors} />
+    // ),
+    // renderTopToolbarCustomActions: props.renderTopToolbarCustomActions,
     muiDetailPanelProps: () => ({
       sx: (theme) => ({
         backgroundColor:
@@ -206,15 +222,15 @@ const SharedTable = (props: Props) => {
     }),
     //conditionally render detail panel
     renderDetailPanel: ({ row }) =>
-      row.original.address ? ( //remove this condition later
-        <SharedTableDetailPanel>
-          {props.detailPanelContent}
-        </SharedTableDetailPanel>
-      ) : null,
+      // row.original.address ? ( //remove this condition later
+    (    <SharedTableDetailPanel>
+          {props.detailPanelContent(row)}
+        </SharedTableDetailPanel>),
+      // ) : null,
     // enable Cell Actions
     enableClickToCopy: "context-menu",
     enableEditing: true,
-    editDisplayMode: props.changeEditingMode,
+    editDisplayMode: changeEditingMode,
     enableCellActions: true,
     //optionally, use single-click to activate editing mode instead of default double-click
     muiTableBodyCellProps: ({ cell, column, table }) => ({
@@ -266,50 +282,36 @@ const SharedTable = (props: Props) => {
     onEditingRowSave: props.onEditingRowSave,
     // onEditingCellChange: ({ cell, value }) => handleSaveCell(cell, value),
     onEditingRowCancel: props.onEditingRowCancel,
-    renderRowActions: ({ row, table }) => (
-      <Box sx={{ display: "flex", gap: "8px" }}>
-        <IconButton
-          size="small"
-          color="primary"
-          onClick={() =>
+    renderRowActions: ({ row, table }) => {
+      const rowActionButtons = [
+        {
+          color: "primary",
+          onClick: () =>
             window.open(
               `mailto:${row.original.email}?subject=Hello ${row.original.name}!`
-            )
-          }
-        >
-          <EmailIcon />
-        </IconButton>
-        <IconButton
-          color="secondary"
-          onClick={() => {
+            ),
+          icon: <EmailIcon />,
+        },
+        {
+          color: "secondary",
+          onClick: () => {
             setchangeEditingMode("row");
             table.setEditingRow(row);
-          }}
-        >
-          <EditIcon />
-        </IconButton>
-        {/* <IconButton
-                        color="error"
-                        onClick={() => {
-                          window.confirm('Are you sure you want to delete this row?').valueOf() &&
-                          data.splice(row.index, 1); //assuming simple data table
-                          setData([...data]);
-                        }}
-                      >
-                        <DeleteIcon />
-                      </IconButton> */}
-        <IconButton
-          color="secondary"
-          onClick={() => {
-            console.log("iddddddddd", row.original);
-
+          },
+          icon: <EditIcon />,
+        },
+        {
+          color: "secondary",
+          onClick: () => {
             navigate(`row/${row.id}`, { state: { data: row.original } });
-          }}
-        >
-          <ViewIcon />
-        </IconButton>
-      </Box>
-    ),
+          },
+          icon: <ViewIcon />,
+        },
+      ];
+     
+      return(
+        <RowActions rowActionButtons={rowActionButtons} />
+    )},
     displayColumnDefOptions: {
       "mrt-row-actions": {
         header: "Actions", //change header text
@@ -337,7 +339,10 @@ const SharedTable = (props: Props) => {
   });
   return (
     <>
-      <MaterialReactTable table={table} />
+      <MaterialReactTable 
+        table={tableProps} 
+        renderTopToolbarCustomActions={props.renderTopToolbarCustomActions} 
+      />
     </>
   );
 };
