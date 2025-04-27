@@ -14,11 +14,15 @@ import { Box, Button, Divider, IconButton, Typography } from "@mui/material";
 import FileDownloadIcon from "@mui/icons-material/FileDownload";
 import EmailIcon from "@mui/icons-material/Email";
 import EditIcon from "@mui/icons-material/Edit";
+import SaveIcon from "@mui/icons-material/Save";
 import DeleteIcon from "@mui/icons-material/Delete";
 import ViewIcon from "@mui/icons-material/ViewListRounded";
 import _, { flatten } from "lodash";
 import SharedTable from "../../../shared-components/organisms/SharedTable";
 import DetailPanelContent from "../../../shared-components/molecules/sharedTableItems/DetailPanelContent.tsx";
+import TopToolbar from "../../../shared-components/molecules/sharedTableItems/TopToolbar.tsx/TopToolbar.tsx";
+import DetailPanel from "../../../shared-components/molecules/sharedTableItems/DetailPanel.tsx/DetailPanel.tsx";
+import CellActionMenuItems from "../../../shared-components/molecules/sharedTableItems/CellActionMenuItems.tsx/CellActionMenuItems.tsx";
 
 //data type
 type Student = {
@@ -63,6 +67,30 @@ const UserGroup = () => {
     MRT_DensityState | undefined
   >("compact");
   const navigate = useNavigate();
+
+  const cellMenuItems = ({row}:{ row: any}, closeMenu: any) =>
+    [
+      {
+        key: 1,
+        label: "Send Email",
+        icon: <EmailIcon />,
+        onClick: () => {
+          alert("Email sent to " + row.original.email);
+          closeMenu(); //close the menu after the action is performed
+        },
+      },
+      {
+        key: 2,
+        label: "Download",
+        icon: <FileDownloadIcon />,
+        onClick: async () => {
+          //await your logic here
+          alert("item downloaded");
+          closeMenu(); //close the menu after the async action is performed
+        },
+      },
+    ];
+
 
   const columns = useMemo<MRT_ColumnDef<Student>[]>(
     () => [
@@ -206,6 +234,8 @@ const UserGroup = () => {
   };
 
   const handleExportRows = (rows: any) => {
+    console.log("rows", rows);
+
     const tableData = rows?.map((row: any) =>
       columns?.map((column) => _?.get(row?.original, column.accessorKey ?? ""))
     );
@@ -236,25 +266,66 @@ const UserGroup = () => {
   };
 
   // Custom toolbar with multiple buttons
-  const renderProductToolbar = (table:any) => (
-    <div style={{ display: 'flex', gap: '8px', padding: '8px' }}>
-      <Button 
-        variant="contained" 
+  const renderUserToolbar = ({ table }: { table: any }) => (
+    <TopToolbar>
+      <IconButton
         size="small"
         onClick={() => handleExportRows(table.getPrePaginationRowModel().rows)}
       >
-        Export to Excel
-      </Button>
-      <Button 
-        variant="outlined" 
-        size="small"
-        onClick={() => console.log('Print action')}
-      >
-        Print Inventory
-      </Button>
-    </div>
+        <FileDownloadIcon />
+      </IconButton>
+      <IconButton size="small" onClick={handleSaveUsers}>
+        <SaveIcon />
+      </IconButton>
+      {Object.values(validationErrors).some((error) => !!error) && (
+        <Typography className="text-sm" color="error">
+          Fix errors before submitting
+        </Typography>
+      )}
+    </TopToolbar>
   );
 
+  // Detail panel renderer
+  const renderUserDetails = ({ row }: { row: any }) => (
+    row.original.address ?  (<DetailPanel>
+      {Object.keys(row.original)
+        .filter((itemId) => expandDataArray.includes(itemId))
+        .map((itemId: string) => (
+          <Typography key={itemId}>
+            {expandData[itemId as keyof typeof expandData]}:{" "}
+            {(row.original as any)[itemId]}
+          </Typography>
+        ))}
+    </DetailPanel>) : null
+  );
+
+    // Cell Action Menu Items renderer
+    const renderCellActions = ({
+      closeMenu,
+      cell,
+      row,
+      table,
+      internalMenuItems,
+    }: {
+      closeMenu: any;
+      cell: any;
+      row: any;
+      table: any;
+      internalMenuItems: any;
+    }) => [
+      ...internalMenuItems, //render the copy and edit actions wherever you want in the list
+      <Divider />,
+      <CellActionMenuItems menuItems={cellMenuItems({row}, closeMenu)} table={table} />      
+    ];
+
+  const getRowHeight = (density:MRT_DensityState) => {
+    switch (density) {
+      case 'compact': return { maxHeight: '24px' };
+      case 'comfortable': return { maxHeight: '30px' };
+      case 'spacious': return { maxHeight: '52px' };
+      default: return { maxHeight: '24px' };
+    }
+  };
   const table = useMaterialReactTable({
     columns: columns,
     data,
@@ -659,11 +730,10 @@ const UserGroup = () => {
         rightColumnPinning={["mrt-row-actions"]}
         // tableWidth=""600px"
         // tableContainerHeight="220px"
-        onExportButtonClick={({table}: {table: any}) =>{
-          console.log("table", table);          
-          handleExportRows(table?.getPrePaginationRowModel().rows)
-        }
-        }
+        onExportButtonClick={({ table }: { table: any }) => {
+          console.log("table", table);
+          handleExportRows(table?.getPrePaginationRowModel().rows);
+        }}
         onSaveButtonClick={handleSaveUsers}
         editedUsers={editedUsers}
         validationErrors={validationErrors}
@@ -689,7 +759,10 @@ const UserGroup = () => {
           setValidationErrors({});
           setchangeEditingMode("cell");
         }}
-        renderTopToolbarCustomActions={renderProductToolbar}
+        renderTopToolbarCustomActions={renderUserToolbar}
+        renderDetailPanel={renderUserDetails}
+        customRowHeight={getRowHeight}
+        renderCellActionMenuItems={renderCellActions}
       />
     </div>
   );

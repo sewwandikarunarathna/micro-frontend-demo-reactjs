@@ -28,6 +28,8 @@ type Props = {
   rightColumnPinning?: string[];
   tableWidth?: string;
   tableContainerHeight?: string;
+  customRowHeight?: any; 
+  renderCellActionMenuItems?: any;
   /* renderTopToolbarCustomActions props */
   onExportButtonClick: any;
   onSaveButtonClick: any;
@@ -37,6 +39,7 @@ type Props = {
   // setchangeEditingMode: editingModeProps;
   /* end of renderTopToolbarCustomActions */
   detailPanelContent: any;
+  renderDetailPanel: any;
   // changeEditingMode: editingModeProps;
   onEditingRowSave: any;
   onEditingRowCancel: any;
@@ -67,6 +70,17 @@ const SharedTable = (props: Props) => {
     });
   };
 
+  // Function to determine row height based on density
+  const getRowHeight = (density: MRT_DensityState) => {
+    if (!props.customRowHeight) return {};
+    
+    const height = typeof props.customRowHeight === 'function' 
+      ? props.customRowHeight(density)
+      : (props.customRowHeight[density] || {});
+      
+    return height;
+  };
+
   const tableProps = useMaterialReactTable({
     columns: props.columns,
     data: props.data,
@@ -92,19 +106,10 @@ const SharedTable = (props: Props) => {
       },
     },
     // Apply height constraints only to regular rows, not expanded ones
-    muiTableBodyRowProps: ({ row }) => ({
+    muiTableBodyRowProps: ({ row, table }) => ({
       sx: {
         // Only apply height constraints if the row is NOT expanded
-        ...(row.getIsExpanded()
-          ? {}
-          : {
-              maxHeight:
-                props.tableDensity === "compact"
-                  ? "24px"
-                  : props.tableDensity === "spacious"
-                  ? "52px"
-                  : "30px",
-            }),
+        ...(row.getIsExpanded() ? {} : getRowHeight(table.getState().density)),
       },
     }),
     enableColumnResizing: true,
@@ -199,10 +204,7 @@ const SharedTable = (props: Props) => {
         top: table.getState().isFullScreen ? "200px" : 0,
       },
     }),
-    // renderTopToolbarCustomActions: ({ table }) => (
-    //   <TopToolbar onExportButtonClick={handleExportRows(table.getPrePaginationRowModel().rows)} onSaveButtonClick={props.onSaveButtonClick} editedUsers={props.editedUsers} validationErrors={props.validationErrors} />
-    // ),
-    // renderTopToolbarCustomActions: props.renderTopToolbarCustomActions,
+    renderTopToolbarCustomActions: props.renderTopToolbarCustomActions,
     muiDetailPanelProps: () => ({
       sx: (theme) => ({
         backgroundColor:
@@ -221,12 +223,7 @@ const SharedTable = (props: Props) => {
       },
     }),
     //conditionally render detail panel
-    renderDetailPanel: ({ row }) =>
-      // row.original.address ? ( //remove this condition later
-    (    <SharedTableDetailPanel>
-          {props.detailPanelContent(row)}
-        </SharedTableDetailPanel>),
-      // ) : null,
+    renderDetailPanel: props.renderDetailPanel,
     // enable Cell Actions
     enableClickToCopy: "context-menu",
     enableEditing: true,
@@ -258,25 +255,7 @@ const SharedTable = (props: Props) => {
         },
       },
     }),
-    renderCellActionMenuItems: ({
-      closeMenu,
-      cell,
-      row,
-      table,
-      internalMenuItems,
-    }) => [
-      ...internalMenuItems, //render the copy and edit actions wherever you want in the list
-      <Divider />,
-      <CellActionMenuItems onEmailButtonClick={() => {
-        //your logic here
-        alert("Email sent to " + row.original.email);
-        closeMenu(); //close the menu after the action is performed
-      }} onDownloadButtonClick={async () => {
-        //await your logic here
-        alert("item downloaded");
-        closeMenu(); //close the menu after the async action is performed
-      }} table={table} />      
-    ],
+    renderCellActionMenuItems: props.renderCellActionMenuItems,
     //row actions
     enableRowActions: true,
     onEditingRowSave: props.onEditingRowSave,
@@ -340,8 +319,7 @@ const SharedTable = (props: Props) => {
   return (
     <>
       <MaterialReactTable 
-        table={tableProps} 
-        renderTopToolbarCustomActions={props.renderTopToolbarCustomActions} 
+        table={tableProps}        
       />
     </>
   );
