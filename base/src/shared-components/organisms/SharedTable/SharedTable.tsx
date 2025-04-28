@@ -1,46 +1,27 @@
 import { Layout } from "antd";
-import SharedMenu from "../../molecules/SharedMenu";
-import { MaterialReactTable, MRT_DensityState, useMaterialReactTable } from "material-react-table";
-import { downloadExcel } from "react-export-table-to-excel";
+import {
+  MaterialReactTable,
+  MRT_DensityState,
+  useMaterialReactTable,
+} from "material-react-table";
 import _ from "lodash";
-import SharedTableTopToolbar from "../../molecules/sharedTableItems/TopToolbar.tsx/index.ts";
-import SharedTableDetailPanel from "../../molecules/sharedTableItems/DetailPanel.tsx/DetailPanel.tsx";
-import { Divider } from "@mui/material";
-import CellActionMenuItems from "../../molecules/sharedTableItems/CellActionMenuItems.tsx/CellActionMenuItems.tsx";
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import EmailIcon from "@mui/icons-material/Email";
-import EditIcon from "@mui/icons-material/Edit";
-import DeleteIcon from "@mui/icons-material/Delete";
-import ViewIcon from "@mui/icons-material/ViewListRounded";
-import RowActions from "../../molecules/sharedTableItems/RowActions.tsx/RowActions.tsx";
-import TopToolbar from "../../molecules/sharedTableItems/TopToolbar.tsx/index.ts";
-
-const { Header } = Layout;
+import tableStyles from "../../../utils/tableStyles.ts";
 
 type Props = {
   columns: any;
   data: any;
   isDataLoading?: boolean;
-  children?: any;
   tableDensity?: MRT_DensityState | undefined;
   leftColumnPinning?: string[];
   rightColumnPinning?: string[];
   tableWidth?: string;
   tableContainerHeight?: string;
-  customRowHeight?: any; 
+  customRowHeight?: any;
+  changeEditingMode?: editingModeProps;
   renderCellActionMenuItems?: any;
-  /* renderTopToolbarCustomActions props */
-  onExportButtonClick: any;
-  onSaveButtonClick: any;
-  editedUsers: Record<string, any>;
-  validationErrors: Record<string, string | undefined>;
+  renderRowActions?: any;
   renderTopToolbarCustomActions?: any;
-  // setchangeEditingMode: editingModeProps;
-  /* end of renderTopToolbarCustomActions */
-  detailPanelContent: any;
   renderDetailPanel: any;
-  // changeEditingMode: editingModeProps;
   onEditingRowSave: any;
   onEditingRowCancel: any;
 };
@@ -48,36 +29,15 @@ type Props = {
 type editingModeProps = "cell" | "table" | "row" | "custom" | "modal";
 
 const SharedTable = (props: Props) => {
-  const [changeEditingMode, setchangeEditingMode] =
-      useState<editingModeProps>("cell");
-
-        const navigate = useNavigate();
-      
-  const handleExportRows = (rows: any) => {
-    const tableData = rows.map((row: any) =>
-      props.columns.map((column:any) => _.get(row.original, column.accessorKey ?? ""))
-    );
-    const tableHeaders = props.columns.map((c:any) => c.header);
-
-    downloadExcel({
-      fileName: "table-data-to-excel",
-      sheet: "table-data-to-excel",
-      tablePayload: {
-        header: tableHeaders,
-        // accept two different data structures
-        body: tableData,
-      },
-    });
-  };
-
   // Function to determine row height based on density
   const getRowHeight = (density: MRT_DensityState) => {
     if (!props.customRowHeight) return {};
-    
-    const height = typeof props.customRowHeight === 'function' 
-      ? props.customRowHeight(density)
-      : (props.customRowHeight[density] || {});
-      
+
+    const height =
+      typeof props.customRowHeight === "function"
+        ? props.customRowHeight(density)
+        : props.customRowHeight[density] || {};
+
     return height;
   };
 
@@ -86,24 +46,13 @@ const SharedTable = (props: Props) => {
     data: props.data,
     initialState: {
       density: props.tableDensity,
-      columnPinning: { left: props.leftColumnPinning, right: props.rightColumnPinning }, //make columns fixed
+      columnPinning: {
+        left: props.leftColumnPinning,
+        right: props.rightColumnPinning,
+      }, //make columns fixed
     },
     muiTableHeadRowProps: {
-      sx: {
-        "& .MuiIconButton-root": {
-          // For icon buttons specifically
-          padding: "2px",
-          "& .MuiSvgIcon-root": {
-            fontSize: "1.0rem", // Make icons smaller
-          },
-        },
-        "& .MuiInputBase-root": {
-          // For search/filter inputs
-          height: "20px",
-          fontSize: "0.75rem",
-          margin: "2px",
-        },
-      },
+      sx: tableStyles.muiTableHeadRowProps,
     },
     // Apply height constraints only to regular rows, not expanded ones
     muiTableBodyRowProps: ({ row, table }) => ({
@@ -122,7 +71,7 @@ const SharedTable = (props: Props) => {
     rowVirtualizerOptions: { overscan: 5 },
     state: { isLoading: props.isDataLoading ?? false }, // isLoading
     enableColumnOrdering: true,
-    muiCircularProgressProps: {
+    muiCircularProgressProps: { 
       color: "secondary",
       thickness: 5,
       size: 55,
@@ -131,77 +80,22 @@ const SharedTable = (props: Props) => {
     enableStickyHeader: true,
     muiTableProps: {
       sx: {
-        width: props.tableWidth ?? "600px",
+        // Make the table width responsive
+        maxWidth: tableStyles.maxWidth,
+        maxHeight: props.tableContainerHeight ?? "220px",
       },
     },
     muiTopToolbarProps: {
-      sx: {
-        backgroundColor: "#ECECEE",
-        minHeight: "15px",
-        maxHeight: "34px",
-        padding: "2px 8px",
-        "& .MuiButtonBase-root": {
-          // Reduce size of buttons
-          padding: "2px 6px",
-          minWidth: "unset",
-        },
-        "& .MuiIconButton-root": {
-          // For icon buttons specifically
-          padding: "2px",
-          "& .MuiSvgIcon-root": {
-            fontSize: "1.0rem", // Make icons smaller
-          },
-        },
-        "& .MuiInputBase-root": {
-          // For search/filter inputs
-          height: "26px",
-          fontSize: "0.75rem",
-          margin: "2px",
-        },
-      },
+      sx: tableStyles.muiTopToolbarProps,
     },
     muiBottomToolbarProps: {
-      sx: {
-        minHeight: "10px",
-        maxHeight: "36px",
-        padding: "10px",
-        top: 0,
-        "& .MuiTypography-root": {
-          fontSize: "0.7rem",
-        },
-        "& .MuiButtonBase-root": {
-          // Reduce size of buttons
-          padding: "2px 6px",
-          minWidth: "unset",
-        },
-        "& .MuiIconButton-root": {
-          // For icon buttons specifically
-          padding: "2px",
-          "& .MuiSvgIcon-root": {
-            fontSize: "1.0rem", // Make icons smaller
-          },
-        },
-        "& .MuiInputBase-root": {
-          // For search/filter inputs
-          height: "26px",
-          fontSize: "0.75rem",
-          margin: "2px",
-        },
-        "& .MuiInputLabel-root": {
-          // "Rows per page:" text
-          fontSize: "0.75rem",
-        },
-        "& .MuiMenu-root": {
-          // page number list
-          fontSize: "0.75rem",
-        },
-      },
+      sx: tableStyles.muiBottomToolbarProps,
     },
-    muiTableContainerProps: { sx: { maxHeight: props.tableContainerHeight ?? "220px" } },
     muiTablePaperProps: ({ table }) => ({
       style: {
         zIndex: table.getState().isFullScreen ? 1000 : undefined,
         top: table.getState().isFullScreen ? "200px" : 0,
+        // maxWidth: props.tableWidth ?? '800px',
       },
     }),
     renderTopToolbarCustomActions: props.renderTopToolbarCustomActions,
@@ -227,7 +121,7 @@ const SharedTable = (props: Props) => {
     // enable Cell Actions
     enableClickToCopy: "context-menu",
     enableEditing: true,
-    editDisplayMode: changeEditingMode,
+    editDisplayMode: props.changeEditingMode,
     enableCellActions: true,
     //optionally, use single-click to activate editing mode instead of default double-click
     muiTableBodyCellProps: ({ cell, column, table }) => ({
@@ -245,52 +139,14 @@ const SharedTable = (props: Props) => {
           }
         });
       },
-      sx: {
-        fontWeight: "normal",
-        fontSize: "12px",
-        "&:focus-visible": {
-          //or just `&:focus` if you want all focus events to be visible
-          outline: "2px solid red",
-          outlineOffset: "-2px",
-        },
-      },
+      sx: tableStyles.muiTableBodyCellProps,
     }),
     renderCellActionMenuItems: props.renderCellActionMenuItems,
     //row actions
     enableRowActions: true,
     onEditingRowSave: props.onEditingRowSave,
-    // onEditingCellChange: ({ cell, value }) => handleSaveCell(cell, value),
     onEditingRowCancel: props.onEditingRowCancel,
-    renderRowActions: ({ row, table }) => {
-      const rowActionButtons = [
-        {
-          color: "primary",
-          onClick: () =>
-            window.open(
-              `mailto:${row.original.email}?subject=Hello ${row.original.name}!`
-            ),
-          icon: <EmailIcon />,
-        },
-        {
-          color: "secondary",
-          onClick: () => {
-            setchangeEditingMode("row");
-            table.setEditingRow(row);
-          },
-          icon: <EditIcon />,
-        },
-        {
-          color: "secondary",
-          onClick: () => {
-            navigate(`row/${row.id}`, { state: { data: row.original } });
-          },
-          icon: <ViewIcon />,
-        },
-      ];
-     
-      return(
-        <RowActions rowActionButtons={rowActionButtons} />
-    )},
+    renderRowActions: props.renderRowActions,
     displayColumnDefOptions: {
       "mrt-row-actions": {
         header: "Actions", //change header text
@@ -304,9 +160,7 @@ const SharedTable = (props: Props) => {
       size: 160, //default size is usually 180
       //header
       muiTableHeadCellProps: {
-        sx: {
-          fontSize: "12px",
-        },
+        sx: tableStyles.muiTableHeadCellProps,
         onKeyDown: (event) => {
           if (event.key === "enter" && event.metaKey) {
             alert("You pressed the custom shortcut!");
@@ -318,9 +172,7 @@ const SharedTable = (props: Props) => {
   });
   return (
     <>
-      <MaterialReactTable 
-        table={tableProps}        
-      />
+      <MaterialReactTable table={tableProps} />
     </>
   );
 };
