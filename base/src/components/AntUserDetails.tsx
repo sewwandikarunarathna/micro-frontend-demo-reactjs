@@ -1,16 +1,12 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import {
-  Button,
-  Flex,
   Form,
   Input,
   MenuProps,
   Tabs,
   TabsProps,
-  Tag,
 } from "antd";
 import STUDENTS from "../assets/students.json";
-import SharedAvatar from "../shared-components/atoms/SharedAvatar";
 import ActionButtonBar from "../shared-components/templates/ActionButtonBar";
 import SearchBar from "../shared-components/templates/SearchBar";
 import AuthenticForm from "./AuthenticForm";
@@ -270,6 +266,7 @@ const AntUserDetails = () => {
               defaultActiveKey="1"
               items={tabItems}
               onChange={onChangeTab}
+              style={{ width: '100%' }}
             />
           </div>
         </div>

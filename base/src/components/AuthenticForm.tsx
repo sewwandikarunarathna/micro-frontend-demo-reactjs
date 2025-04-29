@@ -34,7 +34,7 @@ const AuthenticForm = () => {
   //   const { pending } = useFormStatus();
 
   return (
-    <SharedCard width={600} className="flex flex-col w-auto h-auto justify-start items-center mt-6 p-2 bg-amber-300">
+    <SharedCard className="flex flex-col w-auto h-auto justify-start items-center mt-6 p-2 bg-amber-300">
       <h2 className="flex text-2xl font-bold mb-4 justify-center text-center">Authentication Form</h2>
       <p className="flex justify-center text-sm text-gray-500 mb-4">
         Please fill in the details below
