@@ -1,0 +1,18 @@
+[
+    { "id": 1, "uomName": "Kilogram", "uomCode": "kg", "isBase": true, "conversionFactor": 1, "usedInApp": true },
+    { "id": 2, "uomName": "Gram", "uomCode": "g", "isBase": false, "conversionFactor": 0.001, "usedInApp": true },
+    { "id": 3, "uomName": "Milligram", "uomCode": "mg", "isBase": false, "conversionFactor": 0.000001, "usedInApp": false },
+    { "id": 4, "uomName": "Liter", "uomCode": "L", "isBase": true, "conversionFactor": 1, "usedInApp": true },
+    { "id": 5, "uomName": "Milliliter", "uomCode": "mL", "isBase": false, "conversionFactor": 0.001, "usedInApp": false },
+    { "id": 6, "uomName": "Meter", "uomCode": "m", "isBase": true, "conversionFactor": 1, "usedInApp": true },
+    { "id": 7, "uomName": "Centimeter", "uomCode": "cm", "isBase": false, "conversionFactor": 0.01, "usedInApp": false },
+    { "id": 8, "uomName": "Millimeter", "uomCode": "mm", "isBase": false, "conversionFactor": 0.001, "usedInApp": false },
+    { "id": 9, "uomName": "Inch", "uomCode": "in", "isBase": false, "conversionFactor": 0.0254, "usedInApp": false },
+    { "id": 10, "uomName": "Foot", "uomCode": "ft", "isBase": false, "conversionFactor": 0.3048, "usedInApp": false },
+    { "id": 11, "uomName": "Yard", "uomCode": "yd", "isBase": false, "conversionFactor": 0.9144, "usedInApp": false },
+    { "id": 12, "uomName": "Custom Box", "uomCode": "BX", "isBase": true, "conversionFactor": 1, "usedInApp": false },
+    { "id": 13, "uomName": "Dozen", "uomCode": "DZ", "isBase": false, "conversionFactor": 12, "usedInApp": false },
+    { "id": 14, "uomName": "Piece", "uomCode": "PC", "isBase": false, "conversionFactor": 1, "usedInApp": true },
+    { "id": 15, "uomName": "Tonne", "uomCode": "t", "isBase": false, "conversionFactor": 1000, "usedInApp": false }
+  ]
+  
