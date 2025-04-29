@@ -17,6 +17,8 @@ import {
   SearchOutlined as SearchIcon,
   MenuUnfoldOutlined,
   MenuFoldOutlined,
+  BellFilled,
+  InfoCircleOutlined,
 } from "@ant-design/icons";
 import { JSX, ReactNode } from "react";
 
@@ -42,6 +44,8 @@ const AntIcons = (iconName: string) => {
     DeleteIcon: <DeleteIcon />,
     MenuUnfoldOutlined: <MenuUnfoldOutlined />,
     MenuFoldOutlined: <MenuFoldOutlined />,
+    BellFilled: <BellFilled />,
+    InfoCircleOutlined: <InfoCircleOutlined />
   };
   
   const getIconComponent = () => {

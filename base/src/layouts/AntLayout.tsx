@@ -1,47 +1,21 @@
 import {
-  Avatar,
-  Breadcrumb,
-  Button,
   Form,
-  Input,
   Layout,
-  Menu,
   MenuProps,
-  Tabs,
-  TabsProps,
-  Tag,
-  theme,
 } from "antd";
-import React, { JSX, useEffect, useState } from "react";
-import { sideButtonMenuList } from "../assets/sidebutton-menu";
-import { sidebarMenuList } from "../assets/sidebar-menu";
-import { Outlet, useNavigate } from "react-router-dom";
-import UserDetails from "../components/UserDetails";
-import ActionButtonPopover from "../shared-components/templates/ActionButtonPopover";
-import UserSearch from "../shared-components/organisms/UserSearch";
+import { useEffect, useState } from "react";
+import { Outlet} from "react-router-dom";
 import STUDENTS from "../assets/students.json";
-import { divide } from "lodash";
-import { ResizableBox } from "react-resizable";
-import UserForm from "../components/Form";
-import AuthenticForm from "../components/AuthenticForm";
-import SharedMenu from "../shared-components/molecules/SharedMenu";
-import SharedSider from "../shared-components/organisms/SharedSider";
-import SharedButton from "../shared-components/atoms/SharedButton";
 import MainNavBar from "../shared-components/templates/MainNavBar";
 import ButtonSideBar from "../shared-components/templates/ButtonSideBar";
 import MainSideBar from "../shared-components/templates/MainSideBar";
-import ActionButtonBar from "../shared-components/templates/ActionButtonBar";
-import SearchBar from "../shared-components/templates/SearchBar";
-import AntIcons from "../utils/AntIcons";
 import SharedAvatar from "../shared-components/atoms/SharedAvatar";
-
 
 const AntLayout = () => {
   const [sidebarCollapsed, setSidebarCollapsed] = useState<boolean>(false);
   const [userData, setUserData] = useState<MenuProps["items"]>([
     { key: '1', label: 'John Doe' },
   ]);
-  const [isSearchOpen, setIsSearchOpen] = useState<boolean>(false);
   const [currentUser, setCurrentUser] = useState<any>({
     userName: "",
     email: "N/A",
