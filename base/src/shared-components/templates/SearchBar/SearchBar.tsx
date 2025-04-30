@@ -68,7 +68,7 @@ const SearchBar = (props: Props) => {
         label: item.label,
         className: item.gap ? "menu-gap" : "",
         style: { marginBottom: item.gap ? "16px" : "0" },
-        onClick: item.onClick
+        onClick: item.onClick,
       };
 
       return menuItem;
@@ -89,10 +89,11 @@ const SearchBar = (props: Props) => {
 
   return (
     <>
-      <div className="flex w-auto justify-start items-start">
-        <div className="flex flex-col gap-4 h-screen bg-gray-200 border-l-2 border-gray-400">
+      {/* <div className="flex w-auto justify-start items-start"> */}
+      <div className="flex flex-col gap-4 h-screen border-l-2 border-gray-300">
+        <div className="flex flow-row items-center justify-end w-full">
           <SharedButton
-            className="!bg-red-200 w-40 h-40"
+            className="w-40 h-40"
             type="text"
             icon={
               props.sidebarCollapsed
@@ -101,37 +102,35 @@ const SearchBar = (props: Props) => {
             }
             onClick={props.onCollapseClick}
           />
-          <SharedSider
-            className="!bg-gray-200"
-            collapsed={props.sidebarCollapsed}
-            // onCollapse={getInitials}
-            onCollapse={(value: any) => props.setSidebarCollapsed(value)}
-            collapsedWidth={44}
-            width={props.siderWidth}
-            breakpoint="lg"
-            bgColor="#e5e7eb"
-          >
-            <SharedMenu
-              className="flex flex-col h-auto"
-              mode="inline"
-              defaultSelectedKeys={["1"]}
-              defaultOpenKeys={["sub1"]}
-              bgColor="#e5e7eb"
-              items={menuItems}
-              openKeys={openKeys}
-              selectedKeys={selectedKeys}
-              onOpenChange={onOpenChange}
-              onSelect={onSelect}
-              style={menuItemStyle}
-            />
-            {/* <Menu mode="inline" defaultSelectedKeys={["1"]}>
+        </div>
+        <SharedSider
+          collapsed={props.sidebarCollapsed}
+          // onCollapse={getInitials}
+          onCollapse={(value: any) => props.setSidebarCollapsed(value)}
+          collapsedWidth={44}
+          width={props.siderWidth}
+          breakpoint="lg"
+          // bgColor="blue"
+        >
+          <SharedMenu
+            className="flex flex-col h-auto"
+            mode="inline"
+            items={menuItems}
+            openKeys={openKeys}
+            selectedKeys={selectedKeys}
+            onOpenChange={onOpenChange}
+            onSelect={onSelect}
+          // bgColor="red"
+            style={menuItemStyle}
+          />
+          {/* <Menu mode="inline" defaultSelectedKeys={["1"]}>
               {props.searchedData.map(
                 ({ key, label }: { key: string; label: string }) => (
                   <Menu.Item key={key}>
                     {props.sidebarCollapsed ? getInitials1(label) : label}
                     {/* {getInitials(label)} */}
 
-            {/* <SharedMenu
+          {/* <SharedMenu
               className="flex flex-col h-auto"
               mode="inline"
               defaultSelectedKeys={["1"]}
@@ -139,11 +138,11 @@ const SearchBar = (props: Props) => {
               bgColor="#e5e7eb"
               items={processedItems}
             /> */}
-          </SharedSider>
-        </div>
+        </SharedSider>
       </div>
+      {/* </div> */}
       <div
-        className="flex justify-start items-start w-2 h-screen p-0 bg-yellow-400 hover:cursor-col-resize"
+        className="flex justify-start items-start w-2 h-screen p-0 bg-gray-300 hover:cursor-col-resize"
         onMouseDown={props.onMouseDown}
       ></div>
     </>

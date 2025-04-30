@@ -43,7 +43,7 @@ const SharedButton = (props: AntProps) => {
   return (
     <>
       <Button
-        type={props.type ?? 'default'}
+        type={props.type}
         icon={props.icon}
         onClick={props.onClick}
         disabled={props.disabled}

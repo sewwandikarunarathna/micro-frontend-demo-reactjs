@@ -1,9 +1,8 @@
-import { Avatar, Breadcrumb, Button } from "antd";
-import { ReactNode } from "react";
+import { Breadcrumb } from "antd";
 
 type Props = {
   items: any[];
-  size?: "small"| "large";
+  size?: "small" | "large";
   style?: any;
   separator?: string;
   className?: string;
@@ -11,15 +10,14 @@ type Props = {
   onClick?: any;
 };
 
-
 const SharedBreadCrumb = (props: Props) => {
   return (
     <>
       <Breadcrumb
-    items={props.items}
-    separator={props.separator ?? ">"}
-    className={props.className}
-  />
+        items={props.items}
+        separator={props.separator ?? ">"}
+        className={props.className}
+      />
     </>
   );
 };

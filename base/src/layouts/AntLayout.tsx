@@ -90,12 +90,12 @@ const AntLayout = () => {
           {/* Buttons sidebar */}
           <ButtonSideBar />
           {/* Main Sidebar */}
-          <div className="flex flex-col gap-4 h-screen bg-gray-200">
+          <div className="flex flex-col gap-4 h-screen">
             <MainSideBar sidebarCollapsed={sidebarCollapsed} onClick={() => setSidebarCollapsed(!sidebarCollapsed)} />           
           </div>
           {/* Main Content Area */}
           <Layout>
-            <div className="flex-1 w-full flex-col overflow-hidden h-screen p-0 bg-gray-50">
+            <div className="flex-1 w-full flex-col overflow-hidden h-screen p-0">
              <Outlet />
             </div>
           </Layout>
