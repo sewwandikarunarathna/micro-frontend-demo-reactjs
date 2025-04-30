@@ -22,7 +22,7 @@ type Props = {
   renderRowActions?: any;
   renderTopToolbarCustomActions?: any;
   renderDetailPanel: any;
-  onEditingRowSave: any;
+  onEditingRowSave?: any;
   onEditingRowCancel: any;
 };
 

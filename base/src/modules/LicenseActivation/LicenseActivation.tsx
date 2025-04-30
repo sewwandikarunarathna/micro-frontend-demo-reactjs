@@ -1,12 +1,15 @@
 import React, { useState } from 'react';
 import {
-  Box,
+  Form,
+  Input,
   Button,
-  TextField,
+  Row,
+  Col,
   Typography,
-  Grid,
   Alert
-} from '@mui/material';
+} from 'antd';
+
+const { Title } = Typography;
 
 // Mock license database
 const MOCK_LICENSES: Record<string, {
@@ -35,41 +38,10 @@ const MOCK_LICENSES: Record<string, {
   },
 };
 
-interface FormData {
-  licenseKey: string;
-  activationDate: string;
-  expiryDate: string;
-  licenseType: string;
-  licenseStatus: string;
-  holderName: string;
-  holderEmail: string;
-  systemId: string;
-  activationIp: string;
-  numberOfUsers: string;
-}
-
-interface Errors {
-  licenseKey?: string;
-  holderName?: string;
-  holderEmail?: string;
-}
-
 const LicenseActivationForm: React.FC = () => {
-  const [formData, setFormData] = useState<FormData>({
-    licenseKey: '',
-    activationDate: '',
-    expiryDate: '',
-    licenseType: '',
-    licenseStatus: '',
-    holderName: '',
-    holderEmail: '',
-    systemId: '',
-    activationIp: '',
-    numberOfUsers: '',
-  });
-
-  const [errors, setErrors] = useState<Errors>({});
+  const [form] = Form.useForm();
   const [statusMessage, setStatusMessage] = useState<string>('');
+  const [statusType, setStatusType] = useState<'success' | 'error'>('success');
 
   const generateSystemId = () =>
     'SYS-' + Math.random().toString(36).substring(2, 10).toUpperCase();
@@ -77,230 +49,131 @@ const LicenseActivationForm: React.FC = () => {
   const getIpAddress = () =>
     '192.168.1.' + Math.floor(Math.random() * 100);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    const newFormData = { ...formData, [name]: value };
+  const handleLicenseKeyChange = (value: string) => {
+    const formattedKey = value.trim().toUpperCase();
+    const licenseData = MOCK_LICENSES[formattedKey];
 
-    if (name === 'licenseKey') {
-      const formattedKey = value.trim().toUpperCase();
-      const licenseData = MOCK_LICENSES[formattedKey];
-
-      if (licenseData) {
-        newFormData.activationDate = licenseData.activationDate;
-        newFormData.expiryDate = licenseData.expiryDate;
-        newFormData.licenseType = licenseData.licenseType;
-        newFormData.licenseStatus = licenseData.licenseStatus;
-        newFormData.holderName = licenseData.holderName;
-        newFormData.holderEmail = licenseData.holderEmail;
-        newFormData.systemId = generateSystemId();
-        newFormData.activationIp = getIpAddress();
-        setStatusMessage('');
-      } else {
-        setStatusMessage('❌ Invalid License Key. Please check and try again.');
-        Object.assign(newFormData, {
-          activationDate: '',
-          expiryDate: '',
-          licenseType: '',
-          licenseStatus: '',
-          holderName: '',
-          holderEmail: '',
-          systemId: '',
-          activationIp: '',
-        });
-      }
+    if (licenseData) {
+      form.setFieldsValue({
+        licenseKey: formattedKey,
+        activationDate: licenseData.activationDate,
+        expiryDate: licenseData.expiryDate,
+        licenseType: licenseData.licenseType,
+        licenseStatus: licenseData.licenseStatus,
+        holderName: licenseData.holderName,
+        holderEmail: licenseData.holderEmail,
+        systemId: generateSystemId(),
+        activationIp: getIpAddress(),
+      });
+      setStatusMessage('');
+    } else {
+      setStatusMessage('❌ Invalid License Key. Please check and try again.');
+      setStatusType('error');
+      form.setFieldsValue({
+        activationDate: '',
+        expiryDate: '',
+        licenseType: '',
+        licenseStatus: '',
+        holderName: '',
+        holderEmail: '',
+        systemId: '',
+        activationIp: '',
+      });
     }
-
-    setFormData(newFormData);
   };
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    const newErrors: Errors = {};
-
-    if (!formData.licenseKey || !/^[A-Z0-9\-]{25}$/.test(formData.licenseKey)) {
-      newErrors.licenseKey = 'License Key must be 25-character alphanumeric (with dashes).';
-    }
-    if (!formData.holderName) {
-      newErrors.holderName = 'License Holder Name is required.';
-    }
-    if (!/\S+@\S+\.\S+/.test(formData.holderEmail)) {
-      newErrors.holderEmail = 'Valid email is required.';
-    }
-
-    setErrors(newErrors);
-
-    if (Object.keys(newErrors).length === 0) {
-      console.log('License Activated:', formData);
-      setStatusMessage('✅ License successfully activated.');
-    }
+  const handleFinish = (values: any) => {
+    console.log('License Activated:', values);
+    setStatusMessage('✅ License successfully activated.');
+    setStatusType('success');
   };
 
   const handleCancel = () => {
-    setFormData({
-      licenseKey: '',
-      activationDate: '',
-      expiryDate: '',
-      licenseType: '',
-      licenseStatus: '',
-      holderName: '',
-      holderEmail: '',
-      systemId: '',
-      activationIp: '',
-      numberOfUsers: '',
-    });
-    setErrors({});
+    form.resetFields();
     setStatusMessage('');
   };
 
   return (
-    <Box sx={{ width: '80%', mx: 'auto', mt: 3 }}>
-      <Typography variant="h6" gutterBottom>
-        License Activation
-      </Typography>
+    <div>
+      <div style={{ margin: '2rem auto', padding: 32, borderRadius: 8 }}>
+        <div className="flex flex-col justify-start w-auto">
+          <h1 className="font-bold text-3xl">License Details</h1>
+        </div>
 
-      {statusMessage && (
-        <Alert
-          severity={statusMessage.startsWith('✅') ? 'success' : 'error'}
-          sx={{ mb: 2 }}
-        >
-          {statusMessage}
-        </Alert>
-      )}
-
-      <form onSubmit={handleSubmit}>
-        <Grid container spacing={2}>
-          {/* Left Column */}
-          <Grid item xs={12} md={6}>
-            <Grid container spacing={2}>
-              <Grid item xs={12}>
-                <TextField
+        {statusMessage && (
+          <Alert message={statusMessage} type={statusType} showIcon style={{ marginBottom: 24 }} />
+        )}
+        <div style={{ width: '90%', margin: '2rem auto', backgroundColor: '#f6f6f9', padding: 32, borderRadius: 8 }}>
+          <Form form={form} layout="vertical" onFinish={handleFinish}>
+            <Row gutter={48}>
+              <Col xs={24} md={12}>
+                <Form.Item
                   name="licenseKey"
                   label="License Key"
-                  value={formData.licenseKey}
-                  onChange={handleChange}
-                  fullWidth
-                  error={!!errors.licenseKey}
-                  helperText={errors.licenseKey}
-                  variant="standard"
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  name="activationDate"
-                  label="Activation Date"
-                  value={formData.activationDate}
-                  InputProps={{ readOnly: true }}
-                  fullWidth
-                  variant="standard"
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  name="licenseType"
-                  label="License Type"
-                  value={formData.licenseType}
-                  InputProps={{ readOnly: true }}
-                  fullWidth
-                  variant="standard"
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  name="systemId"
-                  label="System ID"
-                  value={formData.systemId}
-                  InputProps={{ readOnly: true }}
-                  fullWidth
-                  variant="standard"
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <TextField
+                  rules={[{ required: true, pattern: /^[A-Z0-9\-]{25}$/, message: 'License Key must be 25 characters with dashes.' }]}
+                >
+                  <Input onChange={(e) => handleLicenseKeyChange(e.target.value)} />
+                </Form.Item>
+
+                <Form.Item name="activationDate" label="Activation Date">
+                  <Input readOnly />
+                </Form.Item>
+
+                <Form.Item name="licenseType" label="License Type">
+                  <Input readOnly />
+                </Form.Item>
+
+                <Form.Item
                   name="holderName"
                   label="License Holder Name"
-                  value={formData.holderName}
-                  onChange={handleChange}
-                  fullWidth
-                  error={!!errors.holderName}
-                  helperText={errors.holderName}
-                  variant="standard"
-                />
-              </Grid>
-            </Grid>
-          </Grid>
+                  rules={[{ required: true, message: 'License Holder Name is required.' }]}
+                >
+                  <Input />
+                </Form.Item>
 
-          {/* Right Column */}
-          <Grid item xs={12} md={6}>
-            <Grid container spacing={2}>
-              <Grid item xs={12}>
-                <TextField
-                  name="numberOfUsers"
-                  label="No. of Users"
-                  value={formData.numberOfUsers}
-                  onChange={handleChange}
-                  fullWidth
-                  variant="standard"
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  name="expiryDate"
-                  label="Expiry Date"
-                  value={formData.expiryDate}
-                  InputProps={{ readOnly: true }}
-                  fullWidth
-                  variant="standard"
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  name="licenseStatus"
-                  label="License Status"
-                  value={formData.licenseStatus}
-                  InputProps={{ readOnly: true }}
-                  fullWidth
-                  variant="standard"
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  name="activationIp"
-                  label="Activation IP Address"
-                  value={formData.activationIp}
-                  InputProps={{ readOnly: true }}
-                  fullWidth
-                  variant="standard"
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <TextField
+                <Form.Item name="systemId" label="System ID">
+                  <Input readOnly />
+                </Form.Item>
+              </Col>
+
+              <Col xs={24} md={12}>
+                <Form.Item name="numberOfUsers" label="No. of Users">
+                  <Input />
+                </Form.Item>
+
+                <Form.Item name="expiryDate" label="Expiry Date">
+                  <Input readOnly />
+                </Form.Item>
+
+                <Form.Item name="licenseStatus" label="License Status">
+                  <Input readOnly />
+                </Form.Item>
+
+                <Form.Item name="activationIp" label="Activation IP Address">
+                  <Input readOnly />
+                </Form.Item>
+
+                <Form.Item
                   name="holderEmail"
                   label="License Holder Email"
-                  value={formData.holderEmail}
-                  onChange={handleChange}
-                  fullWidth
-                  error={!!errors.holderEmail}
-                  helperText={errors.holderEmail}
-                  variant="standard"
-                />
-              </Grid>
-            </Grid>
-          </Grid>
-        </Grid>
-
-        {/* Buttons */}
-        <Grid item xs={12}>
-          <Box display="flex" gap={2} mt={10}>
-            <Button type="submit" variant="contained" color="primary">
-              Activate
-            </Button>
-            <Button type="button" variant="outlined" onClick={handleCancel}>
-              Cancel
-            </Button>
-          </Box>
-        </Grid>
-      </form>
-    </Box>
+                  rules={[{ type: 'email', required: true, message: 'Valid email is required.' }]}
+                >
+                  <Input />
+                </Form.Item>
+              </Col>
+            </Row>
+          </Form>
+        </div>
+      </div>
+      <div style={{ width: '85%', margin: '2rem auto' }}>
+        <Form.Item style={{ marginTop: 20 }}>
+          <Button type="primary" htmlType="submit" style={{ marginRight: 16 }}>
+            Activate
+          </Button>
+          <Button onClick={handleCancel}>Cancel</Button>
+        </Form.Item>
+      </div>
+    </div>
   );
 };
 
