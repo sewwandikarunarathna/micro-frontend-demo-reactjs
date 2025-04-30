@@ -1,0 +1,28 @@
+[
+    { "id": 1, "languageName": "English", "languageCode": "en", "usedInApp": true },
+    { "id": 2, "languageName": "Spanish", "languageCode": "es", "usedInApp": false },
+    { "id": 3, "languageName": "French", "languageCode": "fr", "usedInApp": false },
+    { "id": 4, "languageName": "German", "languageCode": "de", "usedInApp": false },
+    { "id": 5, "languageName": "Chinese", "languageCode": "zh", "usedInApp": false },
+    { "id": 6, "languageName": "Arabic", "languageCode": "ar", "usedInApp": false },
+    { "id": 7, "languageName": "Russian", "languageCode": "ru", "usedInApp": false },
+    { "id": 8, "languageName": "Portuguese", "languageCode": "pt", "usedInApp": false },
+    { "id": 9, "languageName": "Hindi", "languageCode": "hi", "usedInApp": false },
+    { "id": 10, "languageName": "Japanese", "languageCode": "ja", "usedInApp": false },
+    { "id": 11, "languageName": "Korean", "languageCode": "ko", "usedInApp": false },
+    { "id": 12, "languageName": "Italian", "languageCode": "it", "usedInApp": false },
+    { "id": 13, "languageName": "Dutch", "languageCode": "nl", "usedInApp": false },
+    { "id": 14, "languageName": "Turkish", "languageCode": "tr", "usedInApp": false },
+    { "id": 15, "languageName": "Polish", "languageCode": "pl", "usedInApp": false },
+    { "id": 16, "languageName": "Swedish", "languageCode": "sv", "usedInApp": false },
+    { "id": 17, "languageName": "Ukrainian", "languageCode": "uk", "usedInApp": false },
+    { "id": 18, "languageName": "Thai", "languageCode": "th", "usedInApp": false },
+    { "id": 19, "languageName": "Vietnamese", "languageCode": "vi", "usedInApp": false },
+    { "id": 20, "languageName": "Hebrew", "languageCode": "he", "usedInApp": false },
+    { "id": 21, "languageName": "Greek", "languageCode": "el", "usedInApp": false },
+    { "id": 22, "languageName": "Czech", "languageCode": "cs", "usedInApp": false },
+    { "id": 23, "languageName": "Finnish", "languageCode": "fi", "usedInApp": false },
+    { "id": 24, "languageName": "Romanian", "languageCode": "ro", "usedInApp": false },
+    { "id": 25, "languageName": "Hungarian", "languageCode": "hu", "usedInApp": false }
+  ]
+  
