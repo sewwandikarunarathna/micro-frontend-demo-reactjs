@@ -89,7 +89,6 @@ const SearchBar = (props: Props) => {
 
   return (
     <>
-      {/* <div className="flex w-auto justify-start items-start"> */}
       <div className="flex flex-col gap-4 h-screen border-l-2 border-gray-300">
         <div className="flex flow-row items-center justify-end w-full">
           <SharedButton
@@ -105,12 +104,10 @@ const SearchBar = (props: Props) => {
         </div>
         <SharedSider
           collapsed={props.sidebarCollapsed}
-          // onCollapse={getInitials}
           onCollapse={(value: any) => props.setSidebarCollapsed(value)}
           collapsedWidth={44}
           width={props.siderWidth}
           breakpoint="lg"
-          // bgColor="blue"
         >
           <SharedMenu
             className="flex flex-col h-auto"
@@ -123,24 +120,8 @@ const SearchBar = (props: Props) => {
           // bgColor="red"
             style={menuItemStyle}
           />
-          {/* <Menu mode="inline" defaultSelectedKeys={["1"]}>
-              {props.searchedData.map(
-                ({ key, label }: { key: string; label: string }) => (
-                  <Menu.Item key={key}>
-                    {props.sidebarCollapsed ? getInitials1(label) : label}
-                    {/* {getInitials(label)} */}
-
-          {/* <SharedMenu
-              className="flex flex-col h-auto"
-              mode="inline"
-              defaultSelectedKeys={["1"]}
-              defaultOpenKeys={["sub1"]}
-              bgColor="#e5e7eb"
-              items={processedItems}
-            /> */}
         </SharedSider>
       </div>
-      {/* </div> */}
       <div
         className="flex justify-start items-start w-2 h-screen p-0 bg-gray-300 hover:cursor-col-resize"
         onMouseDown={props.onMouseDown}

@@ -11,9 +11,9 @@ import ActionButtonBar from "../shared-components/templates/ActionButtonBar";
 import SearchBar from "../shared-components/templates/SearchBar";
 import AuthenticForm from "./AuthenticForm";
 import UserForm from "./Form";
-import UserGroup from "../modules/user/tab-components/UserGroup";
 import SharedTypography from "../shared-components/atoms/SharedTypography";
 import SharedTag from "../shared-components/atoms/SharedTag";
+import UserGroups from "../modules/user/tab-components/UserGroups";
 
 const AntUserDetails = () => {
   const [siderWidth, setSiderWidth] = useState(180); // Initial width of the Sider
@@ -36,7 +36,7 @@ const AntUserDetails = () => {
     {
       key: "1",
       label: "User Groups",
-      children: <UserGroup />,
+      children: <UserGroups />,
     },
     {
       key: "2",
@@ -266,10 +266,11 @@ const AntUserDetails = () => {
           {/* Tabs section */}
           <div className="flex flex-row w-full justify-start items-center">
             <Tabs
+            className="w-full"
               defaultActiveKey="1"
               items={tabItems}
               onChange={onChangeTab}
-              style={{ width: '100%' }}
+              // style={{ width: '100%' }}
             />
           </div>
         </div>

@@ -20,7 +20,7 @@ import {
   BellFilled,
   InfoCircleOutlined,
 } from "@ant-design/icons";
-import { JSX, ReactNode } from "react";
+import { JSX } from "react";
 
 const AntIcons = (iconName: string) => {
   const iconNameFromProps = iconName;

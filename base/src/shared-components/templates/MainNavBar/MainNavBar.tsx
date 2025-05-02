@@ -1,10 +1,9 @@
 import AntIcons from "../../../utils/AntIcons";
 import SharedButton from "../../atoms/SharedButton";
 import SharedBreadCrumb from "../../atoms/SharedBreadCrumb";
-import SharedIcon from "../../atoms/SharedIcon";
 import SharedImage from "../../atoms/SharedImage";
 import SharedNotification from "../../molecules/SharedNotification";
-import { Button, notification } from "antd";
+import { notification } from "antd";
 
 const MainNavBar = () => {;
   const breadcrumbItems = [
@@ -22,15 +21,6 @@ const MainNavBar = () => {;
     },
   ];  
 
-  const [api, contextHolder] = notification.useNotification();
-
-  // const openNotification = (notificationType: NotificationType) => {
-  //   api[notificationType || 'info']({
-  //     message: 'inside',
-  //     description: 'in in in',
-  //     duration: 0,
-  //   });
-  // };
   return (
     <div className="flex w-full justify-between items-center bg-gray-100 border-b-2 border-gray-300 shadow-sm">
       <div className="flex justify-start items-center gap-2 px-4 py-2">
@@ -46,9 +36,6 @@ const MainNavBar = () => {;
         >
           ABC Ltd
         </SharedButton>
-      {/* <Button type="primary" onClick={openNotification}>
-        click me
-      </Button> */}
         <SharedNotification
         className=" hover:bg-gray-300"
         type="text"
@@ -59,11 +46,6 @@ const MainNavBar = () => {;
         showProgress={true}
         pauseOnHover={true}
         />
-        {/* <SharedIcon
-          className="hover:cursor-pointer hover:bg-gray-300 rounded-full p-2"
-          onClick={<SharedNotification />}
-          component={AntIcons('BellIconFilled')()}
-        /> */}
         <SharedButton
           type="text"
           icon={AntIcons("InfoCircleOutlined")()}

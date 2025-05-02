@@ -2,10 +2,12 @@ import { Layout } from "antd";
 import {
   MaterialReactTable,
   MRT_DensityState,
+  MRT_RowSelectionState,
   useMaterialReactTable,
 } from "material-react-table";
 import _ from "lodash";
 import tableStyles from "../../../utils/tableStyles.ts";
+import { useEffect, useState } from "react";
 
 type Props = {
   columns: any;
@@ -24,6 +26,7 @@ type Props = {
   renderDetailPanel: any;
   onEditingRowSave: any;
   onEditingRowCancel: any;
+  displayColumnDefOptions?: any;
 };
 
 type editingModeProps = "cell" | "table" | "row" | "custom" | "modal";
@@ -40,7 +43,6 @@ const SharedTable = (props: Props) => {
 
     return height;
   };
-
   const tableProps = useMaterialReactTable({
     columns: props.columns,
     data: props.data,
@@ -65,13 +67,13 @@ const SharedTable = (props: Props) => {
     enableColumnPinning: true,
     columnResizeMode: "onChange", //default
     columnResizeDirection: "rtl",
-    enableBatchRowSelection: true,
+    enableBatchRowSelection: true, //enable batch row selection with shift key
     enableRowVirtualization: true,
     enableRowSelection: true,
     rowVirtualizerOptions: { overscan: 5 },
     state: { isLoading: props.isDataLoading ?? false }, // isLoading
     enableColumnOrdering: true,
-    muiCircularProgressProps: { 
+    muiCircularProgressProps: {
       color: "secondary",
       thickness: 5,
       size: 55,
@@ -88,6 +90,8 @@ const SharedTable = (props: Props) => {
     muiTopToolbarProps: {
       sx: tableStyles.muiTopToolbarProps,
     },
+    positionToolbarAlertBanner: "bottom",
+    muiToolbarAlertBannerProps: tableStyles.muiToolbarAlertBannerProps, //alert banner (row selection)
     muiBottomToolbarProps: {
       sx: tableStyles.muiBottomToolbarProps,
     },
@@ -148,10 +152,7 @@ const SharedTable = (props: Props) => {
     onEditingRowCancel: props.onEditingRowCancel,
     renderRowActions: props.renderRowActions,
     displayColumnDefOptions: {
-      "mrt-row-actions": {
-        header: "Actions", //change header text
-        size: 120, //change column size
-      },
+      "mrt-row-actions": props.displayColumnDefOptions
     },
     //add custom keyboard shortcuts
     defaultColumn: {
