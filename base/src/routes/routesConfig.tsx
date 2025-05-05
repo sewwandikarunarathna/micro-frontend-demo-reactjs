@@ -193,15 +193,6 @@ const routeConfig: RoutesType[] = [
     ),
     allowedRoles: ["User", "Admin"],
   },
-  // {
-  //   path: "/license-activation",
-  //   element: (
-  //     <Suspense fallback={<div>Loading...</div>}>
-  //     <LicenseActivation />
-  //     </Suspense>
-  //   ),
-  //   allowedRoles: ["Guest", "User", "Admin"], // Accessible by all roles
-  // },
   {
     path: "/license-activation",
     element: (

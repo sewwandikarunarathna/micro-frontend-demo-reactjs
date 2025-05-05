@@ -4,6 +4,7 @@ import { Link, Route, Routes } from "react-router-dom";
 import { StoreProvider } from "base/GlobalStore";
 
 const Login = lazy(() => import("./components/Login"));
+const Signup = lazy(() => import("./components/Signup"));
 
 function App() {
   return (
@@ -12,12 +13,21 @@ function App() {
         Home
       </Link>
       <Link to="/login">Login</Link>
+      <Link to="/signup">Signup</Link>
       <Routes>
         <Route
-          path="/login"
+          path="/signup"
           element={
             <Suspense fallback={<div>Loading...</div>}>
-              <Login />
+              <Signup />
+            </Suspense>
+          }
+        />
+        <Route
+          path="/"
+          element={
+            <Suspense fallback={<div>Loading...</div>}>
+              <Signup />
             </Suspense>
           }
         />
