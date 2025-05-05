@@ -25,7 +25,7 @@ type Props = {
   enableRowActions?: boolean;
   renderTopToolbarCustomActions?: any;
   renderDetailPanel: any;
-  onEditingRowSave: any;
+  onEditingRowSave?: any;
   onEditingRowCancel: any;
   displayColumnDefOptions?: any;
 };

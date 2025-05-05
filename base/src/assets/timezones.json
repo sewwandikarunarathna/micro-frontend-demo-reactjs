@@ -1,0 +1,23 @@
+[
+    { "id": 1, "timeZoneName": "Pacific Standard Time (America/Los_Angeles)", "utcOffset": "UTC-08:00", "usedInApp": true },
+    { "id": 2, "timeZoneName": "Eastern Standard Time (America/New_York)", "utcOffset": "UTC-05:00", "usedInApp": true },
+    { "id": 3, "timeZoneName": "Central European Time (Europe/Berlin)", "utcOffset": "UTC+01:00", "usedInApp": false },
+    { "id": 4, "timeZoneName": "Greenwich Mean Time (Europe/London)", "utcOffset": "UTC+00:00", "usedInApp": true },
+    { "id": 5, "timeZoneName": "India Standard Time (Asia/Kolkata)", "utcOffset": "UTC+05:30", "usedInApp": true },
+    { "id": 6, "timeZoneName": "Japan Standard Time (Asia/Tokyo)", "utcOffset": "UTC+09:00", "usedInApp": false },
+    { "id": 7, "timeZoneName": "Australian Eastern Time (Australia/Sydney)", "utcOffset": "UTC+10:00", "usedInApp": false },
+    { "id": 8, "timeZoneName": "Singapore Standard Time (Asia/Singapore)", "utcOffset": "UTC+08:00", "usedInApp": false },
+    { "id": 9, "timeZoneName": "Moscow Standard Time (Europe/Moscow)", "utcOffset": "UTC+03:00", "usedInApp": false },
+    { "id": 10, "timeZoneName": "Brasília Time (America/Sao_Paulo)", "utcOffset": "UTC-03:00", "usedInApp": false },
+    { "id": 11, "timeZoneName": "New Zealand Standard Time (Pacific/Auckland)", "utcOffset": "UTC+12:00", "usedInApp": false },
+    { "id": 12, "timeZoneName": "Dubai Time (Asia/Dubai)", "utcOffset": "UTC+04:00", "usedInApp": false },
+    { "id": 13, "timeZoneName": "China Standard Time (Asia/Shanghai)", "utcOffset": "UTC+08:00", "usedInApp": false },
+    { "id": 14, "timeZoneName": "Central Time (America/Chicago)", "utcOffset": "UTC-06:00", "usedInApp": false },
+    { "id": 15, "timeZoneName": "Mountain Time (America/Denver)", "utcOffset": "UTC-07:00", "usedInApp": false },
+    { "id": 16, "timeZoneName": "South Africa Standard Time (Africa/Johannesburg)", "utcOffset": "UTC+02:00", "usedInApp": false },
+    { "id": 17, "timeZoneName": "Hong Kong Time (Asia/Hong_Kong)", "utcOffset": "UTC+08:00", "usedInApp": false },
+    { "id": 18, "timeZoneName": "Argentina Time (America/Argentina/Buenos_Aires)", "utcOffset": "UTC-03:00", "usedInApp": false },
+    { "id": 19, "timeZoneName": "Alaska Standard Time (America/Anchorage)", "utcOffset": "UTC-09:00", "usedInApp": false },
+    { "id": 20, "timeZoneName": "Hawaii Standard Time (Pacific/Honolulu)", "utcOffset": "UTC-10:00", "usedInApp": false }
+  ]
+  

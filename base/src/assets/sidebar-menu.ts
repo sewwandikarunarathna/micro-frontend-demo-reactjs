@@ -24,17 +24,20 @@ export const sidebarMenuList = [
         gap: true,
         subMenu: [
           { key: 7, title: "Country", url: "/country" },
-          { key: 8, title: "Currency", url: "/user-details" },
-          { key: 9, title: "Language", url: "/user-details" },
-          { key: 10, title: "UOM", url: "/home" },
-          { key: 11, title: "Time Zone", url: "/user-details" },
+          { key: 8, title: "Currency", url: "/currency" },
+          { key: 9, title: "Language", url: "/language" },
+          { key: 10, title: "UOM", url: "/uom" },
+          { key: 11, title: "Time Zone", url: "/timezone" },
         ],
       },
       { 
         key: '2-3',
-        title: "Licesne Admin", 
+        title: "License", 
         icon: "TableIcon",
-        url: "/user-details"
+        gap: true,
+        subMenu: [
+          { key: 7, title: "License Activation", url: "/license-activation" },
+        ]
       }
     ],
   },
@@ -87,7 +90,7 @@ export const sidebarMenuList1 = [
         key: 5,
         title: "Licesne Admin", 
         icon: "TableIcon",
-        url: "/user-details"
+        url: "/licence-activation"
       }
     ],
   },

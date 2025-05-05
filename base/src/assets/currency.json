@@ -1,0 +1,227 @@
+[
+  {
+    "id": 1,
+    "currencyName": "US Dollar",
+    "currencyCode": "USD",
+    "symbol": "$",
+    "exchangeRateDecimalPlaces": 4,
+    "valueDecimalPlaces": 2,
+    "useInApp": true
+  },
+  {
+    "id": 2,
+    "currencyName": "Euro",
+    "currencyCode": "EUR",
+    "symbol": "€",
+    "exchangeRateDecimalPlaces": 4,
+    "valueDecimalPlaces": 2,
+    "useInApp": false
+  },
+  {
+    "id": 3,
+    "currencyName": "British Pound",
+    "currencyCode": "GBP",
+    "symbol": "£",
+    "exchangeRateDecimalPlaces": 4,
+    "valueDecimalPlaces": 2,
+    "useInApp": true
+  },
+  {
+    "id": 4,
+    "currencyName": "Japanese Yen",
+    "currencyCode": "JPY",
+    "symbol": "¥",
+    "exchangeRateDecimalPlaces": 2,
+    "valueDecimalPlaces": 0,
+    "useInApp": false
+  },
+  {
+    "id": 5,
+    "currencyName": "Australian Dollar",
+    "currencyCode": "AUD",
+    "symbol": "A$",
+    "exchangeRateDecimalPlaces": 4,
+    "valueDecimalPlaces": 2,
+    "useInApp": true
+  },
+  {
+    "id": 6,
+    "currencyName": "Canadian Dollar",
+    "currencyCode": "CAD",
+    "symbol": "C$",
+    "exchangeRateDecimalPlaces": 4,
+    "valueDecimalPlaces": 2,
+    "useInApp": true
+  },
+  {
+    "id": 7,
+    "currencyName": "Swiss Franc",
+    "currencyCode": "CHF",
+    "symbol": "CHF",
+    "exchangeRateDecimalPlaces": 4,
+    "valueDecimalPlaces": 2,
+    "useInApp": false
+  },
+  {
+    "id": 8,
+    "currencyName": "Chinese Yuan",
+    "currencyCode": "CNY",
+    "symbol": "¥",
+    "exchangeRateDecimalPlaces": 4,
+    "valueDecimalPlaces": 2,
+    "useInApp": true
+  },
+  {
+    "id": 9,
+    "currencyName": "Indian Rupee",
+    "currencyCode": "INR",
+    "symbol": "₹",
+    "exchangeRateDecimalPlaces": 4,
+    "valueDecimalPlaces": 2,
+    "useInApp": false
+  },
+  {
+    "id": 10,
+    "currencyName": "Brazilian Real",
+    "currencyCode": "BRL",
+    "symbol": "R$",
+    "exchangeRateDecimalPlaces": 4,
+    "valueDecimalPlaces": 2,
+    "useInApp": true
+  },
+  {
+    "id": 11,
+    "currencyName": "Russian Ruble",
+    "currencyCode": "RUB",
+    "symbol": "₽",
+    "exchangeRateDecimalPlaces": 4,
+    "valueDecimalPlaces": 2,
+    "useInApp": false
+  },
+  {
+    "id": 12,
+    "currencyName": "Mexican Peso",
+    "currencyCode": "MXN",
+    "symbol": "$",
+    "exchangeRateDecimalPlaces": 4,
+    "valueDecimalPlaces": 2,
+    "useInApp": true
+  },
+  {
+    "id": 13,
+    "currencyName": "South African Rand",
+    "currencyCode": "ZAR",
+    "symbol": "R",
+    "exchangeRateDecimalPlaces": 4,
+    "valueDecimalPlaces": 2,
+    "useInApp": false
+  },
+  {
+    "id": 14,
+    "currencyName": "New Zealand Dollar",
+    "currencyCode": "NZD",
+    "symbol": "NZ$",
+    "exchangeRateDecimalPlaces": 4,
+    "valueDecimalPlaces": 2,
+    "useInApp": true
+  },
+  {
+    "id": 15,
+    "currencyName": "Singapore Dollar",
+    "currencyCode": "SGD",
+    "symbol": "S$",
+    "exchangeRateDecimalPlaces": 4,
+    "valueDecimalPlaces": 2,
+    "useInApp": true
+  },
+  {
+    "id": 16,
+    "currencyName": "Hong Kong Dollar",
+    "currencyCode": "HKD",
+    "symbol": "HK$",
+    "exchangeRateDecimalPlaces": 4,
+    "valueDecimalPlaces": 2,
+    "useInApp": false
+  },
+  {
+    "id": 17,
+    "currencyName": "Norwegian Krone",
+    "currencyCode": "NOK",
+    "symbol": "kr",
+    "exchangeRateDecimalPlaces": 4,
+    "valueDecimalPlaces": 2,
+    "useInApp": false
+  },
+  {
+    "id": 18,
+    "currencyName": "Swedish Krona",
+    "currencyCode": "SEK",
+    "symbol": "kr",
+    "exchangeRateDecimalPlaces": 4,
+    "valueDecimalPlaces": 2,
+    "useInApp": false
+  },
+  {
+    "id": 19,
+    "currencyName": "Danish Krone",
+    "currencyCode": "DKK",
+    "symbol": "kr",
+    "exchangeRateDecimalPlaces": 4,
+    "valueDecimalPlaces": 2,
+    "useInApp": false
+  },
+  {
+    "id": 20,
+    "currencyName": "Turkish Lira",
+    "currencyCode": "TRY",
+    "symbol": "₺",
+    "exchangeRateDecimalPlaces": 4,
+    "valueDecimalPlaces": 2,
+    "useInApp": true
+  },
+  {
+    "id": 21,
+    "currencyName": "South Korean Won",
+    "currencyCode": "KRW",
+    "symbol": "₩",
+    "exchangeRateDecimalPlaces": 4,
+    "valueDecimalPlaces": 0,
+    "useInApp": true
+  },
+  {
+    "id": 22,
+    "currencyName": "UAE Dirham",
+    "currencyCode": "AED",
+    "symbol": "د.إ",
+    "exchangeRateDecimalPlaces": 4,
+    "valueDecimalPlaces": 2,
+    "useInApp": true
+  },
+  {
+    "id": 23,
+    "currencyName": "Saudi Riyal",
+    "currencyCode": "SAR",
+    "symbol": "﷼",
+    "exchangeRateDecimalPlaces": 4,
+    "valueDecimalPlaces": 2,
+    "useInApp": false
+  },
+  {
+    "id": 24,
+    "currencyName": "Malaysian Ringgit",
+    "currencyCode": "MYR",
+    "symbol": "RM",
+    "exchangeRateDecimalPlaces": 4,
+    "valueDecimalPlaces": 2,
+    "useInApp": true
+  },
+  {
+    "id": 25,
+    "currencyName": "Israeli Shekel",
+    "currencyCode": "ILS",
+    "symbol": "₪",
+    "exchangeRateDecimalPlaces": 4,
+    "valueDecimalPlaces": 2,
+    "useInApp": false
+  }
+]

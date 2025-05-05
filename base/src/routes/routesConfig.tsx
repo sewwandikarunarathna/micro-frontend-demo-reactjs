@@ -17,6 +17,13 @@ const Layout1 = lazy(() => import("../layouts/Layout1"));
 const AntLayout = lazy(() => import("../layouts/AntLayout"));
 const UserGroup = lazy(() => import("../modules/user/tab-components/UserGroup"));
 
+const Country =lazy(()=> import("../modules/system-enablement/CountryLayout"));
+const Currency =lazy(()=> import("../modules/system-enablement/CurrencyLayout"));
+const Language =lazy(()=> import("../modules/system-enablement/LanguageLayout"));
+const TimeZone =lazy(()=> import("../modules/system-enablement/TimeZoneComponentLayout"));
+const Uom =lazy(()=> import("../modules/system-enablement/UOMComponentLayout"));
+const LicenseActivation=lazy(()=>import("../modules/LicenseActivation/LicenseActivation"));
+
 const routeConfig: RoutesType[] = [
   {
     path: "/authLogin",
@@ -154,6 +161,70 @@ const routeConfig: RoutesType[] = [
     ),
     allowedRoles: ["Guest", "User", "Admin"], // Accessible by all roles
   },
+  {
+    path: "/country",
+    element: (
+      <Suspense fallback={<div>Loading...</div>}>
+        <Country />
+      </Suspense>
+    ),
+    allowedRoles: ["User", "Admin"],
+  },
+  {
+    path: "/currency",
+    element: (
+      <Suspense fallback={<div>Loading...</div>}>
+        <Currency />
+      </Suspense>
+    ),
+    allowedRoles: ["User", "Admin"],
+  }, 
+  {
+    path: "/language",
+    element: (
+      <Suspense fallback={<div>Loading...</div>}>
+        <Language />
+      </Suspense>
+    ),
+    allowedRoles: ["User", "Admin"],
+  },
+  {
+    path: "/timezone",
+    element: (
+      <Suspense fallback={<div>Loading...</div>}>
+        <TimeZone />
+      </Suspense>
+    ),
+    allowedRoles: ["User", "Admin"],
+  },
+  {
+    path: "/uom",
+    element: (
+      <Suspense fallback={<div>Loading...</div>}>
+        <Uom />
+      </Suspense>
+    ),
+    allowedRoles: ["User", "Admin"],
+  },
+  // {
+  //   path: "/license-activation",
+  //   element: (
+  //     <Suspense fallback={<div>Loading...</div>}>
+  //     <LicenseActivation />
+  //     </Suspense>
+  //   ),
+  //   allowedRoles: ["Guest", "User", "Admin"], // Accessible by all roles
+  // },
+  {
+    path: "/license-activation",
+    element: (
+      <Suspense fallback={<div>Loading...</div>}>
+        <LicenseActivation />
+      </Suspense>
+    ),
+    allowedRoles: ["User", "Admin"],
+  },
+
 ];
 
 export default routeConfig;
