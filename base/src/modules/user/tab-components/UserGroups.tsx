@@ -1,8 +1,8 @@
 import { useMemo, useState } from "react";
-import STUDENTS from "../../../assets/students.json";
+import USERGROUPS from "../../../assets/userGroups.json";
 import { useNavigate } from "react-router-dom";
-import { usStates } from "../../../assets/makeData";
-import { MRT_ColumnDef, MRT_DensityState } from "material-react-table";
+import { usStates } from "../../../assets/makeData.ts";
+import { MRT_ColumnDef, MRT_DensityState, MRT_Row } from "material-react-table";
 import { downloadExcel } from "react-export-table-to-excel";
 import { Divider, IconButton, Typography } from "@mui/material";
 import FileDownloadIcon from "@mui/icons-material/FileDownload";
@@ -12,51 +12,39 @@ import SaveIcon from "@mui/icons-material/Save";
 import DeleteIcon from "@mui/icons-material/Delete";
 import ViewIcon from "@mui/icons-material/ViewListRounded";
 import _ from "lodash";
-import SharedTable from "../../../shared-components/organisms/SharedTable";
+import SharedTable from "../../../shared-components/organisms/SharedTable/index.ts";
 import TopToolbar from "../../../shared-components/molecules/sharedTableItems/TopToolbar.tsx/TopToolbar.tsx";
 import DetailPanel from "../../../shared-components/molecules/sharedTableItems/DetailPanel.tsx/DetailPanel.tsx";
 import CellActionMenuItems from "../../../shared-components/molecules/sharedTableItems/CellActionMenuItems.tsx/CellActionMenuItems.tsx";
 import RowActions from "../../../shared-components/molecules/sharedTableItems/RowActions.tsx/RowActions.tsx";
+import SharedCheckbox from "../../../shared-components/atoms/SharedCheckbox/SharedCheckbox.tsx";
 
 //data type
-type Student = {
+type UserGroup = {
   id: number;
-  name: string;
-  email: string;
-  phone: string;
-  standard: number;
-  section: string;
-  age: number;
-  date_of_birth: string;
-  date_of_admission: string;
-  address: {
-    pincode: string;
-    city: string;
-    street: string;
-    state: string;
-  };
+  userGroup: string;
+        description: string;
+        default: boolean;
 };
 
-const expandDataArray = ["id", "name", "email", "phone"];
+const expandDataArray = ["userGroup", "description"];
 const expandData = {
-  id: "ID",
-  name: "Name",
-  email: "Email",
-  phone: "Phone",
+  userGroup: "User Group",
+  description: "Description",
 };
 
 type editingModeProps = "cell" | "table" | "row" | "custom" | "modal";
 
-const UserGroup = () => {
+const UserGroups = () => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [changeEditingMode, setchangeEditingMode] =
     useState<editingModeProps>("cell");
-  const [data, setData] = useState<Student[]>(STUDENTS);
+  const [data, setData] = useState<UserGroup[]>(USERGROUPS);
   const [validationErrors, setValidationErrors] = useState<
     Record<string, string | undefined>
   >({});
   //keep track of rows that have been edited
-  const [editedUsers, setEditedUsers] = useState<Record<string, Student>>({});
+  const [editedUserGroups, setEditedUserGroups] = useState<Record<string, UserGroup>>({});
 
   const navigate = useNavigate();
 
@@ -82,23 +70,23 @@ const UserGroup = () => {
     },
   ];
 
-  const columns = useMemo<MRT_ColumnDef<Student>[]>(
+  const columns = useMemo<MRT_ColumnDef<UserGroup>[]>(
     () => [
       {
-        accessorKey: "name",
-        header: "Full Name",
-        size: 120,
+        accessorKey: "userGroup",
+        header: "User Group",
+        // size: 220,
         muiTableBodyCellEditTextFieldProps: { autoFocus: true }, // Always editable
         muiEditTextFieldProps: ({ cell, row }) => ({
           type: "link",
           required: true,
-          error: !!validationErrors?.name,
-          helperText: validationErrors?.name,
+          error: !!validationErrors?.userGroup,
+          helperText: validationErrors?.userGroup,
           //remove any previous validation errors when user focuses on the input
           onFocus: () =>
             setValidationErrors({
               ...validationErrors,
-              name: undefined,
+              userGroup: undefined,
             }),
           //store edited user in state to be saved later
           onBlur: (event) => {
@@ -112,109 +100,66 @@ const UserGroup = () => {
               ...validationErrors,
               [cell.id]: validationError,
             });
-            setEditedUsers({ ...editedUsers, [row.id]: row.original });
-            console.log("set edittt", editedUsers);
+            setEditedUserGroups({ ...editedUserGroups, [row.id]: row.original });
+            console.log("set edittt", editedUserGroups);
           },
           // Cell: ({ row }) => (
           //   <a href='http://localhost:3000' target="_blank" rel="noopener noreferrer" style={{ color: 'blue', textDecoration: 'underline' }}>
-          //     {row.original.name}
+          //     {row.original.userGroup}
           //   </a>
           // ),
         }),
       },
       {
-        accessorKey: "email",
-        header: "Email Address",
-        size: 150,
-        muiTableBodyCellEditTextFieldProps: { type: "email" }, // Always editable
+        accessorKey: "description",
+        header: "description",
+        // size: 240,
         muiEditTextFieldProps: {
-          type: "email",
           required: true,
-          error: !!validationErrors?.email,
-          helperText: validationErrors?.email,
+          error: !!validationErrors?.description,
+          helperText: validationErrors?.description,
           //remove any previous validation errors when user focuses on the input
           onFocus: () =>
             setValidationErrors({
               ...validationErrors,
-              email: undefined,
+              description: undefined,
             }),
         },
       },
       {
-        accessorKey: "phone",
-        header: "Phone Number",
-        size: 100,
-        muiTableBodyCellEditTextFieldProps: { type: "number" }, // Always editable
-      },
-      {
-        accessorKey: "standard",
-        header: "Class Name",
-        size: 100,
-      },
-      {
-        accessorKey: "section",
-        header: "Section Name",
-        size: 120,
-      },
-      {
-        accessorKey: "age",
-        header: "Age",
-        size: 100,
-      },
-      {
-        accessorKey: "date_of_birth",
-        header: "DOB",
-        size: 150,
-      },
-      {
-        accessorKey: "date_of_admission",
-        header: "DOA",
-        size: 150,
-      },
-      {
-        accessorKey: "address.pincode",
-        header: "Pin Code",
-        muiEditTextFieldProps: {
-          type: "number",
-          required: true,
-          error: !!validationErrors?.pincode,
-          helperText: validationErrors?.pincode,
-        },
-        size: 120,
-      },
-      {
-        accessorKey: "address.city",
-        header: "City Name",
-        size: 120,
-      },
-      {
-        accessorKey: "address.street",
-        header: "Street Name",
-        size: 120,
-      },
-      {
-        accessorKey: "address.state",
-        header: "State Name",
-        size: 150,
-        editVariant: "select",
-        editSelectOptions: usStates,
-        muiEditTextFieldProps: ({ row }) => ({
-          select: true,
-          error: !!validationErrors?.state,
-          helperText: validationErrors?.state,
-          onChange: (event) => console.log("statett", row),
-
-          // setEditedUsers({
-          //   ...editedUsers,
-          //   [row.id]: { ...row.original, state: event.target.value },
-          // }),
-        }),
+        accessorKey: "default",
+        header: "Default",
+        // size: 160,
+        // muiTableBodyCellEditTextFieldProps: { autoFocus: false },
+        enableEditing: false, // Disable editing for this column
+         // Custom cell rendering with checkbox
+         Cell: ({ row }) => (
+          <SharedCheckbox
+            checked={row.original.default}
+            onChange={(e:any) => {e.stopPropagation();handleCheckboxChange(row, e.target.checked);}}
+            // onClick={(e:any) => e.stopPropagation()} // Prevent cell click from triggering edit mode
+          />
+        ),
+        // Optional: Hide the default filtering UI for this column
+        enableColumnFilter: false,
       },
     ],
     [validationErrors]
   );
 
-  const handleSave = ({ row, values }: { row: any; values: Student }) => {
+  // Handle checkbox changes
+  const handleCheckboxChange = (row: MRT_Row<UserGroup>, checked:boolean) => {
+    setData(
+      data.map((item) => {
+        if (item.id === row.original.id) {
+          return { ...item, default: checked };
+        }
+        return item;
+      })
+    );
+  };
+
+  const handleSave = ({ row, values }: { row: any; values: UserGroup }) => {
     console.log("updatedData", values);
     const updatedData = [...data];
     updatedData[row.index] = values; // Update row data
@@ -245,18 +190,18 @@ const UserGroup = () => {
   //UPDATE action
   const handleSaveUsers = () => {
     if (Object.values(validationErrors).some((error) => !!error)) return;
-    console.log("editedUsers", editedUsers);
+    console.log("editedUserGroups", editedUserGroups);
 
-    // await updateUsers(Object.values(editedUsers));
-    Object.values(editedUsers)?.map((std: Student) => {
+    // await updateUsers(Object.values(editedUserGroups));
+    Object.values(editedUserGroups)?.map((std: UserGroup) => {
       const newUser = data.find((u) => u.id === std.id);
       return newUser ? newUser : std;
     }),
-      setEditedUsers({});
+      setEditedUserGroups({});
   };
 
   // Custom toolbar with multiple buttons
-  const renderUserToolbar = ({ table }: { table: any }) => (
+  const renderUserGroupToolbar = ({ table }: { table: any }) => (
     <TopToolbar>
       <IconButton
         size="small"
@@ -271,8 +216,8 @@ const UserGroup = () => {
       size="small" 
       // disabled={selectedRowIds.length === 0} 
       onClick={()=>{
-        const selectedIds = table.getSelectedRowModel().rows.map((row: { original: Student }) => row.original.email);
-        setData(prevData => prevData.filter(row => !selectedIds.includes(row.email)));
+        const selectedIds = table.getSelectedRowModel().rows.map((row: { original: UserGroup }) => row.original.id);
+        setData(prevData => prevData.filter(row => !selectedIds.includes(row.id)));
         table.resetRowSelection(); // Reset selection after deletion
         }}>
         <DeleteIcon />
@@ -286,8 +231,8 @@ const UserGroup = () => {
   );
 
   // Detail panel renderer
-  const renderUserDetails = ({ row }: { row: any }) =>
-    row.original.address ? (
+  const renderUserGroupDetails = ({ row }: { row: any }) =>
+    row.original.userGroup ? (
       <DetailPanel>
         {Object.keys(row.original)
           .filter((itemId) => expandDataArray.includes(itemId))
@@ -371,20 +316,23 @@ const UserGroup = () => {
       columns={columns}
       data={data}
       tableDensity="compact"
-      leftColumnPinning={["name"]}
-      rightColumnPinning={["mrt-row-actions"]}
+      // leftColumnPinning={["name"]}
+      // rightColumnPinning={["mrt-row-actions"]}
+      // displayColumnDefOptions={{
+      //     header: "Actions", //change header text
+      //     size: 160, //change column size
+      // }}
       changeEditingMode={changeEditingMode}
       onEditingRowSave={handleSave}
       onEditingRowCancel={() => {
         setValidationErrors({});
         setchangeEditingMode("cell");
       }}
-      renderTopToolbarCustomActions={renderUserToolbar}
-      renderDetailPanel={renderUserDetails}
+      renderTopToolbarCustomActions={renderUserGroupToolbar}
+      renderDetailPanel={renderUserGroupDetails}
       customRowHeight={getRowHeight}
       renderCellActionMenuItems={renderCellActions}
-      enableRowActions
-      renderRowActions={renderRowActions}
+      // renderRowActions={renderRowActions}
     />
   );
 };
@@ -397,4 +345,4 @@ const validateEmail = (email: string) =>
     .match(
       /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
     );
-export default UserGroup;
+export default UserGroups;

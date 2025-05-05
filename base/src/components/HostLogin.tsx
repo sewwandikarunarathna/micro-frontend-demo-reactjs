@@ -1,7 +1,7 @@
-import { lazy, useEffect } from "react";
-import { dataService } from "../services/DataService";
+
 // import { useGlobalStore } from "base/GlobalStore";
 import { useUserStore } from "base/UserStore";
+import { lazy } from "react";
 const AuthLoginModule = lazy(() => import("auth/Login"));
 
 const HostLogin = () => {

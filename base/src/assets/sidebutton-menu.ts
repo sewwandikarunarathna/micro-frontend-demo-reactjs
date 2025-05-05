@@ -6,6 +6,7 @@ export const sideButtonMenuList = [
   {
     title: "Setting",
     icon: "SettingsIcon",
+    url: "user-groups"
   },
   { title: "AntLayout", icon: "AntLayoutIcon", url: "/ant-layout" },
   { title: "Logout", icon: "LogoutIcon", url: "/logout" },

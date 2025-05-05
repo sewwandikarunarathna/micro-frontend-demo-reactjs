@@ -17,8 +17,10 @@ import {
   SearchOutlined as SearchIcon,
   MenuUnfoldOutlined,
   MenuFoldOutlined,
+  BellFilled,
+  InfoCircleOutlined,
 } from "@ant-design/icons";
-import { JSX, ReactNode } from "react";
+import { JSX } from "react";
 
 const AntIcons = (iconName: string) => {
   const iconNameFromProps = iconName;
@@ -42,11 +44,21 @@ const AntIcons = (iconName: string) => {
     DeleteIcon: <DeleteIcon />,
     MenuUnfoldOutlined: <MenuUnfoldOutlined />,
     MenuFoldOutlined: <MenuFoldOutlined />,
+    InfoCircleOutlined: <InfoCircleOutlined />,
+    BellIconFilled: <BellFilled />
   };
   
+  const iconNames: string | any = {
+    BellIconFilled: BellFilled
+  };
+
   const getIconComponent = () => {
     if (iconMap[iconNameFromProps]) {
       return iconMap[iconNameFromProps];
+    }
+    // Check if the icon name is in the iconNames object
+    if(iconNames[iconNameFromProps]) {     
+      return iconNames[iconNameFromProps];
     }
     // Return a default icon or null if the icon is not found
     return null;

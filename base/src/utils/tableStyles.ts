@@ -21,6 +21,9 @@ const tableStyles = {
     xl: "800px",
   },
   muiTopToolbarProps: {
+    display: "flex",
+    justifyContent: "flex-start",
+    flexDirection: "row",
     backgroundColor: "#ECECEE",
     minHeight: "15px",
     maxHeight: "34px",
@@ -47,7 +50,7 @@ const tableStyles = {
   muiBottomToolbarProps: {
     minHeight: "10px",
     maxHeight: "36px",
-    padding: "10px",
+    padding: "12px",
     "& .MuiTypography-root": {
       fontSize: "0.7rem",
     },
@@ -76,6 +79,24 @@ const tableStyles = {
     "& .MuiMenu-root": {
       // page number list
       fontSize: "0.75rem",
+    },
+  },
+  muiToolbarAlertBannerProps: {
+    sx: {
+      fontSize: "0.75rem",
+      "& .MuiButtonBase-root": {
+        // Reduce size of buttons
+        padding: "0px 6px",
+        minWidth: "unset",
+        fontSize: "0.75rem",
+        color: "#000000",
+        textTransform: "capitalize",
+      },
+      "& .MuiStack-root": {
+      overflow: "hidden",
+        padding: 0,
+        alignItems: "flex-start",
+      }
     },
   },
   muiTableBodyCellProps: {

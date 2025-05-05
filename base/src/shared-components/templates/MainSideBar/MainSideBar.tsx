@@ -69,27 +69,23 @@ const MainSideBar = (props: Props) => {
               ? AntIcons("MenuUnfoldOutlined")()
               : AntIcons("MenuFoldOutlined")()
           }
-          fontSize="16px"
-          width={64}
-          height={64}
           onClick={props.onClick}
         />
       </div>
       <PerfectScrollbar className="" onScrollY={() => console.log("helooo")}>
         <SharedSider
-          className="!bg-red-200"
           collapsed={props.sidebarCollapsed}
           collapsedWidth={64}
           width={200}
           breakpoint="lg"
-          bgColor="#e5e7eb"
+          // bgColor="#e5e7eb"
         >
           <SharedMenu
             className="flex flex-col h-auto"
             mode="inline"
             // defaultSelectedKeys={["1"]}
             // defaultOpenKeys={["sub1"]}
-            bgColor="#e5e7eb"
+            // bgColor="#e5e7eb"
             // items={sidebarItems}
             items={menuItems}
             openKeys={openKeys}

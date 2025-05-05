@@ -1,0 +1,26 @@
+[
+    {
+        "id": 1,
+        "userGroup": "Finance",
+        "description": "Finance group",
+        "default": true
+    },
+    {
+        "id": 2,
+        "userGroup": "Supply Chain",
+        "description": "Supply Chain group",
+        "default": false
+    },
+    {
+        "id": 3,
+        "userGroup": "BI",
+        "description": "BI group",
+        "default": true
+    },
+    {
+        "id": 4,
+        "userGroup": "Admin",
+        "description": "Administrator group",
+        "default": true
+    }
+]
