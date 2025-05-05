@@ -5,7 +5,7 @@ import { Button, Paper } from "@mui/material";
 // import {DataService} from "base/DataService";
 // import { useAuth } from 'base/AuthContext';
 
-// const SharedButton = lazy(() => import("base/SharedButton"));
+const SharedButton = lazy(() => import("base/SharedButton"));
 
 const Signup = () => {
   const [username, setUsername] = useState('');
@@ -35,13 +35,14 @@ const Signup = () => {
   }
 
   return (
-    <div className="flex flex-col content-center w-full bg-blue-400">
+    <div className="flex flex-col content-center w-full bg-orange-100">
       <Paper className="flex flex-col content-center justify-center items-center h-full gap-4 p-6 m-8 bg-amber-200">
         <h1 className='text-4xl font-bold'>Signup in Auth</h1>
         <TextField id="outlined-basic" name={username} type="text" onChange={(e)=>setUsername(e.target.value)} label="Username" variant="outlined" />
         <TextField id="outlined-basic" name={email} type="text" onChange={(e)=>setEmail(e.target.value)} label="Email" variant="outlined" />
         <TextField id="outlined-basic" name={password} type="password" onChange={(e)=>setPassword(e.target.value)} label="Password" variant="outlined" />
-        <Button onClick={handleLogin} variant="contained" children="Auth Signup" />
+        <SharedButton onClick={handleLogin} variant="contained" children="Auth Signup" />
+        {/* <Button onClick={handleLogin} variant="contained" children="Auth Signup" /> */}
           {/* {user.username != '' ||user.email != '' || user.password != '' ? (
             <h3>
               User Info: {user.username} | {user.email} | {user.password}

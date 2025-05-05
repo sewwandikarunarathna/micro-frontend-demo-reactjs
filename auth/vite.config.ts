@@ -14,6 +14,7 @@ export default defineConfig({
       name: 'auth',
       filename: 'remoteEntry.js',
       exposes: {
+        './Routes': './src/main.tsx',
         './AuthApp': './src/App.tsx',
         './Login': './src/components/Login.tsx',
         // './Signup': './src/components/Signup.tsx',
