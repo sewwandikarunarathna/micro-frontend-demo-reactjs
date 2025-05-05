@@ -20,7 +20,7 @@ const SharedSider = (props: Props) => {
         className={props.className}
         trigger={null}
         collapsible
-        style={{ background: props.bgColor ?? "#f9fafb" }}
+        style={{ background: props.bgColor }}
         collapsed={props.collapsed}
         onCollapse={props.onCollapse}
         collapsedWidth={props.collapsedWidth}

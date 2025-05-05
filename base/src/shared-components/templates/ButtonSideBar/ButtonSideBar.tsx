@@ -26,7 +26,7 @@ const ButtonSideBar = () => {
   return (
     <SharedSider bgColor="#f9fafb" collapsed={true}>
       <SharedMenu
-        mode="inline"
+        // mode="inline"
         defaultSelectedKeys={["1"]}
         defaultOpenKeys={["sub1"]}
         bgColor="#f9fafb"

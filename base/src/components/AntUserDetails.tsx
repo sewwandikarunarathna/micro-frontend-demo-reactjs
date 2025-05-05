@@ -11,16 +11,18 @@ import ActionButtonBar from "../shared-components/templates/ActionButtonBar";
 import SearchBar from "../shared-components/templates/SearchBar";
 import AuthenticForm from "./AuthenticForm";
 import UserForm from "./Form";
-import UserGroup from "../modules/user/tab-components/UserGroup";
+import SharedTypography from "../shared-components/atoms/SharedTypography";
+import SharedTag from "../shared-components/atoms/SharedTag";
+import UserGroups from "../modules/user/tab-components/UserGroups";
 
 const AntUserDetails = () => {
-  const [siderWidth, setSiderWidth] = useState(200); // Initial width of the Sider
+  const [siderWidth, setSiderWidth] = useState(180); // Initial width of the Sider
   const [searchbarCollapsed, setSearchbarCollapsed] = useState<boolean>(false);
   const [userData, setUserData] = useState<MenuProps["items"]>([
     { key: "1", label: "John Doe" },
   ]);
   const [currentUser, setCurrentUser] = useState<any>({
-    userName: "",
+    userName: "John Doe",
     email: "N/A",
     firstName: "N/A",
     lastName: "N/A",
@@ -34,7 +36,7 @@ const AntUserDetails = () => {
     {
       key: "1",
       label: "User Groups",
-      children: <UserGroup />,
+      children: <UserGroups />,
     },
     {
       key: "2",
@@ -102,7 +104,7 @@ const AntUserDetails = () => {
         const newWidth = width + deltaX;
 
         // Enforce min and max width
-        if (newWidth < 180) {
+        if (newWidth < 160) {
           console.log("Reached minimum width");
           return 200;
         }
@@ -136,10 +138,10 @@ const AntUserDetails = () => {
   return (
     <>
       {/* Action Buttons Bar */}
-      <div className="h-12 w-full bg-red-100 border-b flex items-center justify-center px-4 gap-8">
+      <div className="h-12 w-full bg-white border-b-2 border-gray-300 flex items-center justify-center px-4 gap-8">
         <ActionButtonBar onSearchClick={searchSingleUser} />
       </div>
-      <div className="flex-1 flex flex-row w-full bg-gray-50">
+      <div className="flex-1 flex flex-row w-full">
         {/* Search bar */}
         <SearchBar
           onCollapseClick={() => setSearchbarCollapsed(!searchbarCollapsed)}
@@ -155,14 +157,14 @@ const AntUserDetails = () => {
           <div className="flex flex-row w-full h-13 justify-between items-start my-3">
             {/* User Panel */}
             <div className="flex flex-col justify-start w-auto">
-              <h1 className="font-bold text-3xl text-black">User</h1>
-              <h3 className="font-normal text-2xl text-gray-700">
-                {currentUser?.userName ?? ""}
-              </h3>
+              <SharedTypography isTitle={true} level={3} className="font-bold text-2xl text-black">User</SharedTypography>
+              <SharedTypography isTitle={true} level={4} className="font-normal !text-gray-700 !m-0">
+                {currentUser?.userName ?? "John Doe"}
+              </SharedTypography>
             </div>
           </div>
           {/* User Form */}
-          <div className="flex flex-row w-full justify-center items-center p-1 gap-4 bg-gray-200 rounded-md shadow-md">
+          <div className="flex flex-row w-full h-auto justify-center items-center p-1 gap-4 bg-gray-200 rounded-md shadow-md">
             <Form
               className="flex flex-row w-full justify-center items-center gap-3"
               layout={"vertical"}
@@ -204,8 +206,8 @@ const AntUserDetails = () => {
                         <Input
                           className="text-bold text-sm"
                           placeholder="userName"
-                          // defaultValue={currentUser?.userName}
-                          value={currentUser?.userName}
+                          defaultValue={currentUser?.userName}
+                          // value={currentUser?.userName}
                         />
                       </Form.Item>
                       <Form.Item key="email" label="E-mail" className="w-auto">
@@ -251,22 +253,24 @@ const AntUserDetails = () => {
                         />
                       </Form.Item>
                       <Form.Item key="status" label="status" className="w-auto">
-                        <Input
+                      <SharedTag color="cyan">{currentUser?.status}</SharedTag>
+                        {/* <Input
                           className="text-bold text-sm"
                           placeholder="status"
                           defaultValue={currentUser?.status}
                           value={currentUser?.status}
-                        />
+                        /> */}
                       </Form.Item>
             </Form>
           </div>
           {/* Tabs section */}
           <div className="flex flex-row w-full justify-start items-center">
             <Tabs
+            className="w-full"
               defaultActiveKey="1"
               items={tabItems}
               onChange={onChangeTab}
-              style={{ width: '100%' }}
+              // style={{ width: '100%' }}
             />
           </div>
         </div>

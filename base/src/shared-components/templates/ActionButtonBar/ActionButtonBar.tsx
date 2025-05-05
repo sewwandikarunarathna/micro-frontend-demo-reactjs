@@ -1,7 +1,5 @@
-import { Button, MenuProps } from "antd";
+import { Button } from "antd";
 import { useState } from "react";
-import { sideButtonMenuList } from "../../../assets/sidebutton-menu";
-import { useNavigate } from "react-router-dom";
 import ActionButtonPopover from "../ActionButtonPopover";
 import UserSearch from "../../organisms/UserSearch";
 import SharedButton from "../../atoms/SharedButton";
@@ -40,7 +38,7 @@ console.log('serch opene',isSearchOpen);
       name: "Previous",
       icon: AntIcons("PreviousIcon")(),
       onclick: () => console.log("Prev"),
-      disabled: true,
+      disabled: false,
     },
     {
       name: "Next",
@@ -82,7 +80,7 @@ console.log('serch opene',isSearchOpen);
               disabled={button.disabled}
               size="small"
               type="text"
-              className="text-gray-600 font-bold bg-red-100"
+              className="!text-blue-800 font-bold"
               onClick={button.onclick}
               icon={button.icon}
             />
@@ -92,7 +90,7 @@ console.log('serch opene',isSearchOpen);
             disabled={button.disabled}
             size="small"
             type="text"
-            className="text-gray-600 font-bold bg-red-100"
+            className="!text-blue-800 font-bold bg-red-100"
             onClick={button.onclick}
             icon={button.icon}
           />
