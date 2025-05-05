@@ -383,6 +383,7 @@ const UserGroup = () => {
       renderDetailPanel={renderUserDetails}
       customRowHeight={getRowHeight}
       renderCellActionMenuItems={renderCellActions}
+      enableRowActions
       renderRowActions={renderRowActions}
     />
   );

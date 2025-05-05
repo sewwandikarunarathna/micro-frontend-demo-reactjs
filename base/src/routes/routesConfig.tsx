@@ -1,4 +1,5 @@
 import { lazy, Suspense } from "react";
+import UserGroups from "../modules/user/tab-components/UserGroups";
 
 const Welcome = lazy(() => import("../components/Welcome"));
 const Home = lazy(() => import("../components/Home"));
@@ -14,6 +15,7 @@ const AntUserDetails = lazy(() => import("../components/AntUserDetails"));
 const Logout = lazy(() => import("../components/Logout"));
 const Layout1 = lazy(() => import("../layouts/Layout1"));
 const AntLayout = lazy(() => import("../layouts/AntLayout"));
+const UserGroup = lazy(() => import("../modules/user/tab-components/UserGroup"));
 
 const routeConfig: RoutesType[] = [
   {
@@ -107,6 +109,15 @@ const routeConfig: RoutesType[] = [
     element: (
       <Suspense fallback={<div>Loading...</div>}>
         <AntUserDetails />
+      </Suspense>
+    ),
+    allowedRoles: ["User", "Admin"],
+  },
+  {
+    path: "/user-groups",
+    element: (
+      <Suspense fallback={<div>Loading...</div>}>
+        <UserGroups />
       </Suspense>
     ),
     allowedRoles: ["User", "Admin"],

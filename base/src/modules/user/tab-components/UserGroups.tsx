@@ -2,7 +2,7 @@ import { useMemo, useState } from "react";
 import USERGROUPS from "../../../assets/userGroups.json";
 import { useNavigate } from "react-router-dom";
 import { usStates } from "../../../assets/makeData.ts";
-import { MRT_ColumnDef, MRT_DensityState } from "material-react-table";
+import { MRT_ColumnDef, MRT_DensityState, MRT_Row } from "material-react-table";
 import { downloadExcel } from "react-export-table-to-excel";
 import { Divider, IconButton, Typography } from "@mui/material";
 import FileDownloadIcon from "@mui/icons-material/FileDownload";
@@ -17,6 +17,7 @@ import TopToolbar from "../../../shared-components/molecules/sharedTableItems/To
 import DetailPanel from "../../../shared-components/molecules/sharedTableItems/DetailPanel.tsx/DetailPanel.tsx";
 import CellActionMenuItems from "../../../shared-components/molecules/sharedTableItems/CellActionMenuItems.tsx/CellActionMenuItems.tsx";
 import RowActions from "../../../shared-components/molecules/sharedTableItems/RowActions.tsx/RowActions.tsx";
+import SharedCheckbox from "../../../shared-components/atoms/SharedCheckbox/SharedCheckbox.tsx";
 
 //data type
 type UserGroup = {
@@ -26,12 +27,10 @@ type UserGroup = {
         default: boolean;
 };
 
-const expandDataArray = ["id", "name", "email", "phone"];
+const expandDataArray = ["userGroup", "description"];
 const expandData = {
-  id: "ID",
-  name: "Name",
-  email: "Email",
-  phone: "Phone",
+  userGroup: "User Group",
+  description: "Description",
 };
 
 type editingModeProps = "cell" | "table" | "row" | "custom" | "modal";
@@ -75,8 +74,8 @@ const UserGroups = () => {
     () => [
       {
         accessorKey: "userGroup",
-        header: "userGroup",
-        size: 160,
+        header: "User Group",
+        // size: 220,
         muiTableBodyCellEditTextFieldProps: { autoFocus: true }, // Always editable
         muiEditTextFieldProps: ({ cell, row }) => ({
           type: "link",
@@ -113,9 +112,8 @@ const UserGroups = () => {
       },
       {
         accessorKey: "description",
-        header: "description Address",
-        size: 150,
-        // muiTableBodyCellEditTextFieldProps: { type: "email" }, // Always editable
+        header: "description",
+        // size: 240,
         muiEditTextFieldProps: {
           required: true,
           error: !!validationErrors?.description,
@@ -128,9 +126,38 @@ const UserGroups = () => {
             }),
         },
       },
+      {
+        accessorKey: "default",
+        header: "Default",
+        // size: 160,
+        // muiTableBodyCellEditTextFieldProps: { autoFocus: false },
+        enableEditing: false, // Disable editing for this column
+         // Custom cell rendering with checkbox
+         Cell: ({ row }) => (
+          <SharedCheckbox
+            checked={row.original.default}
+            onChange={(e:any) => {e.stopPropagation();handleCheckboxChange(row, e.target.checked);}}
+            // onClick={(e:any) => e.stopPropagation()} // Prevent cell click from triggering edit mode
+          />
+        ),
+        // Optional: Hide the default filtering UI for this column
+        enableColumnFilter: false,
+      },
     ],
     [validationErrors]
   );
+
+  // Handle checkbox changes
+  const handleCheckboxChange = (row: MRT_Row<UserGroup>, checked:boolean) => {
+    setData(
+      data.map((item) => {
+        if (item.id === row.original.id) {
+          return { ...item, default: checked };
+        }
+        return item;
+      })
+    );
+  };
 
   const handleSave = ({ row, values }: { row: any; values: UserGroup }) => {
     console.log("updatedData", values);
@@ -174,7 +201,7 @@ const UserGroups = () => {
   };
 
   // Custom toolbar with multiple buttons
-  const renderUserToolbar = ({ table }: { table: any }) => (
+  const renderUserGroupToolbar = ({ table }: { table: any }) => (
     <TopToolbar>
       <IconButton
         size="small"
@@ -204,8 +231,8 @@ const UserGroups = () => {
   );
 
   // Detail panel renderer
-  const renderUserDetails = ({ row }: { row: any }) =>
-    row.original.address ? (
+  const renderUserGroupDetails = ({ row }: { row: any }) =>
+    row.original.userGroup ? (
       <DetailPanel>
         {Object.keys(row.original)
           .filter((itemId) => expandDataArray.includes(itemId))
@@ -289,23 +316,23 @@ const UserGroups = () => {
       columns={columns}
       data={data}
       tableDensity="compact"
-      leftColumnPinning={["name"]}
-      rightColumnPinning={["mrt-row-actions"]}
-      displayColumnDefOptions={{
-          header: "Actions", //change header text
-          size: 120, //change column size
-      }}
+      // leftColumnPinning={["name"]}
+      // rightColumnPinning={["mrt-row-actions"]}
+      // displayColumnDefOptions={{
+      //     header: "Actions", //change header text
+      //     size: 160, //change column size
+      // }}
       changeEditingMode={changeEditingMode}
       onEditingRowSave={handleSave}
       onEditingRowCancel={() => {
         setValidationErrors({});
         setchangeEditingMode("cell");
       }}
-      renderTopToolbarCustomActions={renderUserToolbar}
-      renderDetailPanel={renderUserDetails}
+      renderTopToolbarCustomActions={renderUserGroupToolbar}
+      renderDetailPanel={renderUserGroupDetails}
       customRowHeight={getRowHeight}
       renderCellActionMenuItems={renderCellActions}
-      renderRowActions={renderRowActions}
+      // renderRowActions={renderRowActions}
     />
   );
 };

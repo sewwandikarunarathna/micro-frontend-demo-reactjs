@@ -22,6 +22,7 @@ type Props = {
   changeEditingMode?: editingModeProps;
   renderCellActionMenuItems?: any;
   renderRowActions?: any;
+  enableRowActions?: boolean;
   renderTopToolbarCustomActions?: any;
   renderDetailPanel: any;
   onEditingRowSave: any;
@@ -87,6 +88,11 @@ const SharedTable = (props: Props) => {
         maxHeight: props.tableContainerHeight ?? "220px",
       },
     },
+    muiTableContainerProps: {
+      sx: {
+        width: '100%',
+      },
+    },
     muiTopToolbarProps: {
       sx: tableStyles.muiTopToolbarProps,
     },
@@ -147,13 +153,13 @@ const SharedTable = (props: Props) => {
     }),
     renderCellActionMenuItems: props.renderCellActionMenuItems,
     //row actions
-    enableRowActions: true,
+    enableRowActions: props.enableRowActions ?? false,
     onEditingRowSave: props.onEditingRowSave,
     onEditingRowCancel: props.onEditingRowCancel,
-    renderRowActions: props.renderRowActions,
-    displayColumnDefOptions: {
-      "mrt-row-actions": props.displayColumnDefOptions
-    },
+    // renderRowActions: props.renderRowActions,
+    // displayColumnDefOptions: props.displayColumnDefOptions ? {
+    //   "mrt-row-actions": props.displayColumnDefOptions
+    // } : {},
     //add custom keyboard shortcuts
     defaultColumn: {
       maxSize: 400,
