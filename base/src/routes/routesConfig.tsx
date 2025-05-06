@@ -17,6 +17,10 @@ const Layout1 = lazy(() => import("../layouts/Layout1"));
 const AntLayout = lazy(() => import("../layouts/AntLayout"));
 const UserGroup = lazy(() => import("../modules/user/tab-components/UserGroup"));
 
+const AuthApplication = lazy(() => import("auth/AuthApp"));
+const AuthAppRoutes = lazy(() => import("auth/Routes"));
+const AuthSignup = lazy(() => import("auth/Signup"));
+
 const Country =lazy(()=> import("../modules/system-enablement/CountryLayout"));
 const Currency =lazy(()=> import("../modules/system-enablement/CurrencyLayout"));
 const Language =lazy(()=> import("../modules/system-enablement/LanguageLayout"));
@@ -161,6 +165,18 @@ const routeConfig: RoutesType[] = [
     ),
     allowedRoles: ["Guest", "User", "Admin"], // Accessible by all roles
   },
+  // Routes for Remote apps
+  {
+    path: "/auth/*",
+    element: (
+        <AuthApplication />
+        // <AuthAppRoutes />
+        // <AuthSignup />
+    ),
+    allowedRoles: ["Guest"], // Accessible by all roles
+  },
+  // End of Routes for Remote apps
+  // System Enablement Routes
   {
     path: "/country",
     element: (
@@ -206,15 +222,6 @@ const routeConfig: RoutesType[] = [
     ),
     allowedRoles: ["User", "Admin"],
   },
-  // {
-  //   path: "/license-activation",
-  //   element: (
-  //     <Suspense fallback={<div>Loading...</div>}>
-  //     <LicenseActivation />
-  //     </Suspense>
-  //   ),
-  //   allowedRoles: ["Guest", "User", "Admin"], // Accessible by all roles
-  // },
   {
     path: "/license-activation",
     element: (
@@ -224,6 +231,7 @@ const routeConfig: RoutesType[] = [
     ),
     allowedRoles: ["User", "Admin"],
   },
+  // End of System Enablement Routes
 
 ];
 

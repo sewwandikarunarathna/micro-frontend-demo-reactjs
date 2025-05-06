@@ -16,6 +16,7 @@ export default defineConfig({
       exposes: {
         './SharedButton': './src/shared-components/atoms/SharedButton/SharedButton.tsx',
         './GlobalStore': './src/state_management/globalStore.tsx',
+        './StoreProvider': './src/state_management/storeProvider',
         './DataService': './src/services/DataService.ts',
         './AuthContext': './src/context/AuthContext.tsx',
         './UserStore': './src/state_management/hooks/userHooks.ts',
