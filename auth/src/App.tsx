@@ -2,6 +2,7 @@ import { lazy, Suspense } from "react";
 import "./App.css";
 import { createBrowserRouter, Link, Route, RouterProvider, Routes } from "react-router-dom";
 import { StoreProvider } from "base/StoreProvider";
+import { AuthProvider } from "base/AuthContext";
 import { createRoot } from "react-dom/client";
 
 const Login = lazy(() => import("./components/Login"));
@@ -16,6 +17,7 @@ const router = createBrowserRouter([
 
 function App() {
   return (
+    <AuthProvider>
     <StoreProvider>
     {/* <Link to="/" className="m-20">
     //     Home
@@ -33,7 +35,7 @@ function App() {
           }
         />
         <Route
-          path="signup"
+          path={window.location.href.includes('3000') ? `/signup` : "/auth/signup"}
           element={
             <Suspense fallback={<div>Loading...</div>}>
               <Signup />
@@ -75,6 +77,8 @@ function App() {
       </Routes>
     {/* <Route path="/signup" element={<div>Signup Page</div>} /> */}
     </StoreProvider>
+
+    </AuthProvider>
 
 
 

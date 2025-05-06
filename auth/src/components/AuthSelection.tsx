@@ -22,7 +22,7 @@ const AuthSelection = () => {
      <SharedButton
         type="default"
         children={
-          <Link to="/signup" className="m-20">
+          <Link to="/auth/signup" className="m-20">
             Signup
           </Link>
         }
