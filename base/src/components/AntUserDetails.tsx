@@ -14,6 +14,7 @@ import UserForm from "./Form";
 import SharedTypography from "../shared-components/atoms/SharedTypography";
 import SharedTag from "../shared-components/atoms/SharedTag";
 import UserGroups from "../modules/user/tab-components/UserGroups";
+import Branch from "../modules/user/tab-components/Branch";
 
 const AntUserDetails = () => {
   const [siderWidth, setSiderWidth] = useState(180); // Initial width of the Sider
@@ -40,8 +41,8 @@ const AntUserDetails = () => {
     },
     {
       key: "2",
-      label: "Company",
-      children: <UserForm />,
+      label: "Branch",
+      children: <Branch />,
     },
     {
       key: "3",

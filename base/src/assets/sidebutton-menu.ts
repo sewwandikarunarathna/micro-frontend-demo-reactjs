@@ -8,6 +8,6 @@ export const sideButtonMenuList = [
     icon: "SettingsIcon",
     url: "user-groups"
   },
-  { title: "AntLayout", icon: "AntLayoutIcon", url: "/ant-layout" },
+  { title: "Auth Form", icon: "AntLayoutIcon", url: "/auth-form" },
   { title: "Logout", icon: "LogoutIcon", url: "/logout" },
 ];

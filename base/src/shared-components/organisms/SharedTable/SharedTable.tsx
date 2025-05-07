@@ -64,6 +64,7 @@ const SharedTable = (props: Props) => {
         ...(row.getIsExpanded() ? {} : getRowHeight(table.getState().density)),
       },
     }),
+    layoutMode: "grid", // This makes columns distribute width better
     enableColumnResizing: true,
     enableColumnPinning: true,
     columnResizeMode: "onChange", //default
@@ -84,8 +85,10 @@ const SharedTable = (props: Props) => {
     muiTableProps: {
       sx: {
         // Make the table width responsive
-        maxWidth: tableStyles.maxWidth,
+        // maxWidth: tableStyles.maxWidth,
         maxHeight: props.tableContainerHeight ?? "220px",
+        width: '100%', // Take full width of the container
+            tableLayout: 'fixed',
       },
     },
     muiTableContainerProps: {
@@ -107,6 +110,9 @@ const SharedTable = (props: Props) => {
         top: table.getState().isFullScreen ? "200px" : 0,
         // maxWidth: props.tableWidth ?? '800px',
       },
+      sx: {
+        maxWidth: tableStyles.maxWidth
+      }
     }),
     renderTopToolbarCustomActions: props.renderTopToolbarCustomActions,
     muiDetailPanelProps: () => ({

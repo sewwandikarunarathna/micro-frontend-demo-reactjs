@@ -164,4 +164,4 @@ const AuthenticForm = () => {
   );
 };
 
-export default withAuth(AuthenticForm);
+export default AuthenticForm;

@@ -1,5 +1,5 @@
 import { useMemo, useState } from "react";
-import USERGROUPS from "../../../assets/userGroups.json";
+import BRANCHES from "../../../assets/branches.json";
 import { useNavigate } from "react-router-dom";
 import { usStates } from "../../../assets/makeData.ts";
 import { MRT_ColumnDef, MRT_DensityState, MRT_Row } from "material-react-table";
@@ -20,31 +20,31 @@ import RowActions from "../../../shared-components/molecules/sharedTableItems/Ro
 import SharedCheckbox from "../../../shared-components/atoms/SharedCheckbox/SharedCheckbox.tsx";
 
 //data type
-type UserGroup = {
+type Branch = {
   id: number;
-  userGroup: string;
+  branch: string;
         description: string;
         default: boolean;
 };
 
-const expandDataArray = ["userGroup", "description"];
+const expandDataArray = ["branch", "description"];
 const expandData = {
-  userGroup: "User Group",
+  branch: "Branch",
   description: "Description",
 };
 
 type editingModeProps = "cell" | "table" | "row" | "custom" | "modal";
 
-const UserGroups = () => {
+const Branch = () => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [changeEditingMode, setchangeEditingMode] =
     useState<editingModeProps>("cell");
-  const [data, setData] = useState<UserGroup[]>(USERGROUPS);
+  const [data, setData] = useState<Branch[]>(BRANCHES);
   const [validationErrors, setValidationErrors] = useState<
     Record<string, string | undefined>
   >({});
   //keep track of rows that have been edited
-  const [editedUserGroups, setEditedUserGroups] = useState<Record<string, UserGroup>>({});
+  const [editedBranches, setEditedBranches] = useState<Record<string, Branch>>({});
 
   const navigate = useNavigate();
 
@@ -70,23 +70,23 @@ const UserGroups = () => {
     },
   ];
 
-  const columns = useMemo<MRT_ColumnDef<UserGroup>[]>(
+  const columns = useMemo<MRT_ColumnDef<Branch>[]>(
     () => [
       {
-        accessorKey: "userGroup",
+        accessorKey: "branch",
         header: "User Group",
         size: 220,
         // muiTableBodyCellEditTextFieldProps: { autoFocus: true }, // Always editable
         muiEditTextFieldProps: ({ cell, row }) => ({
           // type: "link",
           required: true,
-          error: !!validationErrors?.userGroup,
-          helperText: validationErrors?.userGroup,
+          error: !!validationErrors?.branch,
+          helperText: validationErrors?.branch,
           //remove any previous validation errors when user focuses on the input
           onFocus: () =>
             setValidationErrors({
               ...validationErrors,
-              userGroup: undefined,
+              branch: undefined,
             }),
           //store edited user in state to be saved later
           onBlur: (event) => {
@@ -100,13 +100,13 @@ const UserGroups = () => {
               ...validationErrors,
               [cell.id]: validationError,
             });
-            setEditedUserGroups({ ...editedUserGroups, [row.id]: row.original });
-            console.log("set edittt", editedUserGroups);
+            setEditedBranches({ ...editedBranches, [row.id]: row.original });
+            console.log("set edittt", editedBranches);
           },
         }),
         Cell: ({ row }: {row:any}) => (
           <a href='http://localhost:3000' target="_blank" rel="noopener noreferrer" style={{ color: 'blue', textDecoration: 'underline' }}>
-            {row.original.userGroup}
+            {row.original.branch}
           </a>
         ),
       },
@@ -148,7 +148,7 @@ const UserGroups = () => {
   );
 
   // Handle checkbox changes
-  const handleCheckboxChange = (row: MRT_Row<UserGroup>, checked:boolean) => {
+  const handleCheckboxChange = (row: MRT_Row<Branch>, checked:boolean) => {
     setData(
       data.map((item) => {
         if (item.id === row.original.id) {
@@ -159,7 +159,7 @@ const UserGroups = () => {
     );
   };
 
-  const handleSave = ({ row, values }: { row: any; values: UserGroup }) => {
+  const handleSave = ({ row, values }: { row: any; values: Branch }) => {
     console.log("updatedData", values);
     const updatedData = [...data];
     updatedData[row.index] = values; // Update row data
@@ -190,14 +190,14 @@ const UserGroups = () => {
   //UPDATE action
   const handleSaveUsers = () => {
     if (Object.values(validationErrors).some((error) => !!error)) return;
-    console.log("editedUserGroups", editedUserGroups);
+    console.log("editedBranches", editedBranches);
 
-    // await updateUsers(Object.values(editedUserGroups));
-    Object.values(editedUserGroups)?.map((std: UserGroup) => {
+    // await updateUsers(Object.values(editedBranches));
+    Object.values(editedBranches)?.map((std: Branch) => {
       const newUser = data.find((u) => u.id === std.id);
       return newUser ? newUser : std;
     }),
-      setEditedUserGroups({});
+      setEditedBranches({});
   };
 
   // Custom toolbar with multiple buttons
@@ -216,7 +216,7 @@ const UserGroups = () => {
       size="small" 
       // disabled={selectedRowIds.length === 0} 
       onClick={()=>{
-        const selectedIds = table.getSelectedRowModel().rows.map((row: { original: UserGroup }) => row.original.id);
+        const selectedIds = table.getSelectedRowModel().rows.map((row: { original: Branch }) => row.original.id);
         setData(prevData => prevData.filter(row => !selectedIds.includes(row.id)));
         table.resetRowSelection(); // Reset selection after deletion
         }}>
@@ -232,7 +232,7 @@ const UserGroups = () => {
 
   // Detail panel renderer
   const renderUserGroupDetails = ({ row }: { row: any }) =>
-    row.original.userGroup ? (
+    row.original.branch ? (
       <DetailPanel>
         {Object.keys(row.original)
           .filter((itemId) => expandDataArray.includes(itemId))
@@ -345,4 +345,4 @@ const validateEmail = (email: string) =>
     .match(
       /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
     );
-export default UserGroups;
+export default Branch;
