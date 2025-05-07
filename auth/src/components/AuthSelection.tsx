@@ -1,38 +1,36 @@
-import { lazy, useState } from "react";
-import { Paper } from "@mui/material";
-import { Link } from "react-router-dom";
+import { lazy } from "react";
 import { useUserStore } from "base/UserStore";
+import { useAuthNavigation } from "../utils/useAuthNavigation";
 
 const SharedButton = lazy(() => import("base/SharedButton"));
 
 const AuthSelection = () => {
   const { user } = useUserStore();
 
+  const { navigateTo, getPath } = useAuthNavigation();
+
   return (
     <div className="flex flex-col content-center justify-center items-center w-auto h-full gap-4 p-6 m-8 bg-amber-200">
       <h1 className="text-4xl font-bold">Hello {user.username}, Select what you need...</h1>
       <SharedButton
         type="primary"
+        onClick={() => navigateTo("/login")}
         children={
-          <Link to="/auth/authLogin" className="m-20">
-            Login
-          </Link>
+            'Login'
         }
       />
      <SharedButton
         type="default"
+        onClick={() => navigateTo("/signup")}
         children={
-          <Link to="/auth/signup" className="m-20">
-            Signup
-          </Link>
+            'Signup'
         }
       />
        <SharedButton
         type="dashed"
+        onClick={() => navigateTo("/googleSignin")}
         children={
-          <Link to="/googleSignin" className="m-20">
-            Google Signin
-          </Link>
+            "Google Signin"
         }
       />
     </div>

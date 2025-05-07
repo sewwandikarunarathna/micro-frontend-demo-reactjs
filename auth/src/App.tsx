@@ -35,21 +35,13 @@ function App() {
           }
         />
         <Route
-          path={window.location.href.includes('3000') ? `/signup` : "/auth/signup"}
-          element={
-            <Suspense fallback={<div>Loading...</div>}>
-              <Signup />
-            </Suspense>
-          }
-        />
-        {/* <Route
           path="/signup"
           element={
             <Suspense fallback={<div>Loading...</div>}>
               <Signup />
             </Suspense>
           }
-        /> */}
+        />
          <Route
           path="/login"
           element={
