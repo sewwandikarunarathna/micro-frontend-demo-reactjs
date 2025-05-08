@@ -74,7 +74,7 @@ const Branch = () => {
     () => [
       {
         accessorKey: "branch",
-        header: "User Group",
+        header: "Branch",
         size: 220,
         // muiTableBodyCellEditTextFieldProps: { autoFocus: true }, // Always editable
         muiEditTextFieldProps: ({ cell, row }) => ({
@@ -82,13 +82,13 @@ const Branch = () => {
           required: true,
           error: !!validationErrors?.branch,
           helperText: validationErrors?.branch,
-          //remove any previous validation errors when user focuses on the input
+          //remove any previous validation errors when branch focuses on the input
           onFocus: () =>
             setValidationErrors({
               ...validationErrors,
               branch: undefined,
             }),
-          //store edited user in state to be saved later
+          //store edited branch in state to be saved later
           onBlur: (event) => {
             console.log("row", row);
             console.log("eventt", event);
@@ -118,7 +118,7 @@ const Branch = () => {
           required: true,
           error: !!validationErrors?.description,
           helperText: validationErrors?.description,
-          //remove any previous validation errors when user focuses on the input
+          //remove any previous validation errors when branch focuses on the input
           onFocus: () =>
             setValidationErrors({
               ...validationErrors,
@@ -188,20 +188,20 @@ const Branch = () => {
   };
 
   //UPDATE action
-  const handleSaveUsers = () => {
+  const handleSaveBranches = () => {
     if (Object.values(validationErrors).some((error) => !!error)) return;
     console.log("editedBranches", editedBranches);
 
-    // await updateUsers(Object.values(editedBranches));
+    // await updateBranches(Object.values(editedBranches));
     Object.values(editedBranches)?.map((std: Branch) => {
-      const newUser = data.find((u) => u.id === std.id);
-      return newUser ? newUser : std;
+      const newBranch = data.find((u) => u.id === std.id);
+      return newBranch ? newBranch : std;
     }),
       setEditedBranches({});
   };
 
   // Custom toolbar with multiple buttons
-  const renderUserGroupToolbar = ({ table }: { table: any }) => (
+  const renderBranchToolbar = ({ table }: { table: any }) => (
     <TopToolbar>
       <IconButton
         size="small"
@@ -209,7 +209,7 @@ const Branch = () => {
       >
         <FileDownloadIcon />
       </IconButton>
-      <IconButton size="small" onClick={handleSaveUsers}>
+      <IconButton size="small" onClick={handleSaveBranches}>
         <SaveIcon />
       </IconButton>
       <IconButton 
@@ -231,7 +231,7 @@ const Branch = () => {
   );
 
   // Detail panel renderer
-  const renderUserGroupDetails = ({ row }: { row: any }) =>
+  const renderBranchDetails = ({ row }: { row: any }) =>
     row.original.branch ? (
       <DetailPanel>
         {Object.keys(row.original)
@@ -316,33 +316,19 @@ const Branch = () => {
       columns={columns}
       data={data}
       tableDensity="compact"
-      // leftColumnPinning={["name"]}
-      // rightColumnPinning={["mrt-row-actions"]}
-      // displayColumnDefOptions={{
-      //     header: "Actions", //change header text
-      //     size: 160, //change column size
-      // }}
       changeEditingMode={changeEditingMode}
       onEditingRowSave={handleSave}
       onEditingRowCancel={() => {
         setValidationErrors({});
         setchangeEditingMode("cell");
       }}
-      renderTopToolbarCustomActions={renderUserGroupToolbar}
-      renderDetailPanel={renderUserGroupDetails}
+      renderTopToolbarCustomActions={renderBranchToolbar}
+      renderDetailPanel={renderBranchDetails}
       customRowHeight={getRowHeight}
       renderCellActionMenuItems={renderCellActions}
-      // renderRowActions={renderRowActions}
     />
   );
 };
 
 const validateRequired = (value: string) => !!value.length;
-const validateEmail = (email: string) =>
-  !!email.length &&
-  email
-    .toLowerCase()
-    .match(
-      /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-    );
 export default Branch;

@@ -9,17 +9,21 @@ type Props = {
   gap?: number;
   onChange?: any;
   optionData?: any;
-  options?: any;
+  options?: options[];
 };
 
+type options = {
+  value: string, label: string 
+};
 
 const SharedSelect = (props: Props) => {
   return (
     <>
      <Select
-      size={props.size ?? "middle"}
-        defaultValue={props.defaultValue ?? props.optionData[0]}
+      size={props.size ?? "small"}
+        defaultValue={props.options?.[0]?.value ?? ""}
         style={props.style}
+        className={props.className}
         onChange={props.onChange}
         options={props.options}
       />

@@ -9,12 +9,12 @@ import {
 import STUDENTS from "../assets/students.json";
 import ActionButtonBar from "../shared-components/templates/ActionButtonBar";
 import SearchBar from "../shared-components/templates/SearchBar";
-import AuthenticForm from "./AuthenticForm";
-import UserForm from "./Form";
 import SharedTypography from "../shared-components/atoms/SharedTypography";
 import SharedTag from "../shared-components/atoms/SharedTag";
 import UserGroups from "../modules/user/tab-components/UserGroups";
 import Branch from "../modules/user/tab-components/Branch";
+import AuthorizationTab from "../modules/user/tab-components/AuthorizationTab";
+import SettingsTab from "../modules/user/tab-components/SettingsTab";
 
 const AntUserDetails = () => {
   const [siderWidth, setSiderWidth] = useState(180); // Initial width of the Sider
@@ -47,12 +47,12 @@ const AntUserDetails = () => {
     {
       key: "3",
       label: "Authorization",
-      children: <AuthenticForm />,
+      children: <AuthorizationTab />,
     },
     {
       key: "4",
       label: "Settings",
-      children: "Content of Settings",
+      children: <SettingsTab />,
     },
   ];
 

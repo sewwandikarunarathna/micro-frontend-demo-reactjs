@@ -1,7 +1,6 @@
 import { useMemo, useState } from "react";
-import BRANCHES from "../../../assets/branches.json";
+import AUTHORIZATION from "../../../assets/authorization.json";
 import { useNavigate } from "react-router-dom";
-import { usStates } from "../../../assets/makeData.ts";
 import { MRT_ColumnDef, MRT_DensityState, MRT_Row } from "material-react-table";
 import { downloadExcel } from "react-export-table-to-excel";
 import { Divider, IconButton, Typography } from "@mui/material";
@@ -20,7 +19,7 @@ import RowActions from "../../../shared-components/molecules/sharedTableItems/Ro
 import SharedCheckbox from "../../../shared-components/atoms/SharedCheckbox/SharedCheckbox.tsx";
 
 //data type
-type Branch = {
+type Authorization = {
   id: number;
   description: string;
   accessLevel: string;
@@ -28,22 +27,21 @@ type Branch = {
 
 const expandDataArray = ["accessLevel", "description"];
 const expandData = {
-  accessLevel: "User Group",
+  accessLevel: "Access Level",
   description: "Description",
 };
 
 type editingModeProps = "cell" | "table" | "row" | "custom" | "modal";
 
 const AuthorizationTable = () => {
-  const [isLoading, setIsLoading] = useState<boolean>(true);
   const [changeEditingMode, setchangeEditingMode] =
     useState<editingModeProps>("cell");
-  const [data, setData] = useState<Branch[]>(BRANCHES);
+  const [data, setData] = useState<Authorization[]>(AUTHORIZATION);
   const [validationErrors, setValidationErrors] = useState<
     Record<string, string | undefined>
   >({});
   //keep track of rows that have been edited
-  const [editedBranches, setEditedBranches] = useState<Record<string, Branch>>({});
+  const [editedAuthorizations, setEditedAuthorizations] = useState<Record<string, Authorization>>({});
 
   const navigate = useNavigate();
 
@@ -69,46 +67,8 @@ const AuthorizationTable = () => {
     },
   ];
 
-  const columns = useMemo<MRT_ColumnDef<Branch>[]>(
+  const columns = useMemo<MRT_ColumnDef<Authorization>[]>(
     () => [
-      {
-        accessorKey: "accessLevel",
-        header: "User Group",
-        size: 220,
-        // muiTableBodyCellEditTextFieldProps: { autoFocus: true }, // Always editable
-        muiEditTextFieldProps: ({ cell, row }) => ({
-          // type: "link",
-          required: true,
-          error: !!validationErrors?.accessLevel,
-          helperText: validationErrors?.accessLevel,
-          //remove any previous validation errors when user focuses on the input
-          onFocus: () =>
-            setValidationErrors({
-              ...validationErrors,
-              branch: undefined,
-            }),
-          //store edited user in state to be saved later
-          onBlur: (event) => {
-            console.log("row", row);
-            console.log("eventt", event);
-
-            const validationError = !validateRequired(event.currentTarget.value)
-              ? "Required"
-              : undefined;
-            setValidationErrors({
-              ...validationErrors,
-              [cell.id]: validationError,
-            });
-            setEditedBranches({ ...editedBranches, [row.id]: row.original });
-            console.log("set edittt", editedBranches);
-          },
-        }),
-        Cell: ({ row }: {row:any}) => (
-          <a href='http://localhost:3000' target="_blank" rel="noopener noreferrer" style={{ color: 'blue', textDecoration: 'underline' }}>
-            {row.original.branch}
-          </a>
-        ),
-      },
       {
         accessorKey: "description",
         header: "description",
@@ -124,41 +84,53 @@ const AuthorizationTable = () => {
               description: undefined,
             }),
         },
+        Cell: ({ row }: {row:any}) => (
+          <a href='http://localhost:3000' target="_blank" rel="noopener noreferrer" style={{ color: 'blue', textDecoration: 'underline' }}>
+            {row.original.description}
+          </a>
+        ),
       },
       {
-        accessorKey: "default",
-        header: "Default",
-        size: 160,
-        // muiTableBodyCellEditTextFieldProps: { autoFocus: false },
-        enableEditing: false, // Disable editing for this column
-         // Custom cell rendering with checkbox
-         Cell: ({ row }) => (
-          <SharedCheckbox
-            checked={row.original.default}
-            onChange={(e:any) => {e.stopPropagation();handleCheckboxChange(row, e.target.checked);}}
-            // onClick={(e:any) => e.stopPropagation()} // Prevent cell click from triggering edit mode
-          />
+        accessorKey: "accessLevel",
+        header: "Access Level",
+        size: 220,
+        muiEditTextFieldProps: ({ cell, row }) => ({
+          required: true,
+          error: !!validationErrors?.accessLevel,
+          helperText: validationErrors?.accessLevel,
+          //remove any previous validation errors when accessLevel focuses on the input
+          onFocus: () =>
+            setValidationErrors({
+              ...validationErrors,
+              accessLevel: undefined,
+            }),
+          //store edited accessLevel in state to be saved later
+          onBlur: (event) => {
+            console.log("row", row);
+            console.log("eventt", event);
+
+            const validationError = !validateRequired(event.currentTarget.value)
+              ? "Required"
+              : undefined;
+            setValidationErrors({
+              ...validationErrors,
+              [cell.id]: validationError,
+            });
+            setEditedAuthorizations({ ...editedAuthorizations, [row.id]: row.original });
+            console.log("set edittt", editedAuthorizations);
+          },
+        }),
+        Cell: ({ row }: {row:any}) => (
+          <p className="text-gray-500">
+            {row.original.accessLevel}
+          </p>
         ),
-        // Optional: Hide the default filtering UI for this column
-        enableColumnFilter: false,
-      },
+      }
     ],
     [validationErrors]
   );
 
-  // Handle checkbox changes
-  const handleCheckboxChange = (row: MRT_Row<Branch>, checked:boolean) => {
-    setData(
-      data.map((item) => {
-        if (item.id === row.original.id) {
-          return { ...item, default: checked };
-        }
-        return item;
-      })
-    );
-  };
-
-  const handleSave = ({ row, values }: { row: any; values: Branch }) => {
+  const handleSave = ({ row, values }: { row: any; values: Authorization }) => {
     console.log("updatedData", values);
     const updatedData = [...data];
     updatedData[row.index] = values; // Update row data
@@ -187,20 +159,19 @@ const AuthorizationTable = () => {
   };
 
   //UPDATE action
-  const handleSaveUsers = () => {
+  const handleSaveAuthorizations = () => {
     if (Object.values(validationErrors).some((error) => !!error)) return;
-    console.log("editedBranches", editedBranches);
+    console.log("editedAuthorizations", editedAuthorizations);
 
-    // await updateUsers(Object.values(editedBranches));
-    Object.values(editedBranches)?.map((std: Branch) => {
+    Object.values(editedAuthorizations)?.map((std: Authorization) => {
       const newUser = data.find((u) => u.id === std.id);
       return newUser ? newUser : std;
     }),
-      setEditedBranches({});
+      setEditedAuthorizations({});
   };
 
   // Custom toolbar with multiple buttons
-  const renderUserGroupToolbar = ({ table }: { table: any }) => (
+  const renderAuthorizationsToolbar = ({ table }: { table: any }) => (
     <TopToolbar>
       <IconButton
         size="small"
@@ -208,14 +179,13 @@ const AuthorizationTable = () => {
       >
         <FileDownloadIcon />
       </IconButton>
-      <IconButton size="small" onClick={handleSaveUsers}>
+      <IconButton size="small" onClick={handleSaveAuthorizations}>
         <SaveIcon />
       </IconButton>
       <IconButton 
       size="small" 
-      // disabled={selectedRowIds.length === 0} 
       onClick={()=>{
-        const selectedIds = table.getSelectedRowModel().rows.map((row: { original: Branch }) => row.original.id);
+        const selectedIds = table.getSelectedRowModel().rows.map((row: { original: Authorization }) => row.original.id);
         setData(prevData => prevData.filter(row => !selectedIds.includes(row.id)));
         table.resetRowSelection(); // Reset selection after deletion
         }}>
@@ -230,8 +200,8 @@ const AuthorizationTable = () => {
   );
 
   // Detail panel renderer
-  const renderUserGroupDetails = ({ row }: { row: any }) =>
-    row.original.branch ? (
+  const renderAuthorizationsDetails = ({ row }: { row: any }) =>
+    row.original.Authorization ? (
       <DetailPanel>
         {Object.keys(row.original)
           .filter((itemId) => expandDataArray.includes(itemId))
@@ -266,37 +236,6 @@ const AuthorizationTable = () => {
     />,
   ];
 
-  //render row actions
-  const renderRowActions = ({ row, table }: { row: any; table: any }) => {
-    const rowActionButtons = [
-      {
-        color: "primary",
-        onClick: () =>
-          window.open(
-            `mailto:${row.original.email}?subject=Hello ${row.original.name}!`
-          ),
-        icon: <EmailIcon />,
-      },
-      {
-        color: "secondary",
-        onClick: () => {
-          setchangeEditingMode("row");
-          table.setEditingRow(row);
-        },
-        icon: <EditIcon />,
-      },
-      {
-        color: "secondary",
-        onClick: () => {
-          navigate(`row/${row.id}`, { state: { data: row.original } });
-        },
-        icon: <ViewIcon />,
-      },
-    ];
-
-    return <RowActions rowActionButtons={rowActionButtons} />;
-  };
-
   const getRowHeight = (density: MRT_DensityState) => {
     switch (density) {
       case "compact":
@@ -315,33 +254,19 @@ const AuthorizationTable = () => {
       columns={columns}
       data={data}
       tableDensity="compact"
-      // leftColumnPinning={["name"]}
-      // rightColumnPinning={["mrt-row-actions"]}
-      // displayColumnDefOptions={{
-      //     header: "Actions", //change header text
-      //     size: 160, //change column size
-      // }}
       changeEditingMode={changeEditingMode}
       onEditingRowSave={handleSave}
       onEditingRowCancel={() => {
         setValidationErrors({});
         setchangeEditingMode("cell");
       }}
-      renderTopToolbarCustomActions={renderUserGroupToolbar}
-      renderDetailPanel={renderUserGroupDetails}
+      renderTopToolbarCustomActions={renderAuthorizationsToolbar}
+      renderDetailPanel={renderAuthorizationsDetails}
       customRowHeight={getRowHeight}
       renderCellActionMenuItems={renderCellActions}
-      // renderRowActions={renderRowActions}
     />
   );
 };
 
 const validateRequired = (value: string) => !!value.length;
-const validateEmail = (email: string) =>
-  !!email.length &&
-  email
-    .toLowerCase()
-    .match(
-      /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-    );
 export default AuthorizationTable;
