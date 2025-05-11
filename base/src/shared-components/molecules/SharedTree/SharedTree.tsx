@@ -1,16 +1,11 @@
-import { Card, Tree } from "antd";
+import { Tree } from "antd";
 import AntIcons from "../../../utils/AntIcons";
 
 type Props = {
-  size?: "small"| "middle" | "large";
-  style?: any;
-  className?: string;
-  defaultValue?: string | number | any;
-  width?: number;
   onSelect?: any;
-  value?: any;
   treeData: any;
   defaultExpandAll?: boolean;
+  showIcon?: boolean;
 };
 
 const SharedTree = (props: Props) => {
@@ -28,15 +23,13 @@ const SharedTree = (props: Props) => {
   return (
     <>
       <Tree
-            treeData={props.treeData}
-            showLine
-            switcherIcon={customSwitcherIcon}
-            onSelect={props.onSelect}
-            defaultExpandAll={props.defaultExpandAll}
-            // onExpand={handleExpand}
-            // expandedKeys={expandedKeys}
-            // selectedKeys={selectedKeys}
-          />
+        treeData={props.treeData}
+        showLine
+        switcherIcon={customSwitcherIcon}
+        onSelect={props.onSelect}
+        defaultExpandAll={props.defaultExpandAll}
+        showIcon={props.showIcon}
+      />
     </>
   );
 };

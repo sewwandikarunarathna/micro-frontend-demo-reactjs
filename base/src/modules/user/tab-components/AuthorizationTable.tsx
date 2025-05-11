@@ -1,22 +1,18 @@
 import { useMemo, useState } from "react";
 import AUTHORIZATION from "../../../assets/authorization.json";
 import { useNavigate } from "react-router-dom";
-import { MRT_ColumnDef, MRT_DensityState, MRT_Row } from "material-react-table";
+import { MRT_ColumnDef, MRT_DensityState } from "material-react-table";
 import { downloadExcel } from "react-export-table-to-excel";
 import { Divider, IconButton, Typography } from "@mui/material";
 import FileDownloadIcon from "@mui/icons-material/FileDownload";
 import EmailIcon from "@mui/icons-material/Email";
-import EditIcon from "@mui/icons-material/Edit";
 import SaveIcon from "@mui/icons-material/Save";
 import DeleteIcon from "@mui/icons-material/Delete";
-import ViewIcon from "@mui/icons-material/ViewListRounded";
 import _ from "lodash";
 import SharedTable from "../../../shared-components/organisms/SharedTable/index.ts";
 import TopToolbar from "../../../shared-components/molecules/sharedTableItems/TopToolbar.tsx/TopToolbar.tsx";
 import DetailPanel from "../../../shared-components/molecules/sharedTableItems/DetailPanel.tsx/DetailPanel.tsx";
 import CellActionMenuItems from "../../../shared-components/molecules/sharedTableItems/CellActionMenuItems.tsx/CellActionMenuItems.tsx";
-import RowActions from "../../../shared-components/molecules/sharedTableItems/RowActions.tsx/RowActions.tsx";
-import SharedCheckbox from "../../../shared-components/atoms/SharedCheckbox/SharedCheckbox.tsx";
 
 //data type
 type Authorization = {
@@ -42,8 +38,6 @@ const AuthorizationTable = () => {
   >({});
   //keep track of rows that have been edited
   const [editedAuthorizations, setEditedAuthorizations] = useState<Record<string, Authorization>>({});
-
-  const navigate = useNavigate();
 
   const cellMenuItems = ({ row }: { row: any }, closeMenu: any) => [
     {
@@ -254,6 +248,12 @@ const AuthorizationTable = () => {
       columns={columns}
       data={data}
       tableDensity="compact"
+      tableWidth={{
+        sm: "200px",
+        md: "350px",
+        lg: "500px",
+        xl: "600px",
+      }}
       changeEditingMode={changeEditingMode}
       onEditingRowSave={handleSave}
       onEditingRowCancel={() => {

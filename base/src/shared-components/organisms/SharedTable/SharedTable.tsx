@@ -1,13 +1,10 @@
-import { Layout } from "antd";
 import {
   MaterialReactTable,
   MRT_DensityState,
-  MRT_RowSelectionState,
   useMaterialReactTable,
 } from "material-react-table";
 import _ from "lodash";
 import tableStyles from "../../../utils/tableStyles.ts";
-import { useEffect, useState } from "react";
 
 type Props = {
   columns: any;
@@ -16,7 +13,7 @@ type Props = {
   tableDensity?: MRT_DensityState | undefined;
   leftColumnPinning?: string[];
   rightColumnPinning?: string[];
-  tableWidth?: string;
+  tableWidth?: string | {};
   tableContainerHeight?: string;
   customRowHeight?: any;
   changeEditingMode?: editingModeProps;
@@ -111,7 +108,7 @@ const SharedTable = (props: Props) => {
         // maxWidth: props.tableWidth ?? '800px',
       },
       sx: {
-        maxWidth: tableStyles.maxWidth
+        maxWidth: props.tableWidth ?? tableStyles.maxWidth 
       }
     }),
     renderTopToolbarCustomActions: props.renderTopToolbarCustomActions,

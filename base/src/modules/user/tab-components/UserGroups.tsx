@@ -1,7 +1,6 @@
 import { useMemo, useState } from "react";
 import USERGROUPS from "../../../assets/userGroups.json";
 import { useNavigate } from "react-router-dom";
-import { usStates } from "../../../assets/makeData.ts";
 import { MRT_ColumnDef, MRT_DensityState, MRT_Row } from "material-react-table";
 import { downloadExcel } from "react-export-table-to-excel";
 import { Divider, IconButton, Typography } from "@mui/material";

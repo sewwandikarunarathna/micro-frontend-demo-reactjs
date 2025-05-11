@@ -1,11 +1,5 @@
-import React, { useState } from "react";
-import SharedSider from "../../../shared-components/organisms/SharedSider";
-import SharedMenu from "../../../shared-components/molecules/SharedMenu";
-import AuthorizationTable from "./AuthorizationTable";
+import { useState } from "react";
 import SharedTypography from "../../../shared-components/atoms/SharedTypography";
-import SharedSelect from "../../../shared-components/atoms/SharedSelect";
-import SharedTreeSelect from "../../../shared-components/atoms/SharedTreeSelect";
-import { CarryOutOutlined } from "@ant-design/icons";
 import SharedButton from "../../../shared-components/atoms/SharedButton";
 import SharedCheckbox from "../../../shared-components/atoms/SharedCheckbox";
 

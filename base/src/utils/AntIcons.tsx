@@ -22,6 +22,8 @@ import {
   MenuFoldOutlined,
   BellFilled,
   InfoCircleOutlined,
+  DownOutlined,
+  CarryOutOutlined
 } from "@ant-design/icons";
 import { JSX } from "react";
 
@@ -51,7 +53,9 @@ const AntIcons = (iconName: string) => {
     MenuUnfoldOutlined: <MenuUnfoldOutlined />,
     MenuFoldOutlined: <MenuFoldOutlined />,
     InfoCircleOutlined: <InfoCircleOutlined />,
-    BellIconFilled: <BellFilled />
+    BellIconFilled: <BellFilled />,
+    DownOutlined: <DownOutlined />,
+    CarryOutOutlined: <CarryOutOutlined />
   };
   
   const iconNames: string | any = {

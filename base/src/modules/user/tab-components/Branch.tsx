@@ -1,22 +1,18 @@
 import { useMemo, useState } from "react";
 import BRANCHES from "../../../assets/branches.json";
 import { useNavigate } from "react-router-dom";
-import { usStates } from "../../../assets/makeData.ts";
 import { MRT_ColumnDef, MRT_DensityState, MRT_Row } from "material-react-table";
 import { downloadExcel } from "react-export-table-to-excel";
 import { Divider, IconButton, Typography } from "@mui/material";
 import FileDownloadIcon from "@mui/icons-material/FileDownload";
 import EmailIcon from "@mui/icons-material/Email";
-import EditIcon from "@mui/icons-material/Edit";
 import SaveIcon from "@mui/icons-material/Save";
 import DeleteIcon from "@mui/icons-material/Delete";
-import ViewIcon from "@mui/icons-material/ViewListRounded";
 import _ from "lodash";
 import SharedTable from "../../../shared-components/organisms/SharedTable/index.ts";
 import TopToolbar from "../../../shared-components/molecules/sharedTableItems/TopToolbar.tsx/TopToolbar.tsx";
 import DetailPanel from "../../../shared-components/molecules/sharedTableItems/DetailPanel.tsx/DetailPanel.tsx";
 import CellActionMenuItems from "../../../shared-components/molecules/sharedTableItems/CellActionMenuItems.tsx/CellActionMenuItems.tsx";
-import RowActions from "../../../shared-components/molecules/sharedTableItems/RowActions.tsx/RowActions.tsx";
 import SharedCheckbox from "../../../shared-components/atoms/SharedCheckbox/SharedCheckbox.tsx";
 
 //data type
@@ -266,37 +262,6 @@ const Branch = () => {
       table={table}
     />,
   ];
-
-  //render row actions
-  const renderRowActions = ({ row, table }: { row: any; table: any }) => {
-    const rowActionButtons = [
-      {
-        color: "primary",
-        onClick: () =>
-          window.open(
-            `mailto:${row.original.email}?subject=Hello ${row.original.name}!`
-          ),
-        icon: <EmailIcon />,
-      },
-      {
-        color: "secondary",
-        onClick: () => {
-          setchangeEditingMode("row");
-          table.setEditingRow(row);
-        },
-        icon: <EditIcon />,
-      },
-      {
-        color: "secondary",
-        onClick: () => {
-          navigate(`row/${row.id}`, { state: { data: row.original } });
-        },
-        icon: <ViewIcon />,
-      },
-    ];
-
-    return <RowActions rowActionButtons={rowActionButtons} />;
-  };
 
   const getRowHeight = (density: MRT_DensityState) => {
     switch (density) {

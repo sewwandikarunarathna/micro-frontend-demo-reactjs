@@ -1,13 +1,8 @@
-import { Avatar, Button, Select, TreeSelect } from "antd";
-import { ReactNode } from "react";
+import { TreeSelect } from "antd";
 
 type Props = {
   size?: "small"| "middle" | "large";
-  style?: any;
-  className?: string;
-  defaultValue?: string | number | any;
   width?: number;
-  onChange?: any;
   value?: any;
   treeData: any;
   showTreeIcon: boolean;

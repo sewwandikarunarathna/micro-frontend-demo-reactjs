@@ -33,7 +33,19 @@ export const themeConfig: ThemeConfig = {
      Typography: {
         fontSize: 12,
         colorText: '#0d0d0d' //black
-     }
+     },
+     Input: {
+      fontSize: 12,
+     },
+     Select: {
+      fontSize: 12,
+     },
+     Tree : {
+      fontSize: 12
+     },
+     Form: {
+      itemMarginBottom: 0, // Default is 24px
+    },
   },
   token: {
     // Global design tokens
