@@ -1,0 +1,22 @@
+[
+    {
+        "id": 1,
+        "description": "Sales Order Header",
+        "accessLevel": "Full Access"      
+    },
+    {
+        "id": 2,
+        "description": "Document Number",
+        "accessLevel": "Full Access"
+    },
+    {
+        "id": 3,
+        "description": "Customer",
+        "accessLevel": "Full Access"
+    },
+    {
+        "id": 4,
+        "description": "Document Number",
+        "accessLevel": "View Only"
+    }
+]

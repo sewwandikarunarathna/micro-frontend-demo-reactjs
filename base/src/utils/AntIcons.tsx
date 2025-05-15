@@ -9,7 +9,10 @@ import {
   SettingOutlined as SettingsIcon,
   LayoutOutlined as AntLayoutIcon,
   LogoutOutlined as LogoutIcon,
-  PlusOutlined as AddIcon,
+  PlusOutlined as AddIcon,  
+  MinusSquareOutlined as MinusSquareIcon,
+  MinusOutlined as MinusIcon,
+  PlusSquareOutlined as PlusSquareIcon,
   SaveOutlined as SaveIcon,
   ArrowLeftOutlined as PreviousIcon,
   ArrowRightOutlined as NextIcon,
@@ -19,6 +22,8 @@ import {
   MenuFoldOutlined,
   BellFilled,
   InfoCircleOutlined,
+  DownOutlined,
+  CarryOutOutlined
 } from "@ant-design/icons";
 import { JSX } from "react";
 
@@ -38,6 +43,9 @@ const AntIcons = (iconName: string) => {
     LogoutIcon: <LogoutIcon />,
     SearchIcon: <SearchIcon />,
     AddIcon: <AddIcon />,
+    PlusSquareIcon: <PlusSquareIcon />,
+    MinusSquareIcon: <MinusSquareIcon />,
+    MinusIcon: <MinusIcon />,
     SaveIcon: <SaveIcon />,
     PreviousIcon: <PreviousIcon />,
     NextIcon: <NextIcon />,
@@ -45,7 +53,9 @@ const AntIcons = (iconName: string) => {
     MenuUnfoldOutlined: <MenuUnfoldOutlined />,
     MenuFoldOutlined: <MenuFoldOutlined />,
     InfoCircleOutlined: <InfoCircleOutlined />,
-    BellIconFilled: <BellFilled />
+    BellIconFilled: <BellFilled />,
+    DownOutlined: <DownOutlined />,
+    CarryOutOutlined: <CarryOutOutlined />
   };
   
   const iconNames: string | any = {

@@ -1,13 +1,25 @@
 import { useActionState, useState } from "react";
-import { Form, Input, Button, Alert, Checkbox } from "antd";
+import { Form, Button, Alert, Checkbox, ConfigProvider } from "antd";
 import SharedCard from "../shared-components/molecules/SharedCard";
 // import {  useFormStatus } from "react-dom";
 import PerfectScrollbar from "react-perfect-scrollbar";
 import withAuth from "../utils/WithAuth";
+import SharedForm from "../shared-components/molecules/SharedForm";
+import SharedFormItem from "../shared-components/molecules/SharedFormItem";
+import SharedCheckbox from "../shared-components/atoms/SharedCheckbox";
+import SharedInput from "../shared-components/atoms/SharedInput";
 
 const AuthenticForm = () => {
-  const [form] = Form.useForm();
   const [formErrors, setFormErrors] = useState<any>({});
+
+    // Special theme just for this page
+    const specialTheme = {
+      components: {
+        Form: {
+          itemMarginBottom: 8, // Default is 24px
+        },
+      },
+    };
 
   const [message, submitAction, isPending] = useActionState(
     async (prevErrors: any, formData: any) => {
@@ -40,12 +52,12 @@ const AuthenticForm = () => {
         Please fill in the details below
       </p>
       <PerfectScrollbar>
-      <Form
-        form={form}
+      <ConfigProvider theme={specialTheme}>
+      <SharedForm
         variant="outlined"
         size="small"
         layout="horizontal"
-        onFinish={async (values) => {
+        onFinish={async (values:any) => {
           // Convert AntD values to FormData
           const formData = new FormData();
           Object.entries(values).forEach(([key, value]) => {
@@ -56,9 +68,10 @@ const AuthenticForm = () => {
         style={{ height: '200px', padding: '0px 12px', gap: 0 }}
       >
         {/* Username Field */}
-        <Form.Item
+        <SharedFormItem
           label="Username"
           name="username"
+          initialValue="name"
           rules={[
             { required: true, message: "Required field" },
             { whitespace: true, message: "Cannot be just whitespace" },
@@ -66,11 +79,11 @@ const AuthenticForm = () => {
           validateStatus={formErrors?.username ? "error" : ""}
           help={formErrors?.username}
         >
-          <Input />
-        </Form.Item>
+          <SharedInput />
+        </SharedFormItem>
 
         {/* Email Field */}
-        <Form.Item
+        <SharedFormItem
           label="Email"
           name="email"
           rules={[
@@ -80,11 +93,11 @@ const AuthenticForm = () => {
           validateStatus={formErrors?.email ? "error" : ""}
           help={formErrors?.email}
         >
-          <Input />
-        </Form.Item>
+          <SharedInput />
+        </SharedFormItem>
 
         {/* Password Field */}
-        <Form.Item
+        <SharedFormItem
           label="Password"
           name="password"
           rules={[
@@ -95,18 +108,18 @@ const AuthenticForm = () => {
           validateStatus={formErrors?.password ? "error" : ""}
           help={formErrors?.password}
         >
-          <Input.Password />
-        </Form.Item>
+          <SharedInput inputType="password" />
+        </SharedFormItem>
 
         {/* Confirm Password Field */}
-        <Form.Item
+        <SharedFormItem
           name="confirmPassword"
           label="Confirm Password"
           dependencies={["password"]}
           rules={[
             { required: true, message: "Please confirm your password!" },
-            ({ getFieldValue }) => ({
-              validator(_, value) {
+            ({ getFieldValue }: { getFieldValue: any }) => ({
+              validator(_ : any, value : any) {
                 if (!value || getFieldValue("password") === value) {
                   return Promise.resolve();
                 }
@@ -117,30 +130,30 @@ const AuthenticForm = () => {
             }),
           ]}
         >
-          <Input.Password />
-        </Form.Item>
+          <SharedInput inputType="password" />
+        </SharedFormItem>
 
         {/* Agreement checking field */}
-        <Form.Item
+        <SharedFormItem
           name="agreement"
           valuePropName="checked"
           rules={[
             {
-              validator: (_, value) =>
+              validator: (_:any, value:any) =>
                 value
                   ? Promise.resolve()
                   : Promise.reject(new Error("You must accept the agreement")),
             },
           ]}
         >
-          <Checkbox>I have read the agreement</Checkbox>
-        </Form.Item>
+          <SharedCheckbox>I have read the agreement</SharedCheckbox>
+        </SharedFormItem>
         {/* Submit Button */}
-        <Form.Item>
+        <SharedFormItem>
           <Button type="primary" htmlType="submit" disabled={isPending}>
             {isPending ? "Submitting..." : "Submit"}
           </Button>
-        </Form.Item>
+        </SharedFormItem>
 
         {/* Server Error Display */}
         {formErrors && Object.keys(formErrors).length > 0 && (
@@ -157,11 +170,13 @@ const AuthenticForm = () => {
         ) : (
           <Alert message={message.message} type="error" showIcon />
         )}
-      </Form>
+      </SharedForm>
+
+      </ConfigProvider>
 
       </PerfectScrollbar>
     </SharedCard>
   );
 };
 
-export default withAuth(AuthenticForm);
+export default AuthenticForm;

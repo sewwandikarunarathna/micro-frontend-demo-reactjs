@@ -15,8 +15,8 @@ const tableStyles = {
     },
   },
   maxWidth: {
-    sm: "100px",
-    md: "400px",
+    sm: "300px",
+    md: "500px",
     lg: "700px",
     xl: "800px",
   },

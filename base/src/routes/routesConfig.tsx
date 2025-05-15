@@ -13,6 +13,7 @@ const RowActionTable = lazy(() => import("../components/RowActionTable"));
 const UserDetails = lazy(() => import("../components/UserDetails"));
 const AntUserDetails = lazy(() => import("../components/AntUserDetails"));
 const Logout = lazy(() => import("../components/Logout"));
+const AuthenticForm = lazy(() => import("../components/AuthenticForm"));
 const Layout1 = lazy(() => import("../layouts/Layout1"));
 const AntLayout = lazy(() => import("../layouts/AntLayout"));
 const UserGroup = lazy(() => import("../modules/user/tab-components/UserGroup"));
@@ -233,6 +234,15 @@ const routeConfig: RoutesType[] = [
   },
   // End of System Enablement Routes
 
+  {
+    path: "/auth-form",
+    element: (
+      <Suspense fallback={<div>Loading...</div>}>
+        <AuthenticForm />
+      </Suspense>
+    ),
+    allowedRoles: ["User", "Admin"],
+  },
 ];
 
 export default routeConfig;

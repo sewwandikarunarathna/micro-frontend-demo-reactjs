@@ -1,0 +1,26 @@
+[
+    {
+        "id": 1,
+        "branch": "Rizer",
+        "description": "Finance group",
+        "default": true
+    },
+    {
+        "id": 2,
+        "branch": "LA Corp.",
+        "description": "Supply Chain group",
+        "default": false
+    },
+    {
+        "id": 3,
+        "branch": "AIB",
+        "description": "BI group",
+        "default": true
+    },
+    {
+        "id": 4,
+        "branch": "Learnerr",
+        "description": "Administrator group",
+        "default": true
+    }
+]

@@ -1,25 +1,26 @@
-import { Avatar, Button, Select } from "antd";
-import { ReactNode } from "react";
+import { Select } from "antd";
 
 type Props = {
   size?: "small"| "middle" | "large";
   style?: any;
+  width?: number;
   className?: string;
-  defaultValue?: string | number | any;
-  gap?: number;
   onChange?: any;
-  optionData?: any;
-  options?: any;
+  options?: options[];
 };
 
+type options = {
+  value: string, label: string 
+};
 
 const SharedSelect = (props: Props) => {
   return (
     <>
      <Select
-      size={props.size ?? "middle"}
-        defaultValue={props.defaultValue ?? props.optionData[0]}
-        style={props.style}
+      size={props.size ?? "small"}
+        defaultValue={props.options?.[0]?.value ?? ""}
+        style={{...props.style, width: props.width}}
+        className={props.className}
         onChange={props.onChange}
         options={props.options}
       />

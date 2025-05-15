@@ -9,11 +9,12 @@ import {
 import STUDENTS from "../assets/students.json";
 import ActionButtonBar from "../shared-components/templates/ActionButtonBar";
 import SearchBar from "../shared-components/templates/SearchBar";
-import AuthenticForm from "./AuthenticForm";
-import UserForm from "./Form";
 import SharedTypography from "../shared-components/atoms/SharedTypography";
 import SharedTag from "../shared-components/atoms/SharedTag";
 import UserGroups from "../modules/user/tab-components/UserGroups";
+import Branch from "../modules/user/tab-components/Branch";
+import AuthorizationTab from "../modules/user/tab-components/AuthorizationTab";
+import SettingsTab from "../modules/user/tab-components/SettingsTab";
 
 const AntUserDetails = () => {
   const [siderWidth, setSiderWidth] = useState(180); // Initial width of the Sider
@@ -40,18 +41,18 @@ const AntUserDetails = () => {
     },
     {
       key: "2",
-      label: "Company",
-      children: <UserForm />,
+      label: "Branch",
+      children: <Branch />,
     },
     {
       key: "3",
       label: "Authorization",
-      children: <AuthenticForm />,
+      children: <AuthorizationTab />,
     },
     {
       key: "4",
       label: "Settings",
-      children: "Content of Settings",
+      children: <SettingsTab />,
     },
   ];
 
@@ -164,7 +165,7 @@ const AntUserDetails = () => {
             </div>
           </div>
           {/* User Form */}
-          <div className="flex flex-row w-full h-auto justify-center items-center p-1 gap-4 bg-gray-200 rounded-md shadow-md">
+          <div className="flex flex-row w-full h-auto justify-center items-center px-2 py-2 gap-4 bg-gray-200 rounded-md shadow-md">
             <Form
               className="flex flex-row w-full justify-center items-center gap-3"
               layout={"vertical"}
@@ -181,23 +182,6 @@ const AntUserDetails = () => {
                 // submitAction(formData);
               }}
             >
-              {/* {currentUser &&
-                (
-                  Object.keys(currentUser) as Array<keyof typeof currentUser>
-                ).map((data: any) => (
-                  <Form.Item key={data} label={data} className="w-auto">
-                    {data == "status" ? (
-                      <Tag color="cyan">{currentUser[data]}</Tag>
-                    ) : (
-                      <Input
-                        className="text-bold text-sm"
-                        placeholder={data}
-                        defaultValue={currentUser[data]}
-                      />
-                    )}
-                  </Form.Item>
-                ))} */}
-              {/* {!currentUser && <div className="w-full h-24"></div>} */}
               <Form.Item
                         key="userName"
                         label="User Name"
@@ -212,7 +196,7 @@ const AntUserDetails = () => {
                       </Form.Item>
                       <Form.Item key="email" label="E-mail" className="w-auto">
                         <Input
-                          className="text-bold text-sm"
+                          className="text-bold text-sm text-blue-400"
                           placeholder="email"
                           defaultValue={currentUser?.email}
                           value={currentUser?.email}
